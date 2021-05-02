@@ -30,7 +30,7 @@ function Start(prop) {
   const dispatch = useDispatch()
   const navigation = useSelector(selectNavigation)
   const [form, setForm] = useState(useSelector(selectForm))
-  console.log('Start.js fetchForm: prop.form', form) 
+  //console.log('Start.js fetchForm: prop.form', form) 
   
   const handleNextClick = () => {
     let nextScreenId = "Eligibility>Restricted"

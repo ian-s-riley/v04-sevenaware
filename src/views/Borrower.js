@@ -74,7 +74,7 @@ function Borrower() {
     if (formId) {
       const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId  }});    
       const thisForm = formFromAPI.data.getForm                     
-      console.log('Borrower.js fetchForm: thisForm', thisForm) 
+      //console.log('Borrower.js fetchForm: thisForm', thisForm) 
   
       // //set the redux store
       dispatch(updateForm(thisForm))
@@ -107,7 +107,7 @@ function Borrower() {
   }, [screenId])
 
   const showScreen = () => {
-    //console.log('Borrower.js - showForm - screenId', screenId)
+    console.log('Borrower.js - showForm - screenId', screenId)
     switch(screenId) {
       case "Eligibility>Ineligible":
         setCurrentForm(<Ineligible nextForm={gotoNextForm} />)
