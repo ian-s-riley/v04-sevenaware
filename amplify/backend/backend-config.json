@@ -1,0 +1,41 @@
+{
+  "auth": {
+    "v04sevenawarea21539a2": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "api": {
+    "v04sevenaware": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "description": "v04sevenaware-apikey"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authv04sevenawarea21539a2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "storage": {
+    "v04sevenaware": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}

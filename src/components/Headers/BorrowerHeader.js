@@ -8,7 +8,7 @@ function BorrowerHeader() {
   return (
     <>
       <div
-        className="page-header page-header-xxs settings-background"
+        className="page-header page-header-xs settings-background"
         style={{
           backgroundImage:
             "url(" +

@@ -1,5 +1,25 @@
 /*eslint-disable*/
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+
+//AWS Amplify GraphQL libraries
+import { API, graphqlOperation } from 'aws-amplify';
+import { getForm, listNotifications } from '../graphql/queries';
+
+//AWS Amplify Auth libraries
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+
+// redux store
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  updateForm,
+  createFormAsync,
+  updateFormAsync,  
+  selectForm,
+} from 'features/form/formSlice'
+import {
+  selectNavigation,
+  updateNavigation,
+} from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
@@ -29,16 +49,92 @@ import BorrowerNavBar from "components/Navbars/BorrowerNavBar.js";
 import BorrowerHeader from "components/Headers/BorrowerHeader.js";
 import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Documents from "./borrower-sections/Documents";
+import Start from "./borrower-sections/Start";
+import Restricted from "./borrower-sections/Restricted";
+import RestrictedYes from "./borrower-sections/RestrictedYes";
+import Ineligible from "./borrower-sections/Ineligible";
 
 function Borrower() {
-  const [activeTab, setActiveTab] = React.useState("1");
-  const showReply = false
+  const dispatch = useDispatch()
 
+  const [userId, setUserId] = useState(useSelector(selectNavigation).userId) 
+  const [screenId, setScreenId] = useState("")  
+  const [navigation, setNavigation] = useState(useSelector(selectNavigation)) 
+  const [userName, setUserName] = useState(useSelector(selectNavigation).userName)  
+  const [formId, setFormId] = useState(useSelector(selectNavigation).formId)  
+  const [form, setForm] = useState(useSelector(selectForm))
+  //console.log('Borrower.js : form', form) 
+
+  useEffect(() => {
+    fetchForm()     
+  }, [formId])
+
+  async function fetchForm() {
+    //get this user's form/application from the DB
+    if (formId) {
+      const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId  }});    
+      const thisForm = formFromAPI.data.getForm                     
+      console.log('Borrower.js fetchForm: thisForm', thisForm) 
+  
+      // //set the redux store
+      dispatch(updateForm(thisForm))
+  
+      // //set the local store
+      setForm(thisForm)   
+      
+      //show the cuurent app step
+      const newNav = {
+        ...navigation, 
+        screenId: thisForm.screenId       
+      }
+      dispatch(updateNavigation(newNav))
+      setScreenId(thisForm.screenId)
+    } else {
+      //create a new form for this user      
+      const newForm = {
+        ...form, 
+        userId: userId,
+        screenId: "Start"       
+      }
+      //console.log('fetchForm: newForm', newForm) 
+      dispatch(createFormAsync(newForm))
+    }   
+  } 
+
+  const [currentForm, setCurrentForm] = useState()
+  useEffect(() => {
+    showScreen()
+  }, [screenId])
+
+  const showScreen = () => {
+    //console.log('Borrower.js - showForm - screenId', screenId)
+    switch(screenId) {
+      case "Eligibility>Ineligible":
+        setCurrentForm(<Ineligible nextForm={gotoNextForm} />)
+        break;
+      case "Eligibility>Restricted>Yes":
+        setCurrentForm(<RestrictedYes nextForm={gotoNextForm} />)
+        break;
+      case "Eligibility>Restricted":
+        setCurrentForm(<Restricted nextForm={gotoNextForm} />)
+        break;
+      default:
+        setCurrentForm(<Start nextForm={gotoNextForm} />)
+    }
+  };
+
+  const [activeTab, setActiveTab] = React.useState("1");
   const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
   };
+
+  const gotoNextForm = (screenId) => {
+    setScreenId(screenId)
+  };
+
+  const showReply = false
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -65,21 +161,24 @@ function Borrower() {
                   <div className="following">
                     <Button
                       className="btn-just-icon"
+                      onClick={() => {
+                          toggle("2");
+                        }}
                       color="info"
                       id="tooltip924342351"
                       size="sm"
                     >
-                      <i className="nc-icon nc-simple-add" />
+                      <i className={formId ? "nc-icon nc-minimal-right" : "nc-icon nc-simple-add"} />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      Continue your application...
+                      {formId ? "Continue your application..." : "Start your application..."}
                     </UncontrolledTooltip>
                   </div>
                 </div>
                 <div className="name">
                   <h4>
                     Hello<br />
-                    <small>borrower name</small>
+                    <small>{userName}</small><br />
                   </h4>
                 </div>
               </Col>
@@ -105,7 +204,7 @@ function Borrower() {
                           toggle("2");
                         }}
                       >
-                        Current Application
+                        Application
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -115,7 +214,7 @@ function Borrower() {
                           toggle("3");
                         }}
                       >
-                        Documents & Files
+                        Documents
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -300,7 +399,7 @@ function Borrower() {
                       <Card className="card-with-shadow">
                         <CardBody>
                           <CardTitle tag="h5">
-                            Current Application
+                            Your Application
                           </CardTitle>
                           <div className="accounts-suggestion">
                             <ul className="list-unstyled">
@@ -320,18 +419,18 @@ function Borrower() {
                                   </Col>
                                   <Col className="description-section" md="7">
                                     <span>
-                                      25% Done
+                                      {form.percentComplete}% Done
                                     </span>
                                     <br />
                                     <span className="text-muted">
                                       <small>
-                                        Next Step{" "}
+                                        Next Step:{" "}<br />
                                         <a
                                           className="link-info"
                                           href="#"
                                           onClick={(e) => e.preventDefault()}
                                         >
-                                          @banks
+                                          {form.screenId}
                                         </a>
                                       </small>
                                     </span>
@@ -398,8 +497,10 @@ function Borrower() {
                     </Col>
                   </Row>
                 </TabPane>
-                <TabPane tabId="2" id="connections" role="tabpanel" />
-                <TabPane tabId="3" id="media" role="tabpanel">
+                <TabPane tabId="2" id="application" role="tabpanel">
+                  {currentForm}
+                </TabPane>
+                <TabPane tabId="3" id="documents" role="tabpanel">
                   <Documents />
                 </TabPane>
               </TabContent>
@@ -412,4 +513,4 @@ function Borrower() {
   );
 }
 
-export default Borrower;
+export default withAuthenticator(Borrower);

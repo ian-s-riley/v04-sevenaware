@@ -1,0 +1,104 @@
+type User @model {
+  id: ID!
+  userId: String
+  formId: String
+  userType: String
+  email: String
+  password: String
+  preifx: String
+  firstName: String
+  middleName: String
+  lastName: String
+  suffix: String
+  addressId: String
+  title: String
+  profile: String
+  image: String
+  tin: String
+  ssn: String
+  idType: String
+  percentOwner: Float
+  sevenAwareAgree: Boolean
+}
+
+type Form @model {
+  id: ID!
+  userId: String
+  formId: String
+  sopVersion: String
+  loanAmount: Float
+  screenId: String
+  screenNavigation: String
+  percentComplete: Int
+  restricted: Boolean
+  restrictedSpeculative: Boolean
+  restrictedCoins: Boolean
+  restrictedLending: Boolean
+  restrictedPackaging: Boolean
+  restrictedPyramid: Boolean
+  restrictedIllegal: Boolean
+  restrictedGambling: Boolean
+  ineligible: Boolean
+  ineligibleNonProfit: Boolean
+  ineligibleRealestate: Boolean
+  ineligibleLending: Boolean
+  ineligiblePyramid: Boolean
+  ineligibleGambling: Boolean
+  ineligibleIllegal: Boolean
+  forProfit: Boolean
+  fein: String
+  businessName: String
+  dba: String
+  businessImage: String
+  businessAddressId: String
+  agreeLexisNexis: Boolean
+  fullOwner: Boolean
+}
+
+type Screen @model {
+  id: ID!
+  formId: String
+  sopVersion: String
+  userType: String
+  percentComplete: Int
+  stage: String
+  stageHeader: String
+  stageText: String
+  stagePercentComplete: Int
+  step: String
+  stepHeader: String
+  stepText: String
+  stepPercentComplete: Int
+}
+
+type Address @model {
+  id: ID!
+  userId: String  
+  addressType: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  zipPlus4: String
+  county: String
+  country: String
+}
+
+type Notification @model {
+  id: ID!
+  fromUserId: String!
+  toUserId: String!
+  fromEmail: String
+  toEmail: String
+  action: String
+  status: String
+  badgeColor: String
+  badgeIcon: String
+  title: String
+  body: String
+  emailBody: String
+  smsBody: String
+  footerTitle: String
+  footer: String
+}
