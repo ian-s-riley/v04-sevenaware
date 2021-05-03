@@ -25,7 +25,7 @@ import {
 } from "reactstrap";
 
 
-function ForProfit(prop) {
+function US(prop) {
     const dispatch = useDispatch()
     const navigation = useSelector(selectNavigation)
     const [form, setForm] = useState(useSelector(selectForm))
@@ -37,6 +37,7 @@ function ForProfit(prop) {
     const handleNextClick = () => {
         //validation
         if (!form.forProfit) {nextScreenId = "Eligibility>ForProfit>No"}
+        if (!form.us) {nextScreenId = "Eligibility>US>No"}
 
         //update the local form store 
         const newForm = { 
@@ -83,7 +84,21 @@ function ForProfit(prop) {
                         name="forProfit"
                         className="custom-switch-info"
                         />
-                    </li>                                  
+                    </li>                                
+                </ul>
+                <label>Is your Business Entity established and located in the US or its territories?</label>
+                <ul className="notifications">
+                    <li className="notification-item d-flex justify-content-between align-items-center">
+                        {form.us ? "Yes, this is a US busines. " : "No, this is not a US business. "}
+                        <CustomInput
+                        defaultChecked={form.us}
+                        onChange={handleChange}
+                        type="switch"
+                        id="us"
+                        name="us"
+                        className="custom-switch-info"
+                        />
+                    </li>                                
                 </ul>
                 <div className="text-center">
                     <Button
@@ -117,4 +132,4 @@ function ForProfit(prop) {
   );
 }
 
-export default ForProfit;
+export default US;

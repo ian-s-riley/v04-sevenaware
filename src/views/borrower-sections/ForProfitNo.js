@@ -24,12 +24,12 @@ import {
 } from "reactstrap";
 
 
-function RestrictedYes(prop) {
+function ForProfitNo(prop) {
     const dispatch = useDispatch()
     const navigation = useSelector(selectNavigation)
 
     const handleBackClick = () => {
-        prop.nextForm(null, "Eligibility>Ineligible")
+        prop.nextForm(null, "Eligibility>ForProfit")
     } 
 
     return (
@@ -38,10 +38,10 @@ function RestrictedYes(prop) {
                 <Row>
                     <Col className="ml-auto mr-auto" md="6">
                     <Form className="settings-form">
-                        <label>Eligibility Warning</label>
+                        <label>For Profit Warning</label>
                         <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
-                            Your business does not quality for a 7(a) loan from the SBA. 
+                            Nonprofit businesses do not quality for 7(a) loans from the SBA. 
                         </li>
                         </ul>
                         <div className="text-center">
@@ -65,4 +65,4 @@ function RestrictedYes(prop) {
     );
 }
 
-export default RestrictedYes;
+export default ForProfitNo;

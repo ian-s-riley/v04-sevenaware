@@ -27,11 +27,9 @@ import {
 function IneligibleYes(prop) {
     const dispatch = useDispatch()
     const navigation = useSelector(selectNavigation)
-    const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
 
     const handleBackClick = () => {
-        prop.nextForm("Eligibility>Restricted")
+        prop.nextForm(null, "Eligibility>Restricted")
     } 
 
     return (

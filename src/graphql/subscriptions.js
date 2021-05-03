@@ -112,6 +112,7 @@ export const onCreateForm = /* GraphQL */ `
       ineligibleGambling
       ineligibleIllegal
       forProfit
+      us
       fein
       businessName
       dba
@@ -151,6 +152,7 @@ export const onUpdateForm = /* GraphQL */ `
       ineligibleGambling
       ineligibleIllegal
       forProfit
+      us
       fein
       businessName
       dba
@@ -190,6 +192,7 @@ export const onDeleteForm = /* GraphQL */ `
       ineligibleGambling
       ineligibleIllegal
       forProfit
+      us
       fein
       businessName
       dba

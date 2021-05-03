@@ -32,10 +32,10 @@ function Ineligible(prop) {
     //console.log('Restricted.js - form', form)
     const [isDirty, setIsDirty] = useState(false)
 
+    let nextScreenId = "Eligibility>ForProfit"
+    let percentComplete = 10
+
     const handleNextClick = () => {
-        let nextScreenId = "Eligibility>ForProfit"
-        let percentComplete = 10
-        
         //validation
         const ineligible =  form.ineligibleNonProfit
                             || form.ineligibleRealEstate
@@ -46,7 +46,7 @@ function Ineligible(prop) {
         if (ineligible) {nextScreenId = "Eligibility>Ineligible>Yes"}
 
         //update the local form store 
-        const thisForm = { 
+        const newForm = { 
             ...form, 
             ineligible: ineligible,
             screenId: nextScreenId,
@@ -54,7 +54,7 @@ function Ineligible(prop) {
          }
     
         //update redux & graphql
-        dispatch(updateFormAsync(thisForm))
+        dispatch(updateFormAsync(newForm))
 
         //send a notification
   
@@ -64,7 +64,7 @@ function Ineligible(prop) {
             screenId: nextScreenId    
         }
         dispatch(updateNavigation(newNav))
-        prop.nextForm(nextScreenId)
+        prop.nextForm(newForm, nextScreenId)
     };
 
     function handleChange(e) {
@@ -180,7 +180,7 @@ function Ineligible(prop) {
                         <i className="nc-icon nc-minimal-right" />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        Next: Eligibility {" > "} For Profit
+                        {nextScreenId}
                     </UncontrolledTooltip>
                 </div>
             </Form>

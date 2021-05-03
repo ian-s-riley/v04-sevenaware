@@ -29,15 +29,12 @@ function Restricted(prop) {
     const dispatch = useDispatch()
     const navigation = useSelector(selectNavigation)
     const [form, setForm] = useState(useSelector(selectForm))
-    //console.log('Restricted.js - form', form)
     const [isDirty, setIsDirty] = useState(false)
 
-    //console.log('Start.js fetchForm: prop.form', prop.form) 
+    let nextScreenId = "Eligibility>Ineligible"
+    let percentComplete = 5
 
-    const handleNextClick = () => {
-        let nextScreenId = "Eligibility>Ineligible"
-        let percentComplete = 5
-        
+    const handleNextClick = () => {   
         //validation
         const restricted =  form.restrictedSpeculative || 
                             form.restrictedPyramid || 
@@ -49,7 +46,7 @@ function Restricted(prop) {
         if (restricted) {nextScreenId = "Eligibility>Restricted>Yes"}
 
         //update the local form store 
-        const thisForm = { 
+        const newForm = { 
             ...form, 
             restricted: restricted,
             screenId: nextScreenId,
@@ -57,7 +54,7 @@ function Restricted(prop) {
          }
     
         //update redux & graphql
-        dispatch(updateFormAsync(thisForm))
+        dispatch(updateFormAsync(newForm))
 
         //send a notification
   
@@ -67,7 +64,7 @@ function Restricted(prop) {
             screenId: nextScreenId    
         }
         dispatch(updateNavigation(newNav))
-        prop.nextForm(nextScreenId)
+        prop.nextForm(newForm, nextScreenId)
     };
 
     function handleChange(e) {
@@ -183,7 +180,7 @@ function Restricted(prop) {
                         <i className="nc-icon nc-minimal-right" />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        Next: Eligibility {" > "} Ineligible Businesses
+                        {nextScreenId}
                     </UncontrolledTooltip>
                 </div>
             </Form>

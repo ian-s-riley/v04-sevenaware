@@ -91,6 +91,7 @@ export const getForm = /* GraphQL */ `
       ineligibleGambling
       ineligibleIllegal
       forProfit
+      us
       fein
       businessName
       dba
@@ -135,6 +136,7 @@ export const listForms = /* GraphQL */ `
         ineligibleGambling
         ineligibleIllegal
         forProfit
+        us
         fein
         businessName
         dba

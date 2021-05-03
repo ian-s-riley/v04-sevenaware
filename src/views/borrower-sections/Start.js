@@ -29,35 +29,35 @@ import {
 function Start(prop) {
   const dispatch = useDispatch()
   const navigation = useSelector(selectNavigation)
-  const [form, setForm] = useState(useSelector(selectForm))
-  //console.log('Start.js fetchForm: prop.form', form) 
+
+  let nextScreenId = "Eligibility>Restricted"
+  let percentComplete = 1
   
   const handleNextClick = () => {
-    let nextScreenId = "Eligibility>Restricted"
-    let percentComplete = 1
-
     //validation
   
     //update the local store 
-    const thisForm = {
-      form,
+    const newForm = {
+      ...prop.form,
       screenId: nextScreenId,
       percentComplete: percentComplete,
     }
-    //console.log('Start.js handleNextClick: thisForm', thisForm)
+    //console.log('Start.js handleNextClick: newForm', newForm)
   
     //update redux & graphql
-    dispatch(updateFormAsync(thisForm))
+    dispatch(updateFormAsync(newForm))
 
     //send a notification
   
     //go to the next step, stage, or form
     const newNav = {
       ...navigation, 
-      screenId: nextScreenId    
+      screenId: nextScreenId,      
     }
     dispatch(updateNavigation(newNav))
-    prop.nextForm(nextScreenId)
+
+    //tell the parent screen what to show next
+    prop.nextForm(newForm, nextScreenId)
   };
 
   return (
@@ -83,7 +83,7 @@ function Start(prop) {
                     <i className="nc-icon nc-minimal-right" />
                   </Button>
                   <UncontrolledTooltip delay={0} target="tooltip924342661">
-                    Next: Eligibility {" > "} Restricted Activities
+                    {nextScreenId}
                   </UncontrolledTooltip>
                 </div>
             </Form>

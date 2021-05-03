@@ -53,6 +53,10 @@ import Start from "./borrower-sections/Start";
 import Restricted from "./borrower-sections/Restricted";
 import RestrictedYes from "./borrower-sections/RestrictedYes";
 import Ineligible from "./borrower-sections/Ineligible";
+import IneligibleYes from "./borrower-sections/IneligibleYes";
+import ForProfit from "./borrower-sections/ForProfit";
+import ForProfitNo from "./borrower-sections/ForProfitNo";
+import US from "./borrower-sections/US";
 
 function Borrower() {
   const dispatch = useDispatch()
@@ -63,11 +67,16 @@ function Borrower() {
   const [userName, setUserName] = useState(useSelector(selectNavigation).userName)  
   const [formId, setFormId] = useState(useSelector(selectNavigation).formId)  
   const [form, setForm] = useState(useSelector(selectForm))
+  const [notifications, setNotifications] = useState([])
   //console.log('Borrower.js : form', form) 
 
   useEffect(() => {
     fetchForm()     
   }, [formId])
+
+  useEffect(() => {
+    fetchNotifications()     
+  }, [userId])
 
   async function fetchForm() {
     //get this user's form/application from the DB
@@ -101,6 +110,16 @@ function Borrower() {
     }   
   } 
 
+  async function fetchNotifications() {
+    const apiData = await API.graphql(graphqlOperation(listNotifications, {
+      filter: { toUserId: { eq: userId }},
+    }))    
+
+    const notificationsFromAPI = apiData.data.listNotifications.items
+    console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
+    setNotifications(notificationsFromAPI)    
+  }
+
   const [currentForm, setCurrentForm] = useState()
   useEffect(() => {
     showScreen()
@@ -109,6 +128,18 @@ function Borrower() {
   const showScreen = () => {
     console.log('Borrower.js - showForm - screenId', screenId)
     switch(screenId) {
+      case "Eligibility>US":
+        setCurrentForm(<US nextForm={gotoNextForm} />)
+        break;
+      case "Eligibility>ForProfit>No":
+          setCurrentForm(<ForProfitNo nextForm={gotoNextForm} />)
+          break;
+      case "Eligibility>ForProfit":
+        setCurrentForm(<ForProfit nextForm={gotoNextForm} />)
+        break;
+      case "Eligibility>Ineligible>Yes":
+        setCurrentForm(<IneligibleYes nextForm={gotoNextForm} />)
+        break;
       case "Eligibility>Ineligible":
         setCurrentForm(<Ineligible nextForm={gotoNextForm} />)
         break;
@@ -119,7 +150,7 @@ function Borrower() {
         setCurrentForm(<Restricted nextForm={gotoNextForm} />)
         break;
       default:
-        setCurrentForm(<Start nextForm={gotoNextForm} />)
+        setCurrentForm(<Start nextForm={gotoNextForm} form={form} />)
     }
   };
 
@@ -130,7 +161,8 @@ function Borrower() {
     }
   };
 
-  const gotoNextForm = (screenId) => {
+  const gotoNextForm = (newForm, screenId) => {
+    newForm && setForm(newForm)
     setScreenId(screenId)
   };
 
@@ -178,7 +210,7 @@ function Borrower() {
                 <div className="name">
                   <h4>
                     Hello<br />
-                    <small>{userName}</small><br />
+                    <small>{navigation.userName}</small><br />
                   </h4>
                 </div>
               </Col>
@@ -225,7 +257,14 @@ function Borrower() {
                   <Row>
                     <Col md="8">
                       <div className="tweets">
-                      <Media>
+                      
+                      {notifications.map((notification, key) => {
+                //const timelineBadgeClasses = classes.timelineBadge + " " + classes[notification.badgeColor] + " " + classes.timelineSimpleBadge
+                let image = "assets/img/person-2.jpg"
+                if (notification.badgeIcon) {image = notification.badgeIcon}
+                return (
+
+                  <Media key={key}>
                         <a
                           className="pull-left"
                           href="#"
@@ -244,10 +283,10 @@ function Borrower() {
                         </a>
                         <Media body>
                           <Media heading tag="strong">
-                            Jenny Jones
+                            {notification.fromUserId}
                           </Media>
                           <div className="pull-right">
-                            <h6 className="text-muted">Sep 11, 11:53 AM</h6>
+                            <h6 className="text-muted">{notification.createdAt}</h6>
                             <Button
                               className="btn-link pull-right"
                               color="info"
@@ -259,9 +298,7 @@ function Borrower() {
                             </Button>
                           </div>
                           <p>
-                            Hello guys, nice to have you on the platform! There will
-                            be a lot of great stuff coming soon. We will keep you
-                            posted for the latest news.
+                            {notification.body}
                           </p>
                           {showReply && (
                             <Media className="media-post">
@@ -302,97 +339,24 @@ function Borrower() {
                           )}                                                    
                         </Media>
                       </Media>
-                      {/* end media */}
-                      {/* Comment */}
-                      <Media>
-                        <a
-                          className="pull-left"
-                          href="#"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <div className="avatar">
-                            <Media
-                              alt="..."
-                              object
-                              src={
-                                require("assets/img/person-1.jpg")
-                                  .default
-                              }
-                            />
-                          </div>
-                        </a>
-                        <Media body>
-                          <Media heading tag="strong">
-                            Flume
-                          </Media>
-                          <div className="pull-right">
-                            <h6 className="text-muted">Sep 11, 11:54 AM</h6>
-                            <Button
-                              className="btn-link pull-right"
-                              color="info"
-                              href="#"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <i className="fa fa-reply mr-1" />
-                              Reply
-                            </Button>
-                          </div>
-                          <p>
-                            Hello guys, nice to have you on the platform! There will
-                            be a lot of great stuff coming soon. We will keep you
-                            posted for the latest news.
-                          </p>                          
-                          <Media>
-                            <a
-                              className="pull-left"
-                              href="#"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <div className="avatar">
-                                <Media
-                                  alt="..."
-                                  object
-                                  src={
-                                    require("assets/img/faces/kaci-baum-2.jpg")
-                                      .default
-                                  }
-                                />
-                              </div>
-                            </a>
-                            <Media body>
-                              <Media heading tag="strong">
-                                Eric Faker
-                              </Media>
-                              <div className="pull-right">
-                                <h6 className="text-muted">Sep 11, 11:56 AM</h6>
-                                <Button
-                                  className="btn-link pull-right"
-                                  color="info"
-                                  href="#"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  <i className="fa fa-reply mr-1" />
-                                  Reply
-                                </Button>
-                              </div>
-                              <p>
-                                Hello guys, nice to have you on the platform! There
-                                will be a lot of great stuff coming soon. We will keep
-                                you posted for the latest news.
-                              </p>
-                              <p>Don't forget, You're Awesome!</p>                              
-                            </Media>
-                          </Media>
-                          {/* end media */}
-                        </Media>
-                      </Media>
-                      {/* end media */}
-                        <br />
+
+
+                );
+            })}
+
+                      
+
+{false && (
+  <>
+  <br />
                         <div className="text-center">
                           <Button className="btn-round" color="info" outline>
                             Show more notifications
                           </Button>
                         </div>
+                        </>
+)}
+                        
                       </div>
                     </Col>
                     <Col md="4" sm="6">

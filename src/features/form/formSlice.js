@@ -30,6 +30,7 @@ export const formSlice = createSlice({
     ineligibleGambling: null,
     ineligibleIllegal: null,
     forProfit: null,
+    us: null,
     fein: "",
     businessName: "",
     dba: "",
@@ -63,6 +64,7 @@ export const formSlice = createSlice({
       state.ineligibleGambling = action.payload.ineligibleGambling
       state.ineligibleIllegal = action.payload.ineligibleIllegal
       state.forProfit = action.payload.forProfit
+      state.us = action.payload.us
       state.fein = action.payload.fein
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
@@ -107,6 +109,7 @@ export const updateFormAsync = form => dispatch => {
           ineligibleGambling: form.ineligibleGambling,
           ineligibleIllegal: form.ineligibleIllegal,
           forProfit: form.forProfit,
+          us: form.us,
           fein: form.fein,
           businessName: form.businessName,
           dba: form.dba,
@@ -130,6 +133,8 @@ export const createFormAsync = form => dispatch => {
           screenNavigation: "Start",
           percentComplete:0,
           loanAmount: 0,
+          forProfit: true,
+          us: true,
         }
       } 
   })
