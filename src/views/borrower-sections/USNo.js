@@ -24,12 +24,12 @@ import {
 } from "reactstrap";
 
 
-function ForProfitNo(prop) {
+function USNo(prop) {
     const dispatch = useDispatch()
     const navigation = useSelector(selectNavigation)
 
     const handleBackClick = () => {
-        prop.nextForm(null, "Eligibility>ForProfit")
+        prop.nextForm(null, "Eligibility>US")
     } 
 
     return (
@@ -41,7 +41,7 @@ function ForProfitNo(prop) {
                         <label>For Profit Warning</label>
                         <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
-                            Non-profit businesses do not quality for 7(a) loans from the SBA. 
+                            Bbusinesses outside the US & it's terriroties do not quality for 7(a) loans from the SBA. 
                         </li>
                         </ul>
                         <div className="text-center">
@@ -65,4 +65,4 @@ function ForProfitNo(prop) {
     );
 }
 
-export default ForProfitNo;
+export default USNo;

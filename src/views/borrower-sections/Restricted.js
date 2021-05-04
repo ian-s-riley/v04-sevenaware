@@ -27,10 +27,11 @@ import {
 
 function Restricted(prop) {
     const dispatch = useDispatch()
-    const navigation = useSelector(selectNavigation)
-    const [form, setForm] = useState(useSelector(selectForm))
+    
+    const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
 
+    const thisScreenId = "Eligibility>Restricted"
     let nextScreenId = "Eligibility>Ineligible"
     let percentComplete = 5
 
@@ -45,11 +46,15 @@ function Restricted(prop) {
                             form.restrictedCoins;
         if (restricted) {nextScreenId = "Eligibility>Restricted>Yes"}
 
+        //save the new form to the navigation path for this user    
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.push(nextScreenId)
+        
         //update the local form store 
         const newForm = { 
             ...form, 
             restricted: restricted,
-            screenId: nextScreenId,
+            screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
     
@@ -59,13 +64,14 @@ function Restricted(prop) {
         //send a notification
   
         //go to the next step, stage, or form
-        const newNav = {
-            ...navigation, 
-            screenId: nextScreenId    
-        }
-        dispatch(updateNavigation(newNav))
-        prop.nextForm(newForm, nextScreenId)
+        prop.nextForm(newForm, screenNavigation)
     };
+
+    const handleBackClick = () => {
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.pop()
+        prop.nextForm(null, screenNavigation)
+    }
 
     function handleChange(e) {
         const { id, checked } = e.currentTarget;
@@ -79,10 +85,10 @@ function Restricted(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">                
-                <label>Does your business generate revenue from any of the following activities?</label>
+                <label>Does your business generate revenue from any of the following activities:</label>
                 <ul className="notifications">
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Speculative trading activities{" "}
+                        Speculative trading activities?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedSpeculative}
                         onChange={handleChange}
@@ -93,7 +99,7 @@ function Restricted(prop) {
                         />
                     </li> 
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Dealing in rare coins or stamps{" "}
+                        Dealing in rare coins or stamps?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedCoins}
                         onChange={handleChange}
@@ -104,7 +110,7 @@ function Restricted(prop) {
                         />
                     </li>   
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Lending{" "}
+                        Lending?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedLending}
                         onChange={handleChange}
@@ -115,7 +121,7 @@ function Restricted(prop) {
                         />
                     </li> 
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Loan packaging{" "}
+                        Loan packaging?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedPackaging}
                         onChange={handleChange}
@@ -126,7 +132,7 @@ function Restricted(prop) {
                         />
                     </li> 
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Pyramid sales plans{" "}
+                        Pyramid sales plans?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedPyramid}
                         onChange={handleChange}
@@ -137,7 +143,7 @@ function Restricted(prop) {
                         />
                     </li> 
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Firms involved in illegal activities that are against the law in the jurisdiction where the business is located (including cannabis){" "}
+                        Firms involved in illegal activities that are against the law in the jurisdiction where the business is located (including cannabis)?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedIllegal}
                         onChange={handleChange}
@@ -148,7 +154,7 @@ function Restricted(prop) {
                         />
                     </li> 
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        Gambling{" "}
+                        Gambling?{" "}
                         <CustomInput
                         defaultChecked={form.restrictedGambling}
                         onChange={handleChange}
@@ -159,8 +165,10 @@ function Restricted(prop) {
                         />
                     </li>                
                 </ul>
+                <hr />
                 <div className="text-center">
                     <Button
+                        onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
                         size="sm"

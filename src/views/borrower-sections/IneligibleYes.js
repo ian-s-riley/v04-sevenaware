@@ -29,7 +29,7 @@ function IneligibleYes(prop) {
     const navigation = useSelector(selectNavigation)
 
     const handleBackClick = () => {
-        prop.nextForm(null, "Eligibility>Restricted")
+        prop.nextForm(null, "Eligibility>Ineligible")
     } 
 
     return (
@@ -41,7 +41,7 @@ function IneligibleYes(prop) {
                         <label>Eligibility Warning</label>
                         <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
-                            Your business is ineligible not quality for a 7(a) loan from the SBA. 
+                            Your business is ineligible not quality for a 7(a) loan from the SBA due to ineligible business activity.
                         </li>
                         </ul>
                         <div className="text-center">

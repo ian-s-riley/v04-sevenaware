@@ -28,21 +28,25 @@ import {
 
 function Start(prop) {
   const dispatch = useDispatch()
-  const navigation = useSelector(selectNavigation)
 
   let nextScreenId = "Eligibility>Restricted"
   let percentComplete = 1
   
   const handleNextClick = () => {
     //validation
+
+    //save the new form to the navigation path for this user    
+    let screenNavigation = Object.assign([], prop.navigation);
+    screenNavigation.push(nextScreenId)
+    //console.log('Start.js handleNextClick: screenNavigation', screenNavigation)
   
     //update the local store 
     const newForm = {
       ...prop.form,
-      screenId: nextScreenId,
+      screenNavigation: screenNavigation.join(','),
       percentComplete: percentComplete,
     }
-    //console.log('Start.js handleNextClick: newForm', newForm)
+    console.log('Start.js handleNextClick: newForm', newForm)
   
     //update redux & graphql
     dispatch(updateFormAsync(newForm))
@@ -50,14 +54,7 @@ function Start(prop) {
     //send a notification
   
     //go to the next step, stage, or form
-    const newNav = {
-      ...navigation, 
-      screenId: nextScreenId,      
-    }
-    dispatch(updateNavigation(newNav))
-
-    //tell the parent screen what to show next
-    prop.nextForm(newForm, nextScreenId)
+    prop.nextForm(newForm, screenNavigation)
   };
 
   return (
@@ -66,12 +63,8 @@ function Start(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">
-                <label>New SBA 7(a) loan application.</label>
-                <ul className="notifications">
-                  <li className="notification-item d-flex justify-content-between align-items-center">
-                    Let's determine if you are eligible for a 7(a) loan by answering a few questions
-                  </li>
-                </ul>
+                <label>Let's determine if you are eligible for a 7(a) loan by answering a few questions</label>
+                <hr />
                 <div className="text-center">
                   <Button
                     className="btn-just-icon pull-right"

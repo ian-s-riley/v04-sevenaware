@@ -8,6 +8,7 @@ export const navigationSlice = createSlice({
     userType: "Borrower",
     formId: "f73a9c2d-7eae-4348-81a5-5d5a6724cc8f",    
     screenId: "",  
+    screenNavigation: [],
 
     // userName: "Mike B.", 
     // userType: "Lender",
@@ -16,12 +17,13 @@ export const navigationSlice = createSlice({
   },
   reducers: {
     updateNavigation: (state, action) => {
-      //console.log("navigationSlice.js - udpateNavigation - action", action)
+      console.log("navigationSlice.js - udpateNavigation - action", action)
       state.userId = action.payload.userId
       state.userName = action.payload.userName
       state.userType = action.payload.userType
       state.formId = action.payload.formId
       state.screenId = action.payload.screenId
+      state.screenNavigation = action.payload.screenNavigation
     },
   },
 });

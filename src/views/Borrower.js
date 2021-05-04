@@ -57,17 +57,22 @@ import IneligibleYes from "./borrower-sections/IneligibleYes";
 import ForProfit from "./borrower-sections/ForProfit";
 import ForProfitNo from "./borrower-sections/ForProfitNo";
 import US from "./borrower-sections/US";
+import USNo from "./borrower-sections/USNo";
 
 function Borrower() {
-  const dispatch = useDispatch()
-
-  const [userId, setUserId] = useState(useSelector(selectNavigation).userId) 
-  const [screenId, setScreenId] = useState("")  
+  const dispatch = useDispatch()  
+  
   const [navigation, setNavigation] = useState(useSelector(selectNavigation)) 
-  const [userName, setUserName] = useState(useSelector(selectNavigation).userName)  
-  const [formId, setFormId] = useState(useSelector(selectNavigation).formId)  
+  const [userId, setUserId] = useState(navigation.userId) 
+  const [userName, setUserName] = useState(navigation.userName)  
+  const [formId, setFormId] = useState(navigation.formId)  
+
   const [form, setForm] = useState(useSelector(selectForm))
   const [notifications, setNotifications] = useState([])
+  
+  const [screenNavigation, setScreenNavigation] = useState([]) 
+  const [stageHeader, setStageHeader] = useState("")
+  
   //console.log('Borrower.js : form', form) 
 
   useEffect(() => {
@@ -83,7 +88,7 @@ function Borrower() {
     if (formId) {
       const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId  }});    
       const thisForm = formFromAPI.data.getForm                     
-      //console.log('Borrower.js fetchForm: thisForm', thisForm) 
+      console.log('Borrower.js fetchForm: thisForm', thisForm) 
   
       // //set the redux store
       dispatch(updateForm(thisForm))
@@ -91,22 +96,23 @@ function Borrower() {
       // //set the local store
       setForm(thisForm)   
       
-      //show the cuurent app step
+      //get the navigation path for this form
+      const newScreenNavigation = thisForm.screenNavigation.split(',')
       const newNav = {
         ...navigation, 
-        screenId: thisForm.screenId       
+        screenNavigation: newScreenNavigation
       }
       dispatch(updateNavigation(newNav))
-      setScreenId(thisForm.screenId)
+      setScreenNavigation(newScreenNavigation)
     } else {
-      //create a new form for this user      
-      const newForm = {
-        ...form, 
-        userId: userId,
-        screenId: "Start"       
-      }
-      //console.log('fetchForm: newForm', newForm) 
-      dispatch(createFormAsync(newForm))
+      // //create a new form for this user      
+      // const newForm = {
+      //   ...form, 
+      //   userId: userId,
+      //   screenNavigation: ["Start"]       
+      // }
+      // //console.log('fetchForm: newForm', newForm) 
+      // dispatch(createFormAsync(newForm))
     }   
   } 
 
@@ -116,41 +122,59 @@ function Borrower() {
     }))    
 
     const notificationsFromAPI = apiData.data.listNotifications.items
-    console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
+    //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
     setNotifications(notificationsFromAPI)    
   }
 
   const [currentForm, setCurrentForm] = useState()
   useEffect(() => {
     showScreen()
-  }, [screenId])
+  }, [screenNavigation])
 
   const showScreen = () => {
-    console.log('Borrower.js - showForm - screenId', screenId)
+    //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    const screenId = screenNavigation.slice(-1)[0];
+
     switch(screenId) {
+      case "Eligibility>US>No":
+        setStageHeader("Eligibility")
+        setCurrentForm(<USNo nextForm={gotoNextForm} />)
+        break;
       case "Eligibility>US":
+        setStageHeader("Eligibility")
         setCurrentForm(<US nextForm={gotoNextForm} />)
         break;
       case "Eligibility>ForProfit>No":
-          setCurrentForm(<ForProfitNo nextForm={gotoNextForm} />)
-          break;
+        setStageHeader("Eligibility")
+        setCurrentForm(<ForProfitNo nextForm={gotoNextForm} />)
+        break;
       case "Eligibility>ForProfit":
+        setStageHeader("Eligibility")
         setCurrentForm(<ForProfit nextForm={gotoNextForm} />)
         break;
       case "Eligibility>Ineligible>Yes":
+        setStageHeader("Eligibility")
         setCurrentForm(<IneligibleYes nextForm={gotoNextForm} />)
         break;
       case "Eligibility>Ineligible":
+        setStageHeader("Eligibility")
         setCurrentForm(<Ineligible nextForm={gotoNextForm} />)
         break;
       case "Eligibility>Restricted>Yes":
+        setStageHeader("Eligibility")
         setCurrentForm(<RestrictedYes nextForm={gotoNextForm} />)
         break;
       case "Eligibility>Restricted":
-        setCurrentForm(<Restricted nextForm={gotoNextForm} />)
+        setStageHeader("Eligibility")
+        setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
+      case "Start":
+          setStageHeader("Let's Get Started")
+          setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       default:
-        setCurrentForm(<Start nextForm={gotoNextForm} form={form} />)
+        setStageHeader("404 Page Not Found")
+        setCurrentForm(null)
     }
   };
 
@@ -161,9 +185,9 @@ function Borrower() {
     }
   };
 
-  const gotoNextForm = (newForm, screenId) => {
+  const gotoNextForm = (newForm, screenNavigation) => {
     newForm && setForm(newForm)
-    setScreenId(screenId)
+    setScreenNavigation(screenNavigation)
   };
 
   const showReply = false
@@ -194,6 +218,7 @@ function Borrower() {
                     <Button
                       className="btn-just-icon"
                       onClick={() => {
+                          setScreenNavigation(["Start"])
                           toggle("2");
                         }}
                       color="info"
@@ -207,12 +232,24 @@ function Borrower() {
                     </UncontrolledTooltip>
                   </div>
                 </div>
-                <div className="name">
-                  <h4>
-                    Hello<br />
-                    <small>{navigation.userName}</small><br />
-                  </h4>
-                </div>
+              </Col>
+            </Row>
+            <Row className="owner">
+              <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
+                  {activeTab === "2" ? (
+                    <div className="name">
+                      <h4>
+                        {stageHeader}                        
+                      </h4>
+                    </div>
+                  ) : (
+                    <div className="name">
+                      <h4>
+                        Hello<br />
+                        <small>{navigation.userName}</small>
+                      </h4>
+                    </div>
+                  )}
               </Col>
             </Row>
             <div className="profile-tabs">
@@ -255,7 +292,7 @@ function Borrower() {
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" id="tweets">
                   <Row>
-                    <Col md="8">
+                    <Col md="6">
                       <div className="tweets">
                       
                       {notifications.map((notification, key) => {

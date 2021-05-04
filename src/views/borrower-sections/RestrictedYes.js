@@ -29,7 +29,7 @@ function RestrictedYes(prop) {
     const navigation = useSelector(selectNavigation)
 
     const handleBackClick = () => {
-        prop.nextForm(null, "Eligibility>Ineligible")
+        prop.nextForm(null, "Eligibility>Restricted")
     } 
 
     return (
@@ -41,7 +41,7 @@ function RestrictedYes(prop) {
                         <label>Eligibility Warning</label>
                         <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
-                            Your business does not quality for a 7(a) loan from the SBA. 
+                            Your business does not quality for a 7(a) loan from the SBA due to involvement in restricted business activities.
                         </li>
                         </ul>
                         <div className="text-center">

@@ -72,7 +72,7 @@ function US(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">                
-                <label>Is your Business a For-profit Entity?</label>
+                <label>Is your business a for-profit entity?</label>
                 <ul className="notifications">
                     <li className="notification-item d-flex justify-content-between align-items-center">
                         {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
@@ -84,12 +84,12 @@ function US(prop) {
                         name="forProfit"
                         className="custom-switch-info"
                         />
-                    </li>                                
+                    </li>                                  
                 </ul>
-                <label>Is your Business Entity established and located in the US or its territories?</label>
+                <label>Is your Business Entity established & located in the US or its territories?</label>
                 <ul className="notifications">
                     <li className="notification-item d-flex justify-content-between align-items-center">
-                        {form.us ? "Yes, this is a US busines. " : "No, this is not a US business. "}
+                        {form.us ? "Yes, this is a US business. " : "No, this is not a US business. "}
                         <CustomInput
                         defaultChecked={form.us}
                         onChange={handleChange}
@@ -100,6 +100,7 @@ function US(prop) {
                         />
                     </li>                                
                 </ul>
+                <hr />
                 <div className="text-center">
                     <Button
                         className="btn-just-icon pull-left"

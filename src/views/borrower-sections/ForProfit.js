@@ -71,7 +71,7 @@ function ForProfit(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">                
-                <label>Is your Business a For-profit Entity?</label>
+                <label>Is your business a for-profit entity?</label>
                 <ul className="notifications">
                     <li className="notification-item d-flex justify-content-between align-items-center">
                         {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
@@ -85,6 +85,7 @@ function ForProfit(prop) {
                         />
                     </li>                                  
                 </ul>
+                <hr />
                 <div className="text-center">
                     <Button
                         className="btn-just-icon pull-left"
