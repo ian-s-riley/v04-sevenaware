@@ -27,21 +27,27 @@ import {
 
 function ForProfit(prop) {
     const dispatch = useDispatch()
-    const navigation = useSelector(selectNavigation)
-    const [form, setForm] = useState(useSelector(selectForm))
+    
+    const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
 
+    const thisScreenId = "Eligibility>ForProfit"
     let nextScreenId = "Eligibility>US"
-    let percentComplete = 10
+    let percentComplete = 12
 
-    const handleNextClick = () => {
+    const handleNextClick = () => {   
         //validation
         if (!form.forProfit) {nextScreenId = "Eligibility>ForProfit>No"}
 
+        //save the new form to the navigation path for this user    
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.push(nextScreenId)
+        
         //update the local form store 
         const newForm = { 
             ...form, 
-            screenId: nextScreenId,
+            forProfit: form.forProfit,
+            screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
     
@@ -51,14 +57,15 @@ function ForProfit(prop) {
         //send a notification
   
         //go to the next step, stage, or form
-        const newNav = {
-            ...navigation, 
-            screenId: nextScreenId    
-        }
-        dispatch(updateNavigation(newNav))
-        prop.nextForm(newForm, nextScreenId)
+        prop.nextForm(newForm, screenNavigation)
     };
 
+    const handleBackClick = () => {
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.pop()
+        prop.nextForm(null, screenNavigation)
+    }
+        
     function handleChange(e) {
         const { id, checked } = e.currentTarget;
         setForm({ ...form, [id]: checked })
@@ -88,6 +95,7 @@ function ForProfit(prop) {
                 <hr />
                 <div className="text-center">
                     <Button
+                        onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
                         size="sm"

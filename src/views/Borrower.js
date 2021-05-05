@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
@@ -8,12 +8,16 @@ import { getForm, listNotifications } from '../graphql/queries';
 //AWS Amplify Auth libraries
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
+//google charts
+import Chart from "react-google-charts";
+import Chartist from "react-chartist";
+
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
   updateForm,
   createFormAsync,
-  updateFormAsync,  
+  updateFormAsync,
   selectForm,
 } from 'features/form/formSlice'
 import {
@@ -60,50 +64,53 @@ import US from "./borrower-sections/US";
 import USNo from "./borrower-sections/USNo";
 
 function Borrower() {
-  const dispatch = useDispatch()  
-  
-  const [navigation, setNavigation] = useState(useSelector(selectNavigation)) 
-  const [userId, setUserId] = useState(navigation.userId) 
-  const [userName, setUserName] = useState(navigation.userName)  
-  const [formId, setFormId] = useState(navigation.formId)  
+  const dispatch = useDispatch()
+
+  const [navigation, setNavigation] = useState(useSelector(selectNavigation))
+  const [userId, setUserId] = useState(navigation.userId)
+  const [userName, setUserName] = useState(navigation.userName)
+  const [formId, setFormId] = useState(navigation.formId)
 
   const [form, setForm] = useState(useSelector(selectForm))
   const [notifications, setNotifications] = useState([])
-  
-  const [screenNavigation, setScreenNavigation] = useState([]) 
+
+  const [screenNavigation, setScreenNavigation] = useState([])
   const [stageHeader, setStageHeader] = useState("")
-  
-  //console.log('Borrower.js : form', form) 
+
+  console.log('Borrower.js : screenNavigation', screenNavigation)
 
   useEffect(() => {
-    fetchForm()     
+    fetchForm()
   }, [formId])
 
   useEffect(() => {
-    fetchNotifications()     
+    fetchNotifications()
   }, [userId])
 
   async function fetchForm() {
     //get this user's form/application from the DB
     if (formId) {
-      const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId  }});    
-      const thisForm = formFromAPI.data.getForm                     
-      console.log('Borrower.js fetchForm: thisForm', thisForm) 
-  
+      const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId } });
+      const thisForm = formFromAPI.data.getForm
+      //console.log('Borrower.js fetchForm: thisForm', thisForm)
+
       // //set the redux store
       dispatch(updateForm(thisForm))
-  
+
       // //set the local store
-      setForm(thisForm)   
-      
+      setForm(thisForm)
+
       //get the navigation path for this form
       const newScreenNavigation = thisForm.screenNavigation.split(',')
       const newNav = {
-        ...navigation, 
+        ...navigation,
         screenNavigation: newScreenNavigation
       }
       dispatch(updateNavigation(newNav))
       setScreenNavigation(newScreenNavigation)
+      // newScreenNavigation.map(screen => {
+      //   console.log('screen', screen)
+      // })
     } else {
       // //create a new form for this user      
       // const newForm = {
@@ -113,17 +120,17 @@ function Borrower() {
       // }
       // //console.log('fetchForm: newForm', newForm) 
       // dispatch(createFormAsync(newForm))
-    }   
-  } 
+    }
+  }
 
   async function fetchNotifications() {
     const apiData = await API.graphql(graphqlOperation(listNotifications, {
-      filter: { toUserId: { eq: userId }},
-    }))    
+      filter: { toUserId: { eq: userId } },
+    }))
 
     const notificationsFromAPI = apiData.data.listNotifications.items
     //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
-    setNotifications(notificationsFromAPI)    
+    setNotifications(notificationsFromAPI)
   }
 
   const [currentForm, setCurrentForm] = useState()
@@ -135,43 +142,43 @@ function Borrower() {
     //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
-    switch(screenId) {
+    switch (screenId) {
       case "Eligibility>US>No":
         setStageHeader("Eligibility")
-        setCurrentForm(<USNo nextForm={gotoNextForm} />)
+        setCurrentForm(<USNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>US":
         setStageHeader("Eligibility")
-        setCurrentForm(<US nextForm={gotoNextForm} />)
+        setCurrentForm(<US nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>ForProfit>No":
         setStageHeader("Eligibility")
-        setCurrentForm(<ForProfitNo nextForm={gotoNextForm} />)
+        setCurrentForm(<ForProfitNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>ForProfit":
         setStageHeader("Eligibility")
-        setCurrentForm(<ForProfit nextForm={gotoNextForm} />)
+        setCurrentForm(<ForProfit nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Ineligible>Yes":
         setStageHeader("Eligibility")
-        setCurrentForm(<IneligibleYes nextForm={gotoNextForm} />)
+        setCurrentForm(<IneligibleYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Ineligible":
         setStageHeader("Eligibility")
-        setCurrentForm(<Ineligible nextForm={gotoNextForm} />)
+        setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Restricted>Yes":
         setStageHeader("Eligibility")
-        setCurrentForm(<RestrictedYes nextForm={gotoNextForm} />)
+        setCurrentForm(<RestrictedYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Restricted":
         setStageHeader("Eligibility")
         setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Start":
-          setStageHeader("Let's Get Started")
-          setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-          break;
+        setStageHeader("Let's Get Started")
+        setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        break;
       default:
         setStageHeader("404 Page Not Found")
         setCurrentForm(null)
@@ -218,9 +225,9 @@ function Borrower() {
                     <Button
                       className="btn-just-icon"
                       onClick={() => {
-                          setScreenNavigation(["Start"])
-                          toggle("2");
-                        }}
+                        setScreenNavigation(["Start"])
+                        toggle("2");
+                      }}
                       color="info"
                       id="tooltip924342351"
                       size="sm"
@@ -236,20 +243,20 @@ function Borrower() {
             </Row>
             <Row className="owner">
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
-                  {activeTab === "2" ? (
-                    <div className="name">
-                      <h4>
-                        {stageHeader}                        
-                      </h4>
-                    </div>
-                  ) : (
-                    <div className="name">
-                      <h4>
-                        Hello<br />
-                        <small>{navigation.userName}</small>
-                      </h4>
-                    </div>
-                  )}
+                {activeTab === "2" ? (
+                  <div className="name">
+                    <h4>
+                      {stageHeader}
+                    </h4>
+                  </div>
+                ) : (
+                  <div className="name">
+                    <h4>
+                      Hello<br />
+                      <small>{navigation.userName}</small>
+                    </h4>
+                  </div>
+                )}
               </Col>
             </Row>
             <div className="profile-tabs">
@@ -292,55 +299,19 @@ function Borrower() {
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" id="tweets">
                   <Row>
+                    <Col md="2"></Col>
                     <Col md="6">
                       <div className="tweets">
-                      
-                      {notifications.map((notification, key) => {
-                //const timelineBadgeClasses = classes.timelineBadge + " " + classes[notification.badgeColor] + " " + classes.timelineSimpleBadge
-                let image = "assets/img/person-2.jpg"
-                if (notification.badgeIcon) {image = notification.badgeIcon}
-                return (
 
-                  <Media key={key}>
-                        <a
-                          className="pull-left"
-                          href="#"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <div className="avatar">
-                            <Media
-                              alt="..."
-                              object
-                              src={
-                                require("assets/img/person-2.jpg")
-                                  .default
-                              }
-                            />
-                          </div>
-                        </a>
-                        <Media body>
-                          <Media heading tag="strong">
-                            {notification.fromUserId}
-                          </Media>
-                          <div className="pull-right">
-                            <h6 className="text-muted">{notification.createdAt}</h6>
-                            <Button
-                              className="btn-link pull-right"
-                              color="info"
-                              href="#"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <i className="fa fa-reply mr-1" />
-                              Reply
-                            </Button>
-                          </div>
-                          <p>
-                            {notification.body}
-                          </p>
-                          {showReply && (
-                            <Media className="media-post">
+                        {notifications.map((notification, key) => {
+                          //const timelineBadgeClasses = classes.timelineBadge + " " + classes[notification.badgeColor] + " " + classes.timelineSimpleBadge
+                          let image = "assets/img/person-2.jpg"
+                          if (notification.badgeIcon) { image = notification.badgeIcon }
+                          return (
+
+                            <Media key={key}>
                               <a
-                                className="pull-left author"
+                                className="pull-left"
                                 href="#"
                                 onClick={(e) => e.preventDefault()}
                               >
@@ -349,96 +320,123 @@ function Borrower() {
                                     alt="..."
                                     object
                                     src={
-                                      require("assets/img/faces/kaci-baum-2.jpg")
+                                      require("assets/img/person-2.jpg")
                                         .default
                                     }
                                   />
                                 </div>
                               </a>
                               <Media body>
-                                <Input
-                                  placeholder="Write a nice reply or go home..."
-                                  rows="4"
-                                  type="textarea"
-                                />
-                                <div className="media-footer">
+                                <Media heading tag="strong">
+                                  {notification.fromUserId}
+                                </Media>
+                                <div className="pull-right">
+                                  <h6 className="text-muted">{notification.createdAt}</h6>
                                   <Button
-                                    className="pull-right"
+                                    className="btn-link pull-right"
                                     color="info"
                                     href="#"
                                     onClick={(e) => e.preventDefault()}
                                   >
-                                    Reply
-                                  </Button>
+                                    <i className="fa fa-reply mr-1" />
+                              Reply
+                            </Button>
                                 </div>
+                                <p>
+                                  {notification.body}
+                                </p>
+                                {showReply && (
+                                  <Media className="media-post">
+                                    <a
+                                      className="pull-left author"
+                                      href="#"
+                                      onClick={(e) => e.preventDefault()}
+                                    >
+                                      <div className="avatar">
+                                        <Media
+                                          alt="..."
+                                          object
+                                          src={
+                                            require("assets/img/faces/kaci-baum-2.jpg")
+                                              .default
+                                          }
+                                        />
+                                      </div>
+                                    </a>
+                                    <Media body>
+                                      <Input
+                                        placeholder="Write a nice reply or go home..."
+                                        rows="4"
+                                        type="textarea"
+                                      />
+                                      <div className="media-footer">
+                                        <Button
+                                          className="pull-right"
+                                          color="info"
+                                          href="#"
+                                          onClick={(e) => e.preventDefault()}
+                                        >
+                                          Reply
+                                  </Button>
+                                      </div>
+                                    </Media>
+                                  </Media>
+                                )}
                               </Media>
                             </Media>
-                          )}                                                    
-                        </Media>
-                      </Media>
 
 
-                );
-            })}
+                          );
+                        })}
 
-                      
-
-{false && (
-  <>
-  <br />
-                        <div className="text-center">
-                          <Button className="btn-round" color="info" outline>
-                            Show more notifications
+                        {false && (
+                          <>
+                            <br />
+                            <div className="text-center">
+                              <Button className="btn-round" color="info" outline>
+                                Show more notifications
                           </Button>
-                        </div>
-                        </>
-)}
-                        
+                            </div>
+                          </>
+                        )}
+
                       </div>
                     </Col>
                     <Col md="4" sm="6">
                       <Card className="card-with-shadow">
                         <CardBody>
                           <CardTitle tag="h5">
-                            Your Application
+                            {form.percentComplete}% Complete
                           </CardTitle>
                           <div className="accounts-suggestion">
                             <ul className="list-unstyled">
                               <li className="account">
                                 <Row>
-                                  <Col md="5">
-                                    <div className="avatar">
-                                      <img
-                                        alt="..."
-                                        className="img-circle img-no-padding img-responsive"
-                                        src={
-                                          require("assets/img/percentage.jpg")
-                                            .default
-                                        }
-                                      />
-                                    </div>
-                                  </Col>
-                                  <Col className="description-section" md="7">
-                                    <span>
-                                      {form.percentComplete}% Done
-                                    </span>
-                                    <br />
-                                    <span className="text-muted">
-                                      <small>
-                                        Next Step:{" "}<br />
-                                        <a
-                                          className="link-info"
-                                          href="#"
-                                          onClick={(e) => e.preventDefault()}
-                                        >
-                                          {form.screenId}
-                                        </a>
-                                      </small>
-                                    </span>
-                                  </Col>
+
+                                  {true && (
+                                    <Col md="5">
+                                      <div className="avatar">
+
+                                        <Chartist
+                                          data={{
+                                            labels: [form.percentComplete + " %", " "],
+                                            series: [form.percentComplete, 100 - form.percentComplete],
+                                          }}
+                                          type="Pie"
+                                          options={{
+                                            height: "220px",
+                                            donut: true,
+                                            donutWidth: 50,
+                                            donutSolid: true,
+                                            startAngle: 270,
+                                            showLabel: true
+                                          }}
+                                        />
+                                      </div>
+                                    </Col>
+                                  )}
                                 </Row>
                               </li>
-                              
                             </ul>
                           </div>
                         </CardBody>
@@ -447,49 +445,20 @@ function Borrower() {
                       <Card className="card-with-shadow">
                         <CardBody>
                           <CardTitle tag="h5">
-                            Timeline ·{" "}
-                            <small>
-                              <a
-                                className="link-info"
-                                href="#"
-                                onClick={(e) => e.preventDefault()}
-                              >
-                                Details
-                              </a>
-                            </small>
+                            Timeline
                           </CardTitle>
                           <div className="hashtag-suggestions">
                             <ul className="list-unstyled">
-                              <li>
-                                <i className="fa fa-calendar mr-1" />
-                                Application Started May 2021
-                              </li>
-                              <li>
-                                <a
-                                  className="link-danger"
-                                  href="#"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  Owners Contacted
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="link-danger"
-                                  href="#"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  Application Started
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  href="#"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  Welcome to 7(a)ware
-                                </a>
-                              </li>
+                                <li>
+                                  {screenNavigation[0]}
+                                </li>
+                              {screenNavigation.map((screen, key) => {
+                                <li key={key}>
+                                  {screen}
+                                </li>
+                              })
+
+                              }
                             </ul>
                           </div>
                         </CardBody>

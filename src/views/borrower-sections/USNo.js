@@ -25,11 +25,11 @@ import {
 
 
 function USNo(prop) {
-    const dispatch = useDispatch()
-    const navigation = useSelector(selectNavigation)
-
+    
     const handleBackClick = () => {
-        prop.nextForm(null, "Eligibility>US")
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.pop()
+        prop.nextForm(null, screenNavigation)
     } 
 
     return (
