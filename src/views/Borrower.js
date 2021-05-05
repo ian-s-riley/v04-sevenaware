@@ -62,6 +62,7 @@ import ForProfit from "./borrower-sections/ForProfit";
 import ForProfitNo from "./borrower-sections/ForProfitNo";
 import US from "./borrower-sections/US";
 import USNo from "./borrower-sections/USNo";
+import Eligible from "./borrower-sections/Eligible";
 
 function Borrower() {
   const dispatch = useDispatch()
@@ -76,8 +77,6 @@ function Borrower() {
 
   const [screenNavigation, setScreenNavigation] = useState([])
   const [stageHeader, setStageHeader] = useState("")
-
-  console.log('Borrower.js : screenNavigation', screenNavigation)
 
   useEffect(() => {
     fetchForm()
@@ -143,6 +142,10 @@ function Borrower() {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Eligibility>Eligible":
+        setStageHeader("Eligibility Complete")
+        setCurrentForm(<Eligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        break;
       case "Eligibility>US>No":
         setStageHeader("Eligibility")
         setCurrentForm(<USNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -197,7 +200,21 @@ function Borrower() {
     setScreenNavigation(screenNavigation)
   };
 
+  //constants & variables
   const showReply = false
+  const data={
+    labels: [form.percentComplete + " %", " "],
+    series: [form.percentComplete, 100 - form.percentComplete],
+  }
+  const options = {
+    width: "150px",
+    donut: false,
+    donutWidth: 50,
+    donutSolid: true,
+    startAngle: 270,
+    showLabel: true
+  }
+  const type = "Pie";
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -416,22 +433,7 @@ function Borrower() {
                                   {true && (
                                     <Col md="5">
                                       <div className="avatar">
-
-                                        <Chartist
-                                          data={{
-                                            labels: [form.percentComplete + " %", " "],
-                                            series: [form.percentComplete, 100 - form.percentComplete],
-                                          }}
-                                          type="Pie"
-                                          options={{
-                                            height: "220px",
-                                            donut: true,
-                                            donutWidth: 50,
-                                            donutSolid: true,
-                                            startAngle: 270,
-                                            showLabel: true
-                                          }}
-                                        />
+                                        <Chartist data={data} options={options} type={type} />
                                       </div>
                                     </Col>
                                   )}
