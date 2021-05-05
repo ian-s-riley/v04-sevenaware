@@ -208,11 +208,11 @@ function Borrower() {
   }
   const options = {
     width: "150px",
-    donut: false,
+    donut: true,
     donutWidth: 50,
     donutSolid: true,
     startAngle: 270,
-    showLabel: true
+    showLabel: true,
   }
   const type = "Pie";
 
@@ -344,11 +344,11 @@ function Borrower() {
                                 </div>
                               </a>
                               <Media body>
-                                <Media heading tag="strong">
+                                <Media heading tag="author">
                                   {notification.fromUserId}
                                 </Media>
                                 <div className="pull-right">
-                                  <h6 className="text-muted">{notification.createdAt}</h6>
+                                  <h6 className="text-muted">{new Date(notification.createdAt).toLocaleDateString("en-US")}</h6>
                                   <Button
                                     className="btn-link pull-right"
                                     color="info"
