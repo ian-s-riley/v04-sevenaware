@@ -449,13 +449,8 @@ function Borrower() {
                           </CardTitle>
                           <div className="hashtag-suggestions">
                             <ul className="list-unstyled">
-                                <li>
-                                  {screenNavigation[0]}
-                                </li>
                               {screenNavigation.map((screen, key) => {
-                                <li key={key}>
-                                  {screen}
-                                </li>
+                                return <li key={key}>{screen}</li>
                               })
 
                               }
