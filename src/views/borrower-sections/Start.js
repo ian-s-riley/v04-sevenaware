@@ -3,8 +3,7 @@ import React, {useState} from "react";
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  createFormAsync,
-  updateFormAsync,  
+  updateForm,  
   selectForm,
 } from 'features/form/formSlice'
 import {
@@ -49,7 +48,7 @@ function Start(prop) {
     console.log('Start.js handleNextClick: newForm', newForm)
   
     //update redux & graphql
-    dispatch(updateFormAsync(newForm))
+    dispatch(updateForm(newForm))
 
     //send a notification
   

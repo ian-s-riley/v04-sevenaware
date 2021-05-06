@@ -1,14 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-// redux store
-import { useSelector, useDispatch } from 'react-redux';
-import {
-    updateFormAsync,
-} from 'features/form/formSlice'
-import {
-    updateNavigation,
-    selectNavigation,
-} from 'features/form/navigationSlice'
+import React from "react";
 
 // reactstrap components
 import {

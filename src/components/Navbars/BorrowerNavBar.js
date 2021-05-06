@@ -21,10 +21,14 @@ import {
 } from "reactstrap";
 // core components
 
-function BorrowerNavBar() {
+function BorrowerNavBar(prop) {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [bodyClick, setBodyClick] = React.useState(false);
   const [collapseOpen, setCollapseOpen] = React.useState(false);
+
+  const userId = prop.userId
+  const formId = prop.formId
+
   React.useEffect(() => {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise

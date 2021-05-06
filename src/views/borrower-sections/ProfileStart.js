@@ -1,10 +1,15 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+
+//AWS Amplify GraphQL libraries
+import { API, graphqlOperation } from 'aws-amplify';
+import { getForm } from '../../graphql/queries';
+import { createForm as createFormMutation } from '../../graphql/mutations';
 
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectForm,
   updateForm,
+  updateFormAsync,  
 } from 'features/form/formSlice'
 import {
   updateNavigation,
@@ -25,15 +30,65 @@ import {
 } from "reactstrap";
 
 
-function Eligible(prop) {
+function ProfileStart(prop) {
     const dispatch = useDispatch()
+
+    const [navigation, setNavigation] = useState(useSelector(selectNavigation))
+    const userId = navigation.userId
+    const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
     
     const [form, setForm] = useState(prop.form)
+    const [formId, setFormId] = useState(prop.form.formId)
     const [isDirty, setIsDirty] = useState(false)
 
-    const thisScreenId = "Eligibility>Eligible"
-    let nextScreenId = "Profile>Start"
-    let percentComplete = 20
+    const thisScreenId = "ProfileStart"
+    let nextScreenId = "Profile>Email"
+    let percentComplete = 22
+
+    useEffect(() => {
+        fetchForm()
+    }, [formId])
+
+    async function fetchForm() {
+        //get this user's form/application from the DB
+        if (formId) {
+          const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId } });
+          const thisForm = formFromAPI.data.getForm
+          //console.log('Borrower.js fetchForm: thisForm', thisForm)
+    
+          // //set the redux store
+          dispatch(updateForm(thisForm))
+    
+          // //set the local store
+          setForm(thisForm)
+    
+          //get the navigation path for this form
+          const newScreenNavigation = thisForm.screenNavigation.split(',')
+          const newNav = {
+            ...navigation,
+            screenNavigation: newScreenNavigation
+          }
+          dispatch(updateNavigation(newNav))
+          setScreenNavigation(newScreenNavigation)
+          // newScreenNavigation.map(screen => {
+          //   console.log('screen', screen)
+          // })
+        } else {
+          //create a new form for this user using the data entered
+          console.log('ProfileStart.js - formId', formId)
+          console.log('ProfileStart.js - form', form)
+
+          //clear the navigation stack so far
+          
+          // const newForm = {
+          //   ...form, 
+          //   userId: userId,
+          //   screenNavigation: ["Start"]       
+          // }
+          // //console.log('fetchForm: newForm', newForm) 
+          // dispatch(createFormAsync(newForm))
+        }
+      }
 
     const handleNextClick = () => {   
         //validation
@@ -50,13 +105,10 @@ function Eligible(prop) {
          }
     
         //update redux & graphql
-        dispatch(updateForm(newForm))
+        dispatch(updateFormAsync(newForm))
 
         //send a notification
-
-        //tell the parent page to create a new user & form
-        prop.newUserAndForm()
-
+  
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
     };
@@ -73,9 +125,9 @@ function Eligible(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">
-                <h5>It looks like your entity is eligible for a 7(a) loan.</h5>
                 <label>
-                If you click on the ‘APPLY NOW’ button you will be invited to create a password protected account. We have found it a good practice to have an equity owner and authorized person create the account.
+                It looks like your entity is eligible for a 7(a) loan.  If you click on the ‘APPLY NOW’ button you will be invited to create a password protected account.
+                <br />We have found it a good practice to have an equity owner and authorized person create the account.
                 </label>
                 <hr />
                 <div className="text-center">
@@ -112,4 +164,4 @@ function Eligible(prop) {
   );
 }
 
-export default Eligible;
+export default ProfileStart;

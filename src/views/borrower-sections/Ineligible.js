@@ -1,15 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  updateFormAsync,  
-  selectForm,
+  updateForm, 
 } from 'features/form/formSlice'
-import {
-    updateNavigation,
-    selectNavigation,
-  } from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
@@ -58,7 +53,7 @@ function Ineligible(prop) {
          }
     
         //update redux & graphql
-        dispatch(updateFormAsync(newForm))
+        dispatch(updateForm(newForm))
 
         //send a notification
   

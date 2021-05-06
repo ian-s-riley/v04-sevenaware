@@ -4,20 +4,19 @@ import React, { useState, useEffect } from "react";
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
 import { getForm, listNotifications } from '../graphql/queries';
+import { createUser as createUserMutation, createForm as createFormMutation } from '../graphql/mutations';
 
 //AWS Amplify Auth libraries
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
 //google charts
-import Chart from "react-google-charts";
+//import Chart from "react-google-charts";
+//chartist chart control
 import Chartist from "react-chartist";
 
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  updateForm,
-  createFormAsync,
-  updateFormAsync,
   selectForm,
 } from 'features/form/formSlice'
 import {
@@ -63,73 +62,64 @@ import ForProfitNo from "./borrower-sections/ForProfitNo";
 import US from "./borrower-sections/US";
 import USNo from "./borrower-sections/USNo";
 import Eligible from "./borrower-sections/Eligible";
+import ProfileStart from "./borrower-sections/ProfileStart";
 
 function Borrower() {
   const dispatch = useDispatch()
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-  const [userId, setUserId] = useState(navigation.userId)
-  const [userName, setUserName] = useState(navigation.userName)
-  const [formId, setFormId] = useState(navigation.formId)
-
+  const userId = navigation.userId
+  const formId = navigation.formId
+  const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
+  const [stageHeader, setStageHeader] = useState("")    
   const [form, setForm] = useState(useSelector(selectForm))
   const [notifications, setNotifications] = useState([])
 
-  const [screenNavigation, setScreenNavigation] = useState([])
-  const [stageHeader, setStageHeader] = useState("")
+//   useEffect(() => {
+//     fetchForm()
+// }, [formId])
 
-  useEffect(() => {
-    fetchForm()
-  }, [formId])
+// async function fetchForm() {
+//     //get this user's form/application from the DB
+//     if (formId) {
+//       const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId } });
+//       const thisForm = formFromAPI.data.getForm
+//       //console.log('Borrower.js fetchForm: thisForm', thisForm)
 
+//       // //set the redux store
+//       dispatch(updateForm(thisForm))
+
+//       // //set the local store
+//       setForm(thisForm)
+
+//       //get the navigation path for this form
+//       const newScreenNavigation = thisForm.screenNavigation.split(',')
+//       const newNav = {
+//         ...navigation,
+//         screenNavigation: newScreenNavigation
+//       }
+//       dispatch(updateNavigation(newNav))
+//       setScreenNavigation(newScreenNavigation)
+//       // newScreenNavigation.map(screen => {
+//       //   console.log('screen', screen)
+//       // })
+//     }}
+//   }
+    
   useEffect(() => {
     fetchNotifications()
-  }, [userId])
-
-  async function fetchForm() {
-    //get this user's form/application from the DB
-    if (formId) {
-      const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId } });
-      const thisForm = formFromAPI.data.getForm
-      //console.log('Borrower.js fetchForm: thisForm', thisForm)
-
-      // //set the redux store
-      dispatch(updateForm(thisForm))
-
-      // //set the local store
-      setForm(thisForm)
-
-      //get the navigation path for this form
-      const newScreenNavigation = thisForm.screenNavigation.split(',')
-      const newNav = {
-        ...navigation,
-        screenNavigation: newScreenNavigation
-      }
-      dispatch(updateNavigation(newNav))
-      setScreenNavigation(newScreenNavigation)
-      // newScreenNavigation.map(screen => {
-      //   console.log('screen', screen)
-      // })
-    } else {
-      // //create a new form for this user      
-      // const newForm = {
-      //   ...form, 
-      //   userId: userId,
-      //   screenNavigation: ["Start"]       
-      // }
-      // //console.log('fetchForm: newForm', newForm) 
-      // dispatch(createFormAsync(newForm))
-    }
-  }
+  }, [userId])  
 
   async function fetchNotifications() {
-    const apiData = await API.graphql(graphqlOperation(listNotifications, {
-      filter: { toUserId: { eq: userId } },
-    }))
-
-    const notificationsFromAPI = apiData.data.listNotifications.items
-    //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
-    setNotifications(notificationsFromAPI)
+    if (userId) {
+      const apiData = await API.graphql(graphqlOperation(listNotifications, {
+        filter: { toUserId: { eq: userId } },
+      }))
+  
+      const notificationsFromAPI = apiData.data.listNotifications.items
+      //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
+      setNotifications(notificationsFromAPI)
+    }
   }
 
   const [currentForm, setCurrentForm] = useState()
@@ -138,13 +128,17 @@ function Borrower() {
   }, [screenNavigation])
 
   const showScreen = () => {
-    //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>Start":
+        setStageHeader("Profile")
+        setCurrentForm(<ProfileStart nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        break;
       case "Eligibility>Eligible":
         setStageHeader("Eligibility Complete")
-        setCurrentForm(<Eligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        setCurrentForm(<Eligible nextForm={gotoNextForm} newUserAndForm={newUserAndForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>US>No":
         setStageHeader("Eligibility")
@@ -200,6 +194,29 @@ function Borrower() {
     setScreenNavigation(screenNavigation)
   };
 
+  async function newUserAndForm() {
+    //create the new user
+    const apiUserData = await API.graphql(
+      { query: createUserMutation, 
+        variables: { input: {userType: "Borrower"} } 
+      }
+    )
+    const newUser = apiUserData.data.createUser
+    //console.log('newUserAndForm - newUserId', newUser.id)
+
+    //create the new form for this user
+    const apiFormData = await API.graphql(
+      { query: createFormMutation, 
+        variables: { input: form } 
+      }
+    )
+    const newForm = apiFormData.data.createForm
+    console.log('newUserAndForm - newFormId', newForm.id)
+
+    //update the navigation/site store
+    console.log('newUserAndForm - newFormId')
+  };
+
   //constants & variables
   const showReply = false
   const data={
@@ -225,7 +242,7 @@ function Borrower() {
   });
   return (
     <>
-      <BorrowerNavBar />
+      <BorrowerNavBar navigation={navigation} />
       <div className="wrapper">
         <BorrowerHeader />
         <div className="profile-content section-white-gray">
@@ -269,7 +286,7 @@ function Borrower() {
                 ) : (
                   <div className="name">
                     <h4>
-                      Hello<br />
+                      Welcome<br />
                       <small>{navigation.userName}</small>
                     </h4>
                   </div>
@@ -280,6 +297,7 @@ function Borrower() {
               <div className="nav-tabs-navigation">
                 <div className="nav-tabs-wrapper">
                   <Nav id="tabs" role="tablist" tabs>
+                    {userId && (
                     <NavItem>
                       <NavLink
                         className={activeTab === "1" ? "active" : ""}
@@ -287,9 +305,10 @@ function Borrower() {
                           toggle("1");
                         }}
                       >
-                        Notifications
+                        Home
                       </NavLink>
                     </NavItem>
+                    )}
                     <NavItem>
                       <NavLink
                         className={activeTab === "2" ? "active" : ""}
@@ -300,6 +319,7 @@ function Borrower() {
                         Application
                       </NavLink>
                     </NavItem>
+                    {userId && (
                     <NavItem>
                       <NavLink
                         className={activeTab === "3" ? "active" : ""}
@@ -307,9 +327,10 @@ function Borrower() {
                           toggle("3");
                         }}
                       >
-                        Documents
+                        Library
                       </NavLink>
                     </NavItem>
+                    )}                    
                   </Nav>
                 </div>
               </div>
@@ -426,20 +447,7 @@ function Borrower() {
                             {form.percentComplete}% Complete
                           </CardTitle>
                           <div className="accounts-suggestion">
-                            <ul className="list-unstyled">
-                              <li className="account">
-                                <Row>
-
-                                  {true && (
-                                    <Col md="5">
-                                      <div className="avatar">
-                                        <Chartist data={data} options={options} type={type} />
-                                      </div>
-                                    </Col>
-                                  )}
-                                </Row>
-                              </li>
-                            </ul>
+                            <Chartist data={data} options={options} type={type} />
                           </div>
                         </CardBody>
                       </Card>
@@ -452,9 +460,17 @@ function Borrower() {
                           <div className="hashtag-suggestions">
                             <ul className="list-unstyled">
                               {screenNavigation.map((screen, key) => {
-                                return <li key={key}>{screen}</li>
+                                return (
+                                <li key={key}>
+                                <a
+                                  href="#"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  {screen}
+                                </a>
+                                </li>
+                                )
                               })
-
                               }
                             </ul>
                           </div>

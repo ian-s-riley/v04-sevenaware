@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  updateFormAsync,  
+  updateForm,  
   selectForm,
 } from 'features/form/formSlice'
 import {
@@ -52,7 +52,7 @@ function ForProfit(prop) {
          }
     
         //update redux & graphql
-        dispatch(updateFormAsync(newForm))
+        dispatch(updateForm(newForm))
 
         //send a notification
   
