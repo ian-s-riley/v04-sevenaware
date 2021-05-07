@@ -125,10 +125,7 @@ function ProfileStart(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">
-                <label>
-                It looks like your entity is eligible for a 7(a) loan.  If you click on the ‘APPLY NOW’ button you will be invited to create a password protected account.
-                <br />We have found it a good practice to have an equity owner and authorized person create the account.
-                </label>
+                <label></label>
                 <hr />
                 <div className="text-center">
                     <Button
@@ -143,17 +140,16 @@ function ProfileStart(prop) {
                         Previous
                     </UncontrolledTooltip>
                     <Button
-                        className="pull-right btn-round"
+                        className="btn-just-icon pull-right"
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
                         size="sm"
                     >
-                        Apply Now
                         <i className="nc-icon nc-minimal-right" />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        Apply Now
+                        {nextScreenId}
                     </UncontrolledTooltip>
                 </div>
             </Form>

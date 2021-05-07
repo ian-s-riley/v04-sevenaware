@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const navigationSlice = createSlice({
   name: 'navigation',
   initialState: {
-    userId: null,    
+    userId: "e9148263-3344-4a09-8572-54829968eeaa",    
     userName: "", 
     userType: "Borrower",
     formId: null,    
     screenId: "",  
-    screenNavigation: ["Start"],
+    screenNavigation: [],
 
     // userName: "Mike B.", 
     // userType: "Lender",

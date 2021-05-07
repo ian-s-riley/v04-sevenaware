@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
-import { getForm, listNotifications } from '../graphql/queries';
+import { getForm, listNotifications, listForms } from '../graphql/queries';
 import { createUser as createUserMutation, createForm as createFormMutation } from '../graphql/mutations';
 
 //AWS Amplify Auth libraries
@@ -18,6 +18,7 @@ import Chartist from "react-chartist";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectForm,
+  updateForm,
 } from 'features/form/formSlice'
 import {
   selectNavigation,
@@ -69,42 +70,44 @@ function Borrower() {
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const userId = navigation.userId
-  const formId = navigation.formId
   const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
   const [stageHeader, setStageHeader] = useState("")    
   const [form, setForm] = useState(useSelector(selectForm))
   const [notifications, setNotifications] = useState([])
 
-//   useEffect(() => {
-//     fetchForm()
-// }, [formId])
+  useEffect(() => {
+      fetchForm()
+  }, [userId])
 
-// async function fetchForm() {
-//     //get this user's form/application from the DB
-//     if (formId) {
-//       const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId } });
-//       const thisForm = formFromAPI.data.getForm
-//       //console.log('Borrower.js fetchForm: thisForm', thisForm)
+  async function fetchForm() {
+      //get this user's form/application from the DB
+      //console.log('Borrower.js fetchForm: userId', userId)
+      if (userId) {
+        //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
+        const formFromAPI = await API.graphql(graphqlOperation(listForms, {
+          filter: { userId: { eq: userId }},
+        }))  
+        const thisForm = formFromAPI.data.listForms.items[0]
+        //console.log('Borrower.js fetchForm: thisForm', thisForm)
 
-//       // //set the redux store
-//       dispatch(updateForm(thisForm))
+        //set the redux store
+        dispatch(updateForm(thisForm))
 
-//       // //set the local store
-//       setForm(thisForm)
+        // //set the local store
+        setForm(thisForm)
 
-//       //get the navigation path for this form
-//       const newScreenNavigation = thisForm.screenNavigation.split(',')
-//       const newNav = {
-//         ...navigation,
-//         screenNavigation: newScreenNavigation
-//       }
-//       dispatch(updateNavigation(newNav))
-//       setScreenNavigation(newScreenNavigation)
-//       // newScreenNavigation.map(screen => {
-//       //   console.log('screen', screen)
-//       // })
-//     }}
-//   }
+        //get the navigation path for this form
+        const newScreenNavigation = thisForm.screenNavigation.split(',')
+        const newNav = {
+          ...navigation,
+          formId: thisForm.id,
+          userId: userId,
+          screenNavigation: newScreenNavigation
+        }
+        dispatch(updateNavigation(newNav))
+        setScreenNavigation(newScreenNavigation)
+      }
+    }
     
   useEffect(() => {
     fetchNotifications()
@@ -128,7 +131,7 @@ function Borrower() {
   }, [screenNavigation])
 
   const showScreen = () => {
-    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
@@ -182,7 +185,7 @@ function Borrower() {
     }
   };
 
-  const [activeTab, setActiveTab] = React.useState("1");
+  const [activeTab, setActiveTab] = React.useState("2");
   const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -196,6 +199,7 @@ function Borrower() {
 
   async function newUserAndForm() {
     //create the new user
+    const nextScreenId = "Profile>Start"
     const apiUserData = await API.graphql(
       { query: createUserMutation, 
         variables: { input: {userType: "Borrower"} } 
@@ -203,18 +207,54 @@ function Borrower() {
     )
     const newUser = apiUserData.data.createUser
     //console.log('newUserAndForm - newUserId', newUser.id)
+    const newFormData = {   
+      userId: newUser.id,
+      screenNavigation: nextScreenId, 
+      percentComplete: 0,
+      loanAmount: 0,           
+      restricted: false,
+      restrictedSpeculative: false,
+      restrictedCoins: false,
+      restrictedLending: false,
+      restrictedPackaging: false,
+      restrictedPyramid: false,
+      restrictedIllegal: false,
+      restrictedGambling: false,
+      ineligible: false,
+      ineligibleNonProfit: false,
+      ineligibleRealestate: false,
+      ineligibleLending: false,
+      ineligiblePyramid: false,
+      ineligibleGambling: false,
+      ineligibleIllegal: false,
+      forProfit: true,
+      us: true,
+    }    
 
     //create the new form for this user
     const apiFormData = await API.graphql(
       { query: createFormMutation, 
-        variables: { input: form } 
+        variables: { input: newFormData } 
       }
     )
-    const newForm = apiFormData.data.createForm
-    console.log('newUserAndForm - newFormId', newForm.id)
+    let newForm = apiFormData.data.createForm
+    setForm({ ...form, id: newForm.id, userId: newUser.id })
+    //console.log('newUserAndForm - newForm', newForm)
+
+    //update redux & graphql
+    dispatch(updateForm(newForm))
 
     //update the navigation/site store
-    console.log('newUserAndForm - newFormId')
+    const newNav = {
+      ...navigation,
+      screenNavigation: ["Profile>Start"],
+      userId: newUser.id,
+      formId: newForm.id,
+    }
+    dispatch(updateNavigation(newNav))
+
+    //show the next form (first in the saved data)
+    gotoNextForm(null, ["Profile>Start"])
   };
 
   //constants & variables
@@ -239,12 +279,13 @@ function Borrower() {
     return function cleanup() {
       document.body.classList.remove("twitter-redesign");
     };
-  });
+  })
+
   return (
     <>
       <BorrowerNavBar navigation={navigation} />
       <div className="wrapper">
-        <BorrowerHeader />
+        <BorrowerHeader navigation={navigation} />
         <div className="profile-content section-white-gray">
           <Container>
             <Row className="owner">
@@ -266,10 +307,10 @@ function Borrower() {
                       id="tooltip924342351"
                       size="sm"
                     >
-                      <i className={formId ? "nc-icon nc-minimal-right" : "nc-icon nc-simple-add"} />
+                      <i className={userId ? "nc-icon nc-minimal-right" : "nc-icon nc-simple-add"} />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      {formId ? "Continue your application..." : "Start your application..."}
+                      {userId ? "Continue your application..." : "Start your application..."}
                     </UncontrolledTooltip>
                   </div>
                 </div>

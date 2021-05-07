@@ -93,26 +93,30 @@ function BorrowerNavBar(prop) {
           </div>
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle className="mr-2" color="default" caret nav>
-                  Menu
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-danger" right>
-                  <DropdownItem to="/index" tag={Link}>
-                    Continue my application
-                  </DropdownItem>
-                  <DropdownItem to="/presentation" tag={Link}>
-                    My Profile
-                  </DropdownItem>
-                  <DropdownItem
-                    href="www.duckduckgo.com"
+              
+              
+            <NavItem>
+              <Button
+                    className="btn-neutral"
+                    color="link"
+                    href="#pablo"
+                    onClick={(e) => e.preventDefault()}
                     target="_blank"
                   >
-                    Search
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              
+                    <i className="fa fa-user" />
+                  </Button>
+
+                  <Button
+                    className="btn-neutral"
+                    color="link"
+                    href="#pablo"
+                    onClick={(e) => e.preventDefault()}
+                    target="_blank"
+                  >
+                    <i className="fa fa-envelope" />
+                  </Button>
+                  
+              </NavItem>
             </Nav>
           </Collapse>
         </Container>
