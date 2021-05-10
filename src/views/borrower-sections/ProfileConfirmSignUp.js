@@ -74,7 +74,7 @@ function ProfileSignUp(prop) {
             /* Once the user successfully confirms their account, update form state to show the sign in form*/
             
             //go to the next step, stage, or form
-            prop.nextForm(newForm, screenNavigation)
+            prop.nextForm(null, screenNavigation)
 
         } catch (err) { console.log({ err }); }
     };

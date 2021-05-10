@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^1.0.7",
+    "@emotion/react": "^11.4.0",
     "@reduxjs/toolkit": "^1.5.1",
     "aws-amplify": "^3.3.27",
     "bootstrap": "4.6.0",
@@ -24,6 +25,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "4.3.0",
+    "react-spinners": "^0.10.6",
     "reactstrap": "8.9.0"
   },
   "scripts": {

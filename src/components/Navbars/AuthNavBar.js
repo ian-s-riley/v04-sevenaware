@@ -99,21 +99,11 @@ function BorrowerNavBar(prop) {
               <Button
                     className="btn-neutral"
                     color="link"
-                    href="#pablo"
+                    href="#"
                     onClick={(e) => e.preventDefault()}
                     target="_blank"
                   >
                     <i className="fa fa-user" />
-                  </Button>
-
-                  <Button
-                    className="btn-neutral"
-                    color="link"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                  >
-                    <i className="fa fa-envelope" />
                   </Button>
                   
               </NavItem>

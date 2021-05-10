@@ -3,12 +3,8 @@ import React, { useState, useEffect } from "react";
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
 
-// redux store
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  updateFormAsync,  
-  selectForm,
-} from 'features/form/formSlice'
+import { css } from "@emotion/core";
+import PulseLoader from "react-spinners/PulseLoader";
 
 // reactstrap components
 import {
@@ -28,6 +24,11 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: white;
+`;
 
 function SignIn() {   
     const [isDirty, setIsDirty] = useState(false)
@@ -36,13 +37,19 @@ function SignIn() {
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
 
+    const [loading, setLoading] = useState(false);
+
     /* Sign in function */
     async function signIn() {
+        setLoading(true)
         try {
         await Auth.signIn(email, password);
         //App.js is listening to the Auth Hub and will handle the login routes
 
-        } catch (err) { console.log({ err }); }
+        } catch (err) { 
+            setLoading(false)
+            console.log({ err }); 
+        }
     }
 
     // function that returns true if value is email, false otherwise
@@ -106,7 +113,12 @@ function SignIn() {
                 />    
             </FormGroup>
             <div className="text-center">
-            <Button
+            {loading ? (
+                <div className="sweet-loading pull-right">
+                    <PulseLoader color={"#51bcda"} loading={loading} css={override} size={15} />
+                </div> 
+            ) : (
+                <Button
                 className="pull-right"
                 onClick={signIn}
                 color="info"
@@ -114,8 +126,8 @@ function SignIn() {
             >
                 Sign In
             </Button>
-            </div>
-                
+            )}            
+            </div>               
             </Form>
             </Col>
         </Row>

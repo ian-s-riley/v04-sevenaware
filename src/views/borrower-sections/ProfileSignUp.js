@@ -26,6 +26,7 @@ import {
   Col,
   CustomInput,
   UncontrolledTooltip,
+  Modal,
 } from "reactstrap";
 
 
@@ -40,6 +41,7 @@ function ProfileSignUp(prop) {
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
     const [confirmPasswordState, setConfirmPasswordState] = useState("");
+    const [userExists, setUserExists] = useState(false);
 
     const thisScreenId = "Profile>SignUp"
     let nextScreenId = "Profile>ConfirmSignUp"
@@ -81,7 +83,10 @@ function ProfileSignUp(prop) {
             //go to the next step, stage, or form
             prop.nextForm(newForm, screenNavigation)
         
-        } catch (err) { console.log({ err }); }
+        } catch (err) { 
+            console.log({ err })
+            setUserExists(true)
+        }
 
     };
 
@@ -110,6 +115,7 @@ function ProfileSignUp(prop) {
     };
 
   return (
+    
     <div className="profile-content section">
         <Container>        
         <Row>
@@ -208,6 +214,25 @@ function ProfileSignUp(prop) {
             </Col>
         </Row>
         </Container>
+        <Modal isOpen={userExists} toggle={() => setUserExists(false)}>
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLiveLabel">
+            Sign Up Warning
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setUserExists(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>Your email/username (<small>{email}</small>) already already exists in the system. Please sign in or verify your account to continue.</p>          
+        </div>
+      </Modal>
     </div>
   );
 }
