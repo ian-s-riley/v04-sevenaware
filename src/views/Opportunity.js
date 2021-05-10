@@ -148,6 +148,11 @@ function Opportunity() {
     setScreenNavigation(["Start"])
   };  
 
+  const gotoConfirmSignUp = () => {
+    setAuthState("Profile>ConfirmSignUp")
+    setScreenNavigation(["Profile>ConfirmSignUp"])
+  };  
+
   //constants & variables
 
   document.documentElement.classList.remove("nav-open");
@@ -232,6 +237,7 @@ function Opportunity() {
         authState={authState}
         signIn={() => gotoSignIn()}
         gotoEligibility={() => gotoEligibility()} 
+        gotoConfirmSignUp={() => gotoConfirmSignUp()}
       />
     </>
   );

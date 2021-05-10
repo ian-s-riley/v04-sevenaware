@@ -19,15 +19,6 @@ function FooterBorrower() {
               <ul>
                 <li>
                   <a
-                    href="https://www.roaringbrook.com"
-                    target="_blank"
-                    className="mr-1"
-                  >
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a
                     href="#"
                     onClick={() => Auth.signOut()}
                     className="mr-1"

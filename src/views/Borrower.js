@@ -50,25 +50,15 @@ import BorrowerNavBar from "components/Navbars/BorrowerNavBar.js";
 import BorrowerHeader from "components/Headers/BorrowerHeader.js";
 import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Documents from "./borrower-sections/Documents";
-import Start from "./borrower-sections/Start";
-import Restricted from "./borrower-sections/Restricted";
-import RestrictedYes from "./borrower-sections/RestrictedYes";
-import Ineligible from "./borrower-sections/Ineligible";
-import IneligibleYes from "./borrower-sections/IneligibleYes";
-import ForProfit from "./borrower-sections/ForProfit";
-import ForProfitNo from "./borrower-sections/ForProfitNo";
-import US from "./borrower-sections/US";
-import USNo from "./borrower-sections/USNo";
-import Eligible from "./borrower-sections/Eligible";
-import ProfileStart from "./borrower-sections/ProfileStart";
-import ProfileEmail from "./borrower-sections/ProfileEmail";
+import ProfileWelcome from "./borrower-sections/ProfileWelcome";
+import ProfileAddress from "./borrower-sections/ProfileAddress";
 
 function Borrower() {
   const dispatch = useDispatch()
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const userId = navigation.userId
-  const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
+  const [screenNavigation, setScreenNavigation] = useState(["Profile>Welcome"])
   const [stageHeader, setStageHeader] = useState("")    
   const [form, setForm] = useState(useSelector(selectForm))
   const [notifications, setNotifications] = useState([])
@@ -129,58 +119,18 @@ function Borrower() {
   }, [screenNavigation])
 
   const showScreen = () => {
-    //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
-      case "Profile>Email":
+      case "Profile>Address":
         setStageHeader("Profile")
-        setCurrentForm(<ProfileEmail nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        setCurrentForm(<ProfileAddress nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
-      case "Profile>Start":
-        setStageHeader("Profile")
-        setCurrentForm(<ProfileStart nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>Eligible":
-        setStageHeader("Eligibility Complete")
-        setCurrentForm(<Eligible nextForm={gotoNextForm} newUserAndForm={newUserAndForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>US>No":
-        setStageHeader("Eligibility")
-        setCurrentForm(<USNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>US":
-        setStageHeader("Eligibility")
-        setCurrentForm(<US nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>ForProfit>No":
-        setStageHeader("Eligibility")
-        setCurrentForm(<ForProfitNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>ForProfit":
-        setStageHeader("Eligibility")
-        setCurrentForm(<ForProfit nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>Ineligible>Yes":
-        setStageHeader("Eligibility")
-        setCurrentForm(<IneligibleYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>Ineligible":
-        setStageHeader("Eligibility")
-        setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>Restricted>Yes":
-        setStageHeader("Eligibility")
-        setCurrentForm(<RestrictedYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>Restricted":
-        setStageHeader("Eligibility")
-        setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Start":
-        setStageHeader("Let's Get Started")
-        setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
+      case "Profile>Welcome":
+          setStageHeader("Welcome")
+          setCurrentForm(<ProfileWelcome nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       default:
         setStageHeader("404 Page Not Found")
         setCurrentForm(null)
@@ -199,65 +149,65 @@ function Borrower() {
     setScreenNavigation(screenNavigation)
   };
 
-  async function newUserAndForm() {
-    //create the new user
-    const nextScreenId = "Profile>Start"
-    const apiUserData = await API.graphql(
-      { query: createUserMutation, 
-        variables: { input: {userType: "Borrower"} } 
-      }
-    )
-    const newUser = apiUserData.data.createUser
-    //console.log('newUserAndForm - newUserId', newUser.id)
-    const newFormData = {   
-      userId: newUser.id,
-      screenNavigation: nextScreenId, 
-      percentComplete: 0,
-      loanAmount: 0,           
-      restricted: false,
-      restrictedSpeculative: false,
-      restrictedCoins: false,
-      restrictedLending: false,
-      restrictedPackaging: false,
-      restrictedPyramid: false,
-      restrictedIllegal: false,
-      restrictedGambling: false,
-      ineligible: false,
-      ineligibleNonProfit: false,
-      ineligibleRealestate: false,
-      ineligibleLending: false,
-      ineligiblePyramid: false,
-      ineligibleGambling: false,
-      ineligibleIllegal: false,
-      forProfit: true,
-      us: true,
-    }    
+  // async function newUserAndForm() {
+  //   //create the new user
+  //   const nextScreenId = "Profile>Start"
+  //   const apiUserData = await API.graphql(
+  //     { query: createUserMutation, 
+  //       variables: { input: {userType: "Borrower"} } 
+  //     }
+  //   )
+  //   const newUser = apiUserData.data.createUser
+  //   //console.log('newUserAndForm - newUserId', newUser.id)
+  //   const newFormData = {   
+  //     userId: newUser.id,
+  //     screenNavigation: nextScreenId, 
+  //     percentComplete: 0,
+  //     loanAmount: 0,           
+  //     restricted: false,
+  //     restrictedSpeculative: false,
+  //     restrictedCoins: false,
+  //     restrictedLending: false,
+  //     restrictedPackaging: false,
+  //     restrictedPyramid: false,
+  //     restrictedIllegal: false,
+  //     restrictedGambling: false,
+  //     ineligible: false,
+  //     ineligibleNonProfit: false,
+  //     ineligibleRealestate: false,
+  //     ineligibleLending: false,
+  //     ineligiblePyramid: false,
+  //     ineligibleGambling: false,
+  //     ineligibleIllegal: false,
+  //     forProfit: true,
+  //     us: true,
+  //   }    
 
-    //create the new form for this user
-    const apiFormData = await API.graphql(
-      { query: createFormMutation, 
-        variables: { input: newFormData } 
-      }
-    )
-    let newForm = apiFormData.data.createForm
-    setForm({ ...form, id: newForm.id, userId: newUser.id })
-    //console.log('newUserAndForm - newForm', newForm)
+  //   //create the new form for this user
+  //   const apiFormData = await API.graphql(
+  //     { query: createFormMutation, 
+  //       variables: { input: newFormData } 
+  //     }
+  //   )
+  //   let newForm = apiFormData.data.createForm
+  //   setForm({ ...form, id: newForm.id, userId: newUser.id })
+  //   //console.log('newUserAndForm - newForm', newForm)
 
-    //update redux & graphql
-    dispatch(updateForm(newForm))
+  //   //update redux & graphql
+  //   dispatch(updateForm(newForm))
 
-    //update the navigation/site store
-    const newNav = {
-      ...navigation,
-      screenNavigation: ["Profile>Start"],
-      userId: newUser.id,
-      formId: newForm.id,
-    }
-    dispatch(updateNavigation(newNav))
+  //   //update the navigation/site store
+  //   const newNav = {
+  //     ...navigation,
+  //     screenNavigation: ["Profile>Start"],
+  //     userId: newUser.id,
+  //     formId: newForm.id,
+  //   }
+  //   dispatch(updateNavigation(newNav))
 
-    //show the next form (first in the saved data)
-    gotoNextForm(null, ["Profile>Start"])
-  };
+  //   //show the next form (first in the saved data)
+  //   gotoNextForm(null, ["Profile>Start"])
+  // };
 
   //constants & variables
   const showReply = false
@@ -309,7 +259,7 @@ function Borrower() {
                       id="tooltip924342351"
                       size="sm"
                     >
-                      <i className={userId ? "nc-icon nc-minimal-right" : "nc-icon nc-simple-add"} />
+                      <i className={"nc-icon nc-minimal-right"} />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342351">
                       {userId ? "Continue your application..." : "Start your application..."}

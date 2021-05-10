@@ -41,18 +41,16 @@ function FooterBorrower(prop) {
                     Eligibility
                   </a>
                 </li>
-                </>
-                )}
-                {authState === "signUp" && (
                 <li>
                   <a
                     href="#"
                     className="mr-1"
-                    onClick={prop.confirmSignUp}
+                    onClick={prop.gotoConfirmSignUp}
                   >
                     Confirm Sign Up
                   </a>
                 </li>
+                </>
                 )}
               </ul>
             </nav>
