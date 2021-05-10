@@ -7,7 +7,7 @@ import { updateUser as updateUserMutation } from '../../graphql/mutations';
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    id: "70213c91-7f7a-4790-8146-cb26cb13daf8",
+    id: "",
     userId: "",
     userType: "",    
     email: "",    

@@ -8,8 +8,7 @@ import { createForm as createFormMutation } from '../../graphql/mutations';
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  updateForm,
-  updateFormAsync,  
+  updateForm,  
 } from 'features/form/formSlice'
 import {
   updateNavigation,
@@ -34,61 +33,14 @@ function ProfileStart(prop) {
     const dispatch = useDispatch()
 
     const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-    const userId = navigation.userId
     const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
     
     const [form, setForm] = useState(prop.form)
-    const [formId, setFormId] = useState(prop.form.formId)
     const [isDirty, setIsDirty] = useState(false)
 
-    const thisScreenId = "ProfileStart"
-    let nextScreenId = "Profile>Email"
-    let percentComplete = 22
-
-    useEffect(() => {
-        fetchForm()
-    }, [formId])
-
-    async function fetchForm() {
-        //get this user's form/application from the DB
-        if (formId) {
-          const formFromAPI = await API.graphql({ query: getForm, variables: { id: formId } });
-          const thisForm = formFromAPI.data.getForm
-          //console.log('Borrower.js fetchForm: thisForm', thisForm)
-    
-          // //set the redux store
-          dispatch(updateForm(thisForm))
-    
-          // //set the local store
-          setForm(thisForm)
-    
-          //get the navigation path for this form
-          const newScreenNavigation = thisForm.screenNavigation.split(',')
-          const newNav = {
-            ...navigation,
-            screenNavigation: newScreenNavigation
-          }
-          dispatch(updateNavigation(newNav))
-          setScreenNavigation(newScreenNavigation)
-          // newScreenNavigation.map(screen => {
-          //   console.log('screen', screen)
-          // })
-        } else {
-          //create a new form for this user using the data entered
-          console.log('ProfileStart.js - formId', formId)
-          console.log('ProfileStart.js - form', form)
-
-          //clear the navigation stack so far
-          
-          // const newForm = {
-          //   ...form, 
-          //   userId: userId,
-          //   screenNavigation: ["Start"]       
-          // }
-          // //console.log('fetchForm: newForm', newForm) 
-          // dispatch(createFormAsync(newForm))
-        }
-      }
+    const thisScreenId = "Profile>Start"
+    let nextScreenId = "Profile>SignUp"
+    let percentComplete = 23
 
     const handleNextClick = () => {   
         //validation
@@ -105,7 +57,7 @@ function ProfileStart(prop) {
          }
     
         //update redux & graphql
-        dispatch(updateFormAsync(newForm))
+        dispatch(updateForm(newForm))
 
         //send a notification
   
@@ -125,7 +77,7 @@ function ProfileStart(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">
-                <label></label>
+                <label>Thank you for beginning the loan application process.  Let’s get started.</label>
                 <hr />
                 <div className="text-center">
                     <Button

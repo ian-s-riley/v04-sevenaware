@@ -47,6 +47,7 @@ type Form @model {
   ineligibleIllegal: Boolean
   forProfit: Boolean
   us: Boolean
+  businessEmail: Boolean
   fein: String
   businessName: String
   dba: String

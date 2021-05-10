@@ -125,6 +125,7 @@ export const createForm = /* GraphQL */ `
       ineligibleIllegal
       forProfit
       us
+      businessEmail
       fein
       businessName
       dba
@@ -168,6 +169,7 @@ export const updateForm = /* GraphQL */ `
       ineligibleIllegal
       forProfit
       us
+      businessEmail
       fein
       businessName
       dba
@@ -211,6 +213,7 @@ export const deleteForm = /* GraphQL */ `
       ineligibleIllegal
       forProfit
       us
+      businessEmail
       fein
       businessName
       dba

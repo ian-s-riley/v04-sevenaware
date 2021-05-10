@@ -9,32 +9,51 @@ import { Container, Row } from "reactstrap";
 
 // core components
 
-function FooterBorrower() {
+function FooterBorrower(prop) {
+    const authState = prop.authState
+    console.log('FooterAuth.js - authState', authState)
   return (
     <>
       <footer className="footer footer-white">
         <Container>
           <Row>
-            <nav className="footer-nav">
-              <ul>
-                <li>
-                  <a
-                    href="https://www.roaringbrook.com"
-                    target="_blank"
-                    className="mr-1"
-                  >
-                    Home
-                  </a>
-                </li>
+          <nav className="footer-nav">
+              <ul>              
+                {authState === "eligibility" && (
                 <li>
                   <a
                     href="#"
-                    onClick={() => Auth.signOut()}
                     className="mr-1"
+                    onClick={prop.signIn}
                   >
-                    Sign Out
+                    Sign In
                   </a>
                 </li>
+                )}
+                {authState === "signIn" && (
+                <>
+                <li>
+                  <a
+                    href="#"
+                    className="mr-1"
+                    onClick={prop.gotoEligibility}
+                  >
+                    Eligibility
+                  </a>
+                </li>
+                </>
+                )}
+                {authState === "signUp" && (
+                <li>
+                  <a
+                    href="#"
+                    className="mr-1"
+                    onClick={prop.confirmSignUp}
+                  >
+                    Confirm Sign Up
+                  </a>
+                </li>
+                )}
               </ul>
             </nav>
             <div className="credits ml-auto">

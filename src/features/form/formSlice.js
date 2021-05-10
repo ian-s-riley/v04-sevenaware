@@ -31,6 +31,7 @@ export const formSlice = createSlice({
     ineligibleIllegal: null,
     forProfit: true,
     us: true,
+    businessEmail: "",
     fein: "",
     businessName: "",
     dba: "",
@@ -65,6 +66,7 @@ export const formSlice = createSlice({
       state.ineligibleIllegal = action.payload.ineligibleIllegal
       state.forProfit = action.payload.forProfit
       state.us = action.payload.us
+      state.businessEmail = action.payload.businessEmail
       state.fein = action.payload.fein
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
@@ -110,6 +112,7 @@ export const updateFormAsync = form => dispatch => {
           ineligibleIllegal: form.ineligibleIllegal,
           forProfit: form.forProfit,
           us: form.us,
+          businessEmail: form.businessEmail,
           fein: form.fein,
           businessName: form.businessName,
           dba: form.dba,

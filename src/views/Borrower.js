@@ -6,9 +6,6 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { getForm, listNotifications, listForms } from '../graphql/queries';
 import { createUser as createUserMutation, createForm as createFormMutation } from '../graphql/mutations';
 
-//AWS Amplify Auth libraries
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
-
 //google charts
 //import Chart from "react-google-charts";
 //chartist chart control
@@ -64,6 +61,7 @@ import US from "./borrower-sections/US";
 import USNo from "./borrower-sections/USNo";
 import Eligible from "./borrower-sections/Eligible";
 import ProfileStart from "./borrower-sections/ProfileStart";
+import ProfileEmail from "./borrower-sections/ProfileEmail";
 
 function Borrower() {
   const dispatch = useDispatch()
@@ -88,7 +86,7 @@ function Borrower() {
           filter: { userId: { eq: userId }},
         }))  
         const thisForm = formFromAPI.data.listForms.items[0]
-        //console.log('Borrower.js fetchForm: thisForm', thisForm)
+        console.log('Borrower.js fetchForm: thisForm', thisForm)
 
         //set the redux store
         dispatch(updateForm(thisForm))
@@ -135,6 +133,10 @@ function Borrower() {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>Email":
+        setStageHeader("Profile")
+        setCurrentForm(<ProfileEmail nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        break;
       case "Profile>Start":
         setStageHeader("Profile")
         setCurrentForm(<ProfileStart nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -338,8 +340,7 @@ function Borrower() {
               <div className="nav-tabs-navigation">
                 <div className="nav-tabs-wrapper">
                   <Nav id="tabs" role="tablist" tabs>
-                    {userId && (
-                    <NavItem>
+                  <NavItem>
                       <NavLink
                         className={activeTab === "1" ? "active" : ""}
                         onClick={() => {
@@ -349,7 +350,6 @@ function Borrower() {
                         Home
                       </NavLink>
                     </NavItem>
-                    )}
                     <NavItem>
                       <NavLink
                         className={activeTab === "2" ? "active" : ""}
@@ -360,7 +360,6 @@ function Borrower() {
                         Application
                       </NavLink>
                     </NavItem>
-                    {userId && (
                     <NavItem>
                       <NavLink
                         className={activeTab === "3" ? "active" : ""}
@@ -370,8 +369,7 @@ function Borrower() {
                       >
                         Library
                       </NavLink>
-                    </NavItem>
-                    )}                    
+                    </NavItem>                    
                   </Nav>
                 </div>
               </div>
@@ -537,4 +535,4 @@ function Borrower() {
   );
 }
 
-export default withAuthenticator(Borrower);
+export default Borrower;

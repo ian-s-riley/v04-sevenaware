@@ -55,7 +55,7 @@ function Eligible(prop) {
         //send a notification
 
         //tell the parent page to create a new user & form
-        prop.newUserAndForm()
+        //prop.newUserAndForm()
 
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
