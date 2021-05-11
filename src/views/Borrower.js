@@ -149,65 +149,7 @@ function Borrower() {
     setScreenNavigation(screenNavigation)
   };
 
-  // async function newUserAndForm() {
-  //   //create the new user
-  //   const nextScreenId = "Profile>Start"
-  //   const apiUserData = await API.graphql(
-  //     { query: createUserMutation, 
-  //       variables: { input: {userType: "Borrower"} } 
-  //     }
-  //   )
-  //   const newUser = apiUserData.data.createUser
-  //   //console.log('newUserAndForm - newUserId', newUser.id)
-  //   const newFormData = {   
-  //     userId: newUser.id,
-  //     screenNavigation: nextScreenId, 
-  //     percentComplete: 0,
-  //     loanAmount: 0,           
-  //     restricted: false,
-  //     restrictedSpeculative: false,
-  //     restrictedCoins: false,
-  //     restrictedLending: false,
-  //     restrictedPackaging: false,
-  //     restrictedPyramid: false,
-  //     restrictedIllegal: false,
-  //     restrictedGambling: false,
-  //     ineligible: false,
-  //     ineligibleNonProfit: false,
-  //     ineligibleRealestate: false,
-  //     ineligibleLending: false,
-  //     ineligiblePyramid: false,
-  //     ineligibleGambling: false,
-  //     ineligibleIllegal: false,
-  //     forProfit: true,
-  //     us: true,
-  //   }    
-
-  //   //create the new form for this user
-  //   const apiFormData = await API.graphql(
-  //     { query: createFormMutation, 
-  //       variables: { input: newFormData } 
-  //     }
-  //   )
-  //   let newForm = apiFormData.data.createForm
-  //   setForm({ ...form, id: newForm.id, userId: newUser.id })
-  //   //console.log('newUserAndForm - newForm', newForm)
-
-  //   //update redux & graphql
-  //   dispatch(updateForm(newForm))
-
-  //   //update the navigation/site store
-  //   const newNav = {
-  //     ...navigation,
-  //     screenNavigation: ["Profile>Start"],
-  //     userId: newUser.id,
-  //     formId: newForm.id,
-  //   }
-  //   dispatch(updateNavigation(newNav))
-
-  //   //show the next form (first in the saved data)
-  //   gotoNextForm(null, ["Profile>Start"])
-  // };
+  
 
   //constants & variables
   const showReply = false

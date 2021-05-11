@@ -22,6 +22,7 @@ import {
   Col,
   CustomInput,
   UncontrolledTooltip,
+  Modal,
 } from "reactstrap";
 
 const override = css`
@@ -38,6 +39,7 @@ function SignIn() {
     const [passwordState, setPasswordState] = useState("");
 
     const [loading, setLoading] = useState(false);
+    const [invalid, setInvalid] = useState(false);
 
     /* Sign in function */
     async function signIn() {
@@ -48,6 +50,7 @@ function SignIn() {
 
         } catch (err) { 
             setLoading(false)
+            setInvalid(true)
             console.log({ err }); 
         }
     }
@@ -132,6 +135,25 @@ function SignIn() {
             </Col>
         </Row>
         </Container>
+        <Modal isOpen={invalid} toggle={() => setInvalid(false)}>
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLiveLabel">
+            Login Warning
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setInvalid(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>This email/username (<small>{email}</small>) & password combination are not valid. Please try to sign in again.</p>          
+        </div>
+      </Modal>
     </div>
   );
 }

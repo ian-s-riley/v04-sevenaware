@@ -3,6 +3,11 @@ import React, {useState, useEffect} from "react";
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
 
+//AWS Amplify GraphQL libraries
+import { API, graphqlOperation } from 'aws-amplify';
+import { getForm, listNotifications, listForms } from '../../graphql/queries';
+import { createUser as createUserMutation, createForm as createFormMutation } from '../../graphql/mutations';
+
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -72,22 +77,76 @@ function ProfileSignUp(prop) {
 
         //amplify auth sign up
         try {
-            await Auth.signUp({
+            const { user } = await Auth.signUp({
                 username: email,
                 password: password,
                 attributes: {
                     email: email
                 }});
             /* Once the user successfully signs up, update form state to show the confirm sign up form for MFA */
-            
-            //go to the next step, stage, or form
-            prop.nextForm(newForm, screenNavigation)
-        
+            //create the user record
+            createNewUserAndForm(user.username, screenNavigation)
         } catch (err) { 
             console.log({ err })
             setUserExists(true)
         }
 
+    };
+
+    //save the new user and form
+    async function createNewUserAndForm(newAuthUserId, screenNavigation) {
+        //create the new user
+        const apiUserData = await API.graphql(
+        { query: createUserMutation, 
+            variables: { 
+                input: {                    
+                    userId: newAuthUserId,
+                    userType: "Borrower",
+                    email: email,
+                    sevenAwareAgree: true,
+                } 
+            } 
+        }
+        )
+        const newUserId = apiUserData.data.createUser.id
+        //console.log('newUserAndForm - newUserId', newUserId)
+        
+        const newFormData = {   
+            userId: newUserId,
+            screenNavigation: "Profile>Welcome", 
+            percentComplete: 0,
+            loanAmount: 0,           
+            restricted: false,
+            restrictedSpeculative: false,
+            restrictedCoins: false,
+            restrictedLending: false,
+            restrictedPackaging: false,
+            restrictedPyramid: false,
+            restrictedIllegal: false,
+            restrictedGambling: false,
+            ineligible: false,
+            ineligibleNonProfit: false,
+            ineligibleRealestate: false,
+            ineligibleLending: false,
+            ineligiblePyramid: false,
+            ineligibleGambling: false,
+            ineligibleIllegal: false,
+            forProfit: true,
+            us: true,
+            businessEmail: email,
+        }    
+
+        //create the new form for this user
+        const apiFormData = await API.graphql(
+            { query: createFormMutation, 
+                variables: { input: newFormData } 
+            }
+        )
+        const newFormId = apiFormData.data.createForm.id
+        setForm({ ...form, id: newFormId, userId: newUserId })
+
+         //go to the next step, stage, or form
+         prop.nextForm(null, screenNavigation)
     };
 
     const handleBackClick = () => {
@@ -217,7 +276,7 @@ function ProfileSignUp(prop) {
         <Modal isOpen={userExists} toggle={() => setUserExists(false)}>
         <div className="modal-header">
           <h5 className="modal-title" id="exampleModalLiveLabel">
-            Sign Up Warning
+            You've already got an account.
           </h5>
           <button
             aria-label="Close"
