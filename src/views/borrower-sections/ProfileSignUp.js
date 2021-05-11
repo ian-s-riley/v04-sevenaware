@@ -6,7 +6,11 @@ import { Auth } from 'aws-amplify';
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
 import { getForm, listNotifications, listForms } from '../../graphql/queries';
-import { createUser as createUserMutation, createForm as createFormMutation } from '../../graphql/mutations';
+import { 
+    createUser as createUserMutation, 
+    createForm as createFormMutation,
+    createNotification as createNotificationMutation, 
+} from '../../graphql/mutations';
 
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
@@ -94,13 +98,13 @@ function ProfileSignUp(prop) {
     };
 
     //save the new user and form
-    async function createNewUserAndForm(newAuthUserId, screenNavigation) {
+    async function createNewUserAndForm(newUserName, screenNavigation) {
         //create the new user
         const apiUserData = await API.graphql(
         { query: createUserMutation, 
             variables: { 
                 input: {                    
-                    userId: newAuthUserId,
+                    userId: newUserName,
                     userType: "Borrower",
                     email: email,
                     sevenAwareAgree: true,
@@ -112,7 +116,7 @@ function ProfileSignUp(prop) {
         //console.log('newUserAndForm - newUserId', newUserId)
         
         const newFormData = {   
-            userId: newUserId,
+            userId: newUserName,
             screenNavigation: "Profile>Welcome", 
             percentComplete: 0,
             loanAmount: 0,           
@@ -144,6 +148,26 @@ function ProfileSignUp(prop) {
         )
         const newFormId = apiFormData.data.createForm.id
         setForm({ ...form, id: newFormId, userId: newUserId })
+
+        //add notifications
+        const apiNotificationData = await API.graphql(
+            { query: createNotificationMutation, 
+                variables: { 
+                    input: {
+                        title: "Title of message goes here...", 
+                        toUserId: email, 
+                        toEmail: email, 
+                        fromUserId: "ian.public@yahoo.cm", 
+                        fromEmail: "ian.public@yahoo.com", 
+                        body: "Body of message goes here...", 
+                        footer: "Footer of message goes here..."}
+                 } 
+
+                
+
+            }
+        )
+        const newNotificationId = apiNotificationData.data.createNotification.id
 
          //go to the next step, stage, or form
          prop.nextForm(null, screenNavigation)
