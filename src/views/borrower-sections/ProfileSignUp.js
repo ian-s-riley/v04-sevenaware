@@ -46,38 +46,21 @@ function ProfileSignUp(prop) {
     const [isDirty, setIsDirty] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [confirmassword, setConfirmPassword] = useState("");
+    const [password2, setPassword2] = useState("");
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
-    const [confirmPasswordState, setConfirmPasswordState] = useState("");
+    const [password2State, setPassword2State] = useState("");
     const [userExists, setUserExists] = useState(false);
 
     const thisScreenId = "Profile>SignUp"
     let nextScreenId = "Profile>ConfirmSignUp"
-    let percentComplete = "25"
+    let percentComplete = "0"
 
     async function handleNextClick() {   
         //validation
-        if (emailState !== "success") return
-         
-        //save the new form to the navigation path for this user    
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.push(nextScreenId)
-
-        //create the new user in amplify, request 2 factor (email auth)
-        
-        //update the local form store 
-        const newForm = { 
-            ...form, 
-            businessEmail: email,
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
-         }
-    
-        //update redux & graphql
-        dispatch(updateForm(newForm))
-
-        //send a notification
+        if (emailState !== "success") {return false}
+        if (passwordState !== "success") {return false}
+        if (password2State !== "success") {return false}
 
         //amplify auth sign up
         try {
@@ -89,7 +72,7 @@ function ProfileSignUp(prop) {
                 }});
             /* Once the user successfully signs up, update form state to show the confirm sign up form for MFA */
             //create the user record
-            createNewUserAndForm(user.username, screenNavigation)
+            createNewUserAndForm(user.username)
         } catch (err) { 
             console.log({ err })
             setUserExists(true)
@@ -98,7 +81,7 @@ function ProfileSignUp(prop) {
     };
 
     //save the new user and form
-    async function createNewUserAndForm(newUserName, screenNavigation) {
+    async function createNewUserAndForm(newUserName) {
         //create the new user
         const apiUserData = await API.graphql(
         { query: createUserMutation, 
@@ -112,7 +95,7 @@ function ProfileSignUp(prop) {
             } 
         }
         )
-        const newUserId = apiUserData.data.createUser.id
+        //const newUserId = apiUserData.data.createUser.id
         //console.log('newUserAndForm - newUserId', newUserId)
         
         const newFormData = {   
@@ -147,9 +130,23 @@ function ProfileSignUp(prop) {
             }
         )
         const newFormId = apiFormData.data.createForm.id
-        setForm({ ...form, id: newFormId, userId: newUserId })
 
-        //add notifications
+        //save the new form to the navigation path for this user    
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.push(nextScreenId)
+
+        //update the local form store 
+        const newForm = { 
+            ...form, 
+            businessEmail: email,
+            screenNavigation: screenNavigation.join(','),
+            percentComplete: percentComplete,
+        }
+
+        //update redux & graphql
+        dispatch(updateForm(newForm))
+
+        //send a notification
         const apiNotificationData = await API.graphql(
             { query: createNotificationMutation, 
                 variables: { 
@@ -162,12 +159,9 @@ function ProfileSignUp(prop) {
                         body: "Body of message goes here...", 
                         footer: "Footer of message goes here..."}
                  } 
-
-                
-
             }
         )
-        const newNotificationId = apiNotificationData.data.createNotification.id
+        //const newNotificationId = apiNotificationData.data.createNotification.id
 
          //go to the next step, stage, or form
          prop.nextForm(null, screenNavigation)
@@ -189,9 +183,20 @@ function ProfileSignUp(prop) {
     };
 
     const verifyPassword = value => {
-        console.log('verifyPassword - value', value)
-        var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
+        
+        var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$/
+        //console.log('verifyPassword - passwordRex.test(' + value + ')', passwordRex.test(value))
         if (passwordRex.test(value) && value.length > 0) {
+        return true;
+        }
+        return false;
+    };
+
+    const verifyPassword2 = value => {
+        
+        var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$/
+        //console.log('verifyPassword - passwordRex.test(' + value + ')', passwordRex.test(value))
+        if (passwordRex.test(value) && value.length > 0 && value === password) {
         return true;
         }
         return false;
@@ -226,7 +231,7 @@ function ProfileSignUp(prop) {
             <Row>
             <Col className="ml-auto mr-auto" md="6">
             <FormGroup className={passwordState === "success" ? "has-success" : null}>
-                <Label for="examplePassword">Password</Label>
+                <Label for="password">Password</Label>
                 <Input
                 type="password"
                 name="password"
@@ -245,35 +250,43 @@ function ProfileSignUp(prop) {
             </FormGroup>
             </Col>
             <Col className="ml-auto mr-auto" md="6">
-            <FormGroup>
+            <FormGroup className={password2State === "success" ? "has-success" : null}>
                 <Label for="password2">Confirm Password</Label>
                 <Input
-                type="text"
+                type="password"
                 name="password2"
                 id="password2"
                 autoComplete="off"
+                onChange = {event => {
+                    if (verifyPassword2(event.target.value)) {
+                        setPassword2State("success");
+                    } else {
+                        setPassword2State("error");
+                    }
+                    setPassword2(event.target.value);
+                    }}
                 />
             </FormGroup>
 
             </Col>
             </Row>
             
-            <FormGroup check>
-        <Label check>
-          <Input type="checkbox" />{' '}
-          I understand how 7(a)ware will <a>use and protect my data</a>. And I agree to the <a>terms & conditions</a>.
-          <span className="form-check-sign">
-            <span className="check"></span>
-        </span>
-        </Label>
-      </FormGroup>
+                <FormGroup check>
+                    <Label check>
+                    <Input type="checkbox" />{' '}
+                    I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
+                    <span className="form-check-sign">
+                        <span className="check"></span>
+                    </span>
+                    </Label>
+                </FormGroup>
                 <hr />
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -285,7 +298,7 @@ function ProfileSignUp(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

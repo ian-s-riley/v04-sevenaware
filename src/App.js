@@ -38,6 +38,7 @@ import Opportunity from "views/Opportunity.js";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [userId, setUserId] = useState()
 
   useEffect(() => {
     Hub.listen('auth', (data) => {
@@ -45,12 +46,11 @@ function App() {
       console.log('A new auth event has happened: ', data)
        if (payload.event === 'signIn') {
         setIsAuthenticated(true)
-         //checkUser()
+        setUserId(payload.data.username)
        }
        if (payload.event === 'signOut') {
          console.log('a user has signed out!')
         setIsAuthenticated(false)
-         //checkUser()
        }
     })
   }, [])
@@ -76,7 +76,7 @@ function App() {
         <Switch>
           <Route
             path="/borrower"
-            render={(props) => <Borrower {...props} />}
+            render={(props) => <Borrower {...props} userId={userId} />}
           />
           <Route path="/error-404" render={(props) => <Error404 {...props} />} />
           <Redirect to="/borrower" />

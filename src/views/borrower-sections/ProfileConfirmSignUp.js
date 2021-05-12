@@ -49,32 +49,32 @@ function ProfileSignUp(prop) {
         if (verificationState !== "success") return
          
         //save the new form to the navigation path for this user    
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.push(nextScreenId)
+        // let screenNavigation = Object.assign([], prop.navigation);
+        // screenNavigation.push(nextScreenId)
 
         //create the new user in amplify, request 2 factor (email auth)
         
-        //update the local form store 
-        const newForm = { 
-            ...form, 
-            businessEmail: email,
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
-         }
+        // //update the local form store 
+        // const newForm = { 
+        //     ...form, 
+        //     businessEmail: email,
+        //     screenNavigation: screenNavigation.join(','),
+        //     percentComplete: percentComplete,
+        //  }
     
-        //update redux & graphql
-        dispatch(updateForm(newForm))
+        // //update redux & graphql
+        // dispatch(updateForm(newForm))
 
         //send a notification
 
         //amplify auth confirm sign up
-        console.log("ProfileConfirmSignIn.js - email", email)
+        //console.log("ProfileConfirmSignIn.js - email", email)
         try {
         await Auth.confirmSignUp(email, verification);
             /* Once the user successfully confirms their account, update form state to show the sign in form*/
             
             //go to the next step, stage, or form
-            prop.nextForm(null, screenNavigation)
+            //prop.nextForm(null, screenNavigation)
 
         } catch (err) { console.log({ err }); }
     };
@@ -144,7 +144,7 @@ function ProfileSignUp(prop) {
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -156,7 +156,7 @@ function ProfileSignUp(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="sm"
+                        size="md"
                     >
                         Confirm Sign Up<i className="nc-icon nc-minimal-right" />
                     </Button>

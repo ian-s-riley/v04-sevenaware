@@ -39,7 +39,7 @@ function USNo(prop) {
                             onClick={handleBackClick}
                             className="btn-just-icon pull-left"
                             id="tooltip924342661"
-                            size="sm"
+                            size="md"
                         >
                             <i className="nc-icon nc-minimal-left" />
                         </Button>

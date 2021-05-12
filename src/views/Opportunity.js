@@ -181,9 +181,6 @@ function Opportunity() {
                   <div className="following">
                     <Button
                       className="btn-just-icon"
-                      onClick={() => {
-                        setScreenNavigation(["Start"])
-                      }}
                       color="info"
                       id="tooltip924342351"
                       size="sm"

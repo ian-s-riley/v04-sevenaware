@@ -81,22 +81,11 @@ function ProfileStart(prop) {
                 <hr />
                 <div className="text-center">
                     <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="sm"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
                         className="btn-just-icon pull-right"
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

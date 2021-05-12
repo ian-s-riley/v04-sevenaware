@@ -98,7 +98,7 @@ function ForProfit(prop) {
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -110,7 +110,7 @@ function ForProfit(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

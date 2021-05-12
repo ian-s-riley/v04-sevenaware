@@ -63,39 +63,39 @@ function Borrower() {
   const [form, setForm] = useState(useSelector(selectForm))
   const [notifications, setNotifications] = useState([])
 
-  useEffect(() => {
-      fetchForm()
-  }, [userId])
+  // useEffect(() => {
+  //     fetchForm()
+  // }, [userId])
 
-  async function fetchForm() {
-      //get this user's form/application from the DB
-      //console.log('Borrower.js fetchForm: userId', userId)
-      if (userId) {
-        //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
-        const formFromAPI = await API.graphql(graphqlOperation(listForms, {
-          filter: { userId: { eq: userId }},
-        }))  
-        const thisForm = formFromAPI.data.listForms.items[0]
-        console.log('Borrower.js fetchForm: thisForm', thisForm)
+  // async function fetchForm() {
+  //     //get this user's form/application from the DB
+  //     //console.log('Borrower.js fetchForm: userId', userId)
+  //     if (userId) {
+  //       //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
+  //       const formFromAPI = await API.graphql(graphqlOperation(listForms, {
+  //         filter: { userId: { eq: userId }},
+  //       }))  
+  //       const thisForm = formFromAPI.data.listForms.items[0]
+  //       console.log('Borrower.js fetchForm: thisForm', thisForm)
 
-        //set the redux store
-        dispatch(updateForm(thisForm))
+  //       //set the redux store
+  //       dispatch(updateForm(thisForm))
 
-        // //set the local store
-        setForm(thisForm)
+  //       // //set the local store
+  //       setForm(thisForm)
 
-        //get the navigation path for this form
-        const newScreenNavigation = thisForm.screenNavigation.split(',')
-        const newNav = {
-          ...navigation,
-          formId: thisForm.id,
-          userId: userId,
-          screenNavigation: newScreenNavigation
-        }
-        dispatch(updateNavigation(newNav))
-        setScreenNavigation(newScreenNavigation)
-      }
-    }
+  //       //get the navigation path for this form
+  //       const newScreenNavigation = thisForm.screenNavigation.split(',')
+  //       const newNav = {
+  //         ...navigation,
+  //         formId: thisForm.id,
+  //         userId: userId,
+  //         screenNavigation: newScreenNavigation
+  //       }
+  //       dispatch(updateNavigation(newNav))
+  //       setScreenNavigation(newScreenNavigation)
+  //     }
+  //   }
     
   useEffect(() => {
     fetchNotifications()
