@@ -11,7 +11,7 @@ import { Container, Row } from "reactstrap";
 
 function FooterBorrower(prop) {
     const authState = prop.authState
-    console.log('FooterAuth.js - authState', authState)
+    //console.log('FooterAuth.js - authState', authState)
   return (
     <>
       <footer className="footer footer-white">
@@ -20,6 +20,17 @@ function FooterBorrower(prop) {
           <nav className="footer-nav">
               <ul>              
                 {authState === "eligibility" && (
+                <li>
+                  <a
+                    href="#"
+                    className="mr-1"
+                    onClick={prop.signIn}
+                  >
+                    Sign In
+                  </a>
+                </li>
+                )}
+                {authState === "confirmSignUp" && (
                 <li>
                   <a
                     href="#"

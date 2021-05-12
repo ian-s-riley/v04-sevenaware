@@ -55,6 +55,7 @@ function ProfileSignUp(prop) {
     const thisScreenId = "Profile>SignUp"
     let nextScreenId = "Profile>ConfirmSignUp"
     let percentComplete = "0"
+    const lenderUserId = "ian.public@yahoo.com"
 
     async function handleNextClick() {   
         //validation
@@ -146,26 +147,45 @@ function ProfileSignUp(prop) {
         //update redux & graphql
         dispatch(updateForm(newForm))
 
-        //send a notification
+        //send a notification to the lender
+        addNotification(
+            email, 
+            lenderUserId, 
+            "Welcome to 7(a)ware", 
+            "You've taken the first steps towards financing your businss with a SBA 7(a) loan. Pleaese continue with your application and check back often for updates and notifications.",
+            "7(a)ware Team"
+        )
+        //send a notification to the new user
+        addNotification(
+            lenderUserId, 
+            email,
+            "New User Sign Up", 
+            email + " has signed up as a new user and is starting a SBA 7(a) application.",
+            "7(a)ware Team"
+        )
+        
+
+         //go to the next step, stage, or form
+         prop.nextForm(newForm, screenNavigation)
+    };
+
+    async function addNotification(toUserId, fromUserId, title, body, footer) {
         const apiNotificationData = await API.graphql(
             { query: createNotificationMutation, 
                 variables: { 
                     input: {
-                        title: "Title of message goes here...", 
-                        toUserId: email, 
-                        toEmail: email, 
-                        fromUserId: "ian.public@yahoo.cm", 
-                        fromEmail: "ian.public@yahoo.com", 
-                        body: "Body of message goes here...", 
-                        footer: "Footer of message goes here..."}
+                        title: title, 
+                        toUserId: toUserId, 
+                        toEmail: toUserId, 
+                        fromUserId: fromUserId, 
+                        fromEmail: fromUserId, 
+                        body: body, 
+                        footer: footer}
                  } 
             }
         )
         //const newNotificationId = apiNotificationData.data.createNotification.id
-
-         //go to the next step, stage, or form
-         prop.nextForm(null, screenNavigation)
-    };
+    }
 
     const handleBackClick = () => {
         let screenNavigation = Object.assign([], prop.navigation);

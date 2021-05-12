@@ -26,7 +26,10 @@ import {
   Col,
   CustomInput,
   UncontrolledTooltip,
+  Modal,
 } from "reactstrap";
+
+const initialErrorState = {error: false, title: "", message: ""}
 
 
 function ProfileSignUp(prop) {
@@ -38,7 +41,8 @@ function ProfileSignUp(prop) {
     const [emailState, setEmailState] = useState("");
     const [verification, setVerification] = useState("")
     const [verificationState, setVerificationState] = useState("")
-
+    const [authError, setAuthError] = useState(initialErrorState)
+    //console.log('ProfileConfirmSignup.js - authError', authError)
 
     const thisScreenId = "Profile>ConfirmSignUp"
     let nextScreenId = "SignIn"
@@ -49,8 +53,8 @@ function ProfileSignUp(prop) {
         if (verificationState !== "success") return
          
         //save the new form to the navigation path for this user    
-        // let screenNavigation = Object.assign([], prop.navigation);
-        // screenNavigation.push(nextScreenId)
+        let screenNavigation = Object.assign([], prop.navigation);
+        screenNavigation.push(nextScreenId)
 
         //create the new user in amplify, request 2 factor (email auth)
         
@@ -74,9 +78,43 @@ function ProfileSignUp(prop) {
             /* Once the user successfully confirms their account, update form state to show the sign in form*/
             
             //go to the next step, stage, or form
-            //prop.nextForm(null, screenNavigation)
+            prop.nextForm(null, screenNavigation)
 
-        } catch (err) { console.log({ err }); }
+        } catch (err) { 
+            console.log({ err }); 
+            switch(err.code) {
+            case "NotAuthorizedException":
+                setAuthError({
+                    error: true,
+                    title: "You've already confirmed your account.",
+                    message: "Your email/username (" + email + ") has already been verified and confirmed. Please sign in or verify your account to continue."
+                })
+                break;
+            case "UserNotFoundException":
+                setAuthError({
+                    error: true,
+                    title: "Email/username not found.",
+                    message: "This email/username (" + email + ") was not found in our system. Please check the email address or go back to sign up with it."
+                })
+                break;
+            case "CodeMismatchException":
+                    setAuthError({
+                        error: true,
+                        title: "Incorrect Verification Code.",
+                        message: "This verificatino code does not match the one sent to your email/username (" + email + "). Please check the check the code and try again."
+                    })
+                    break;
+            default:
+                setAuthError({
+                    error: true,
+                    title: "Confimration Error.",
+                    message: err.message
+                })
+            }
+            if (err.code === "NotAuthorizedException") {
+                
+            }
+        }
     };
 
     const handleBackClick = () => {
@@ -141,17 +179,6 @@ function ProfileSignUp(prop) {
                 <hr />
                 <div className="text-center">
                     <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="md"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
                         className="btn-round pull-right"
                         onClick={handleNextClick}
                         color="info"
@@ -167,7 +194,26 @@ function ProfileSignUp(prop) {
             </Form>
             </Col>
         </Row>
-        </Container>
+        </Container>        
+        <Modal isOpen={authError.error} toggle={() => setAuthError(initialErrorState)}>
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLiveLabel">
+            {authError.title}
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setAuthError(initialErrorState)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>{authError.message}</p>          
+        </div>
+      </Modal>
     </div>
   );
 }
