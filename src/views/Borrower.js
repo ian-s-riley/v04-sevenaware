@@ -1,10 +1,11 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from "react";
+//amplify authentication
+import { Auth, Hub } from 'aws-amplify'
 
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
-import { getForm, listNotifications, listForms } from '../graphql/queries';
-import { createUser as createUserMutation, createForm as createFormMutation } from '../graphql/mutations';
+import { listNotifications, listForms } from '../graphql/queries';
 
 //google charts
 //import Chart from "react-google-charts";
@@ -43,6 +44,7 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
+  ButtonToggle,
 } from "reactstrap";
 
 // core components
@@ -53,49 +55,66 @@ import Documents from "./borrower-sections/Documents";
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
 import ProfileAddress from "./borrower-sections/ProfileAddress";
 
-function Borrower() {
-  const dispatch = useDispatch()
+function Borrower(prop) {
+  const dispatch = useDispatch()    
+    
+  const [form, setForm] = useState(useSelector(selectForm))
+  const [notifications, setNotifications] = useState([])    
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-  const userId = navigation.userId
-  const [screenNavigation, setScreenNavigation] = useState(["Profile>Welcome"])
+  const [userId, setUserId] = useState(navigation.userId)
+  const [screenNavigation, setScreenNavigation] = useState(["Profile>Welcome"])    
   const [stageHeader, setStageHeader] = useState("")    
-  const [form, setForm] = useState(useSelector(selectForm))
-  const [notifications, setNotifications] = useState([])
+  
+  const [showReply, setShowReply] = useState(false)
 
-  // useEffect(() => {
-  //     fetchForm()
-  // }, [userId])
+  useEffect(() => {
+    checkUser()
+  }, [])
 
-  // async function fetchForm() {
-  //     //get this user's form/application from the DB
-  //     //console.log('Borrower.js fetchForm: userId', userId)
-  //     if (userId) {
-  //       //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
-  //       const formFromAPI = await API.graphql(graphqlOperation(listForms, {
-  //         filter: { userId: { eq: userId }},
-  //       }))  
-  //       const thisForm = formFromAPI.data.listForms.items[0]
-  //       console.log('Borrower.js fetchForm: thisForm', thisForm)
+  async function checkUser() {
+    try {
+        const thisUser = await Auth.currentAuthenticatedUser()        
+        setUserId(thisUser.username)
+        console.log('checkuser - user signed in - thisUser:', thisUser.username)
+      } catch (error) {
+          console.log('checkUser - error signing in:', error)
+      }               
+  }
 
-  //       //set the redux store
-  //       dispatch(updateForm(thisForm))
+  useEffect(() => {
+      fetchForm()
+  }, [userId])
 
-  //       // //set the local store
-  //       setForm(thisForm)
+  async function fetchForm() {
+      //get this user's form/application from the DB
+      console.log('Borrower.js fetchForm: userId', userId)
+      if (userId) {
+        //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
+        const formFromAPI = await API.graphql(graphqlOperation(listForms, {
+          filter: { userId: { eq: userId }},
+        }))  
+        const thisForm = formFromAPI.data.listForms.items[0]
+        //console.log('Borrower.js fetchForm: thisForm', thisForm)
 
-  //       //get the navigation path for this form
-  //       const newScreenNavigation = thisForm.screenNavigation.split(',')
-  //       const newNav = {
-  //         ...navigation,
-  //         formId: thisForm.id,
-  //         userId: userId,
-  //         screenNavigation: newScreenNavigation
-  //       }
-  //       dispatch(updateNavigation(newNav))
-  //       setScreenNavigation(newScreenNavigation)
-  //     }
-  //   }
+        //set the redux store
+        dispatch(updateForm(thisForm))
+
+        // //set the local store
+        setForm(thisForm)
+
+        //get the navigation path for this form
+        const newScreenNavigation = thisForm.screenNavigation.split(',')
+        const newNav = {
+          ...navigation,
+          formId: thisForm.id,
+          userId: userId,
+          screenNavigation: newScreenNavigation
+        }
+        dispatch(updateNavigation(newNav))
+        setScreenNavigation(newScreenNavigation)
+      }
+    }
     
   useEffect(() => {
     fetchNotifications()
@@ -137,7 +156,7 @@ function Borrower() {
     }
   };
 
-  const [activeTab, setActiveTab] = React.useState("2");
+  const [activeTab, setActiveTab] = React.useState("1");
   const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -151,8 +170,7 @@ function Borrower() {
 
   
 
-  //constants & variables
-  const showReply = false
+  //constants & variables  
   const data={
     labels: [form.percentComplete + " %", " "],
     series: [form.percentComplete, 100 - form.percentComplete],
@@ -169,11 +187,13 @@ function Borrower() {
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
-    document.body.classList.add("twitter-redesign");
+    document.body.classList.add("index-page");
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
     return function cleanup() {
-      document.body.classList.remove("twitter-redesign");
+      document.body.classList.remove("index-page");
     };
-  })
+  });
 
   return (
     <>
@@ -204,7 +224,7 @@ function Borrower() {
                       <i className={"nc-icon nc-minimal-right"} />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      {userId ? "Continue your application..." : "Start your application..."}
+                      Continue your application...
                     </UncontrolledTooltip>
                   </div>
                 </div>
@@ -222,7 +242,7 @@ function Borrower() {
                   <div className="name">
                     <h4>
                       Welcome<br />
-                      <small>{navigation.userName}</small>
+                      <small>{userId}</small>
                     </h4>
                   </div>
                 )}
@@ -266,18 +286,13 @@ function Borrower() {
                 </div>
               </div>
               <TabContent activeTab={activeTab}>
-                <TabPane tabId="1" id="tweets">
+                <TabPane tabId="1" id="home">
                   <Row>
-                    <Col md="2"></Col>
-                    <Col md="6">
-                      <div className="tweets">
+                  <Col className="ml-auto mr-auto" md="8">
+                    <div className="media-area">
 
                         {notifications.map((notification, key) => {
-                          //const timelineBadgeClasses = classes.timelineBadge + " " + classes[notification.badgeColor] + " " + classes.timelineSimpleBadge
-                          let image = "assets/img/person-2.jpg"
-                          if (notification.badgeIcon) { image = notification.badgeIcon }
                           return (
-
                             <Media key={key}>
                               <a
                                 className="pull-left"
@@ -289,14 +304,14 @@ function Borrower() {
                                     alt="..."
                                     object
                                     src={
-                                      require("assets/img/person-2.jpg")
+                                      require("assets/img/placeholder-2.jpg")
                                         .default
                                     }
                                   />
                                 </div>
                               </a>
                               <Media body>
-                                <Media heading tag="author">
+                                <Media heading tag="h6">
                                   {notification.fromUserId}
                                 </Media>
                                 <div className="pull-right">
@@ -305,11 +320,11 @@ function Borrower() {
                                     className="btn-link pull-right"
                                     color="info"
                                     href="#"
-                                    onClick={(e) => e.preventDefault()}
+                                    onClick={() => setShowReply(!showReply)}
                                   >
                                     <i className="fa fa-reply mr-1" />
-                              Reply
-                            </Button>
+                                    Reply
+                                  </Button>
                                 </div>
                                 <p>
                                   {notification.body}
@@ -326,7 +341,7 @@ function Borrower() {
                                           alt="..."
                                           object
                                           src={
-                                            require("assets/img/faces/kaci-baum-2.jpg")
+                                            require("assets/img/placeholder-2.jpg")
                                               .default
                                           }
                                         />
@@ -334,7 +349,7 @@ function Borrower() {
                                     </a>
                                     <Media body>
                                       <Input
-                                        placeholder="Write a nice reply or go home..."
+                                        placeholder="What's up?"
                                         rows="4"
                                         type="textarea"
                                       />

@@ -57,7 +57,7 @@ function SignIn() {
 
     // function that returns true if value is email, false otherwise
     const verifyEmail = value => {        
-        console.log('verifyEmail - value', value)
+        //console.log('verifyEmail - value', value)
         var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (emailRex.test(value) && value.length > 0) {
         return true;
@@ -66,7 +66,7 @@ function SignIn() {
     };
 
     const verifyPassword = value => {
-        console.log('verifyPassword - value', value)
+        //console.log('verifyPassword - value', value)
         var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
         if (passwordRex.test(value) && value.length > 0) {
         return true;

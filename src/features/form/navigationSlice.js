@@ -5,7 +5,7 @@ export const navigationSlice = createSlice({
   initialState: {
     userId: "",    
     userName: "", 
-    userType: "Borrower",
+    userType: "",
     formId: null,    
     screenId: "",  
     screenNavigation: ["Start"],

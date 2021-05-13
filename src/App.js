@@ -35,10 +35,10 @@ import Error404 from "views/examples/Error404.js";
 import CustomAuth from "views/CustomAuth.js"
 import Borrower from "views/Borrower.js";
 import Opportunity from "views/Opportunity.js";
+import { selectUser } from "features/form/userSlice";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [userId, setUserId] = useState()
 
   useEffect(() => {
     Hub.listen('auth', (data) => {
@@ -46,14 +46,13 @@ function App() {
       console.log('A new auth event has happened: ', data)
        if (payload.event === 'signIn') {
         setIsAuthenticated(true)
-        setUserId(payload.data.username)
        }
        if (payload.event === 'signOut') {
-         console.log('a user has signed out!')
+        console.log('a user has signed out!')
         setIsAuthenticated(false)
        }
     })
-  }, [])
+  }, [])  
 
   useEffect(() => {
     checkUser()
@@ -62,7 +61,7 @@ function App() {
   async function checkUser() {
     try {
         const thisUser = await Auth.currentAuthenticatedUser().then(
-        setIsAuthenticated(true))
+        setIsAuthenticated(true))     
       } catch (error) {
           console.log('checkUser - error signing in:', error)
           setIsAuthenticated(false)
@@ -76,7 +75,7 @@ function App() {
         <Switch>
           <Route
             path="/borrower"
-            render={(props) => <Borrower {...props} userId={userId} />}
+            render={(props) => <Borrower {...props} />}
           />
           <Route path="/error-404" render={(props) => <Error404 {...props} />} />
           <Redirect to="/borrower" />
