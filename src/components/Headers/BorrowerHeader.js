@@ -4,6 +4,12 @@ import React from "react";
 
 // core components
 
+//images
+// "assets/img/buildings.jpg",
+// "assets/img/cover.jpg",
+// "assets/img/office-1.jpg",
+// "assets/img/farid-askerov.jpg",
+
 function BorrowerHeader() { 
   return (
   <>
@@ -11,7 +17,7 @@ function BorrowerHeader() {
     className="page-header page-header-xxs settings-background"
     style={{
       backgroundImage: "url(" +
-      require("assets/img/farid-askerov.jpg").default +
+      require("assets/img/buildings.jpg").default +
       ")"
     }}
     ></div>
