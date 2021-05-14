@@ -35,7 +35,6 @@ import Error404 from "views/examples/Error404.js";
 import CustomAuth from "views/CustomAuth.js"
 import Borrower from "views/Borrower.js";
 import Opportunity from "views/Opportunity.js";
-import { selectUser } from "features/form/userSlice";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -60,10 +59,10 @@ function App() {
 
   async function checkUser() {
     try {
-        const thisUser = await Auth.currentAuthenticatedUser().then(
+        await Auth.currentAuthenticatedUser().then(
         setIsAuthenticated(true))     
       } catch (error) {
-          console.log('checkUser - error signing in:', error)
+          //console.log('checkUser - error signing in:', error)
           setIsAuthenticated(false)
       }               
   }

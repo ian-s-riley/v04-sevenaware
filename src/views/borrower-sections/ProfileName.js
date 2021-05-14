@@ -1,22 +1,23 @@
 import React, {useState, useEffect} from "react";
 
-//AWS Amplify GraphQL libraries
-
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
   updateFormAsync,  
+  selectForm,
 } from 'features/form/formSlice'
-import {
-  selectNavigation,
-} from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
   Button,
   FormGroup,
   Form,
+  Label,
+  FormText,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
   Container,
   Row,
   Col,
@@ -25,24 +26,21 @@ import {
 } from "reactstrap";
 
 
-function ProfileWelcome(prop) {
+function ProfileAddress(prop) {
     const dispatch = useDispatch()
-
     
     const [form, setForm] = useState(prop.form)
-    console.log('ProfileName.js - form', prop.form)
-    const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-    const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
-    
     const [isDirty, setIsDirty] = useState(false)
+    const [nameState, setNameState] = useState("");
 
-    const thisScreenId = "Profile>Welcome"
-    let nextScreenId = "Profile>Name"
-    let percentComplete = 26
+    const thisScreenId = "Profile>Name"
+    let nextScreenId = "Profile>ID"
+    let percentComplete = "5"
 
     const handleNextClick = () => {   
         //validation
-
+        if (nameState !== "success") return
+         
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
@@ -53,6 +51,7 @@ function ProfileWelcome(prop) {
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
+    
         //update redux & graphql
         dispatch(updateFormAsync(newForm))
 
@@ -68,13 +67,55 @@ function ProfileWelcome(prop) {
         prop.nextForm(null, screenNavigation)
     }
 
+    // function that returns true if value is email, false otherwise
+    const verifyLength = value => {        
+        if (value.length > 3) {
+        return true;
+        }
+        return false;
+    };
+
+    function handleChange(e) {
+        const {id, value} = e.currentTarget;
+        setForm({ ...form, [id]: value})
+        setIsDirty(true)
+    }
+
   return (
     <div className="profile-content section">
         <Container>        
         <Row>
             <Col className="ml-auto mr-auto" md="6">
-            <Form className="settings-form">
-                <label>Let’s gather some initial information on your business to speed-up your application process...</label>
+            <Form className="settings-form">             
+                <FormGroup>
+                    <Label for="businessName" className="control-label">What's the name of your business?</Label>
+                    <Input 
+                    type="text" 
+                    name="businessName" 
+                    id="businessName" 
+                    onChange = {event => {
+                        if (verifyLength(event.target.value)) {
+                            setNameState("success");
+                        } else {
+                            setNameState("error");
+                        }
+                        handleChange(event)
+                        }
+                    }
+                    />         
+                </FormGroup>  
+                <FormGroup>
+                    <Label for="dba" className="control-label">Does your business use a DBA?</Label>
+                    <Input 
+                    type="text" 
+                    name="dba" 
+                    id="dba" 
+                    onChange = {handleChange}
+                    />         
+                    <FormText>
+                        Doing Businss As (DBA)
+                    </FormText>
+                </FormGroup>         
                 <hr />
                 <div className="text-center">
                     <Button
@@ -109,4 +150,4 @@ function ProfileWelcome(prop) {
   );
 }
 
-export default ProfileWelcome;
+export default ProfileAddress;

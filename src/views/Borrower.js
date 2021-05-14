@@ -53,6 +53,7 @@ import BorrowerHeader from "components/Headers/BorrowerHeader.js";
 import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Documents from "./borrower-sections/Documents";
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
+import ProfileName from "./borrower-sections/ProfileName";
 import ProfileAddress from "./borrower-sections/ProfileAddress";
 
 function Borrower(prop) {
@@ -76,7 +77,7 @@ function Borrower(prop) {
     try {
         const thisUser = await Auth.currentAuthenticatedUser()        
         setUserId(thisUser.username)
-        console.log('checkuser - user signed in - thisUser:', thisUser.username)
+        //console.log('checkuser - user signed in - thisUser:', thisUser.username)
       } catch (error) {
           console.log('checkUser - error signing in:', error)
       }               
@@ -87,8 +88,7 @@ function Borrower(prop) {
   }, [userId])
 
   async function fetchForm() {
-      //get this user's form/application from the DB
-      console.log('Borrower.js fetchForm: userId', userId)
+      //get this user's form/application from the DB      
       if (userId) {
         //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
         const formFromAPI = await API.graphql(graphqlOperation(listForms, {
@@ -138,7 +138,7 @@ function Borrower(prop) {
   }, [screenNavigation])
 
   const showScreen = () => {
-    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
@@ -146,6 +146,10 @@ function Borrower(prop) {
         setStageHeader("Profile")
         setCurrentForm(<ProfileAddress nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
+      case "Profile>Name":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileName nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>Welcome":
           setStageHeader("Welcome")
           setCurrentForm(<ProfileWelcome nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -197,9 +201,9 @@ function Borrower(prop) {
 
   return (
     <>
-      <BorrowerNavBar navigation={navigation} />
+      <BorrowerNavBar />
       <div className="wrapper">
-        <BorrowerHeader navigation={navigation} />
+        <BorrowerHeader />
         <div className="profile-content section-white-gray">
           <Container>
             <Row className="owner">
@@ -368,11 +372,8 @@ function Borrower(prop) {
                                 )}
                               </Media>
                             </Media>
-
-
                           );
                         })}
-
                         {false && (
                           <>
                             <br />
@@ -383,7 +384,6 @@ function Borrower(prop) {
                             </div>
                           </>
                         )}
-
                       </div>
                     </Col>
                     <Col md="4" sm="6">

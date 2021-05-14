@@ -1,15 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 
 // reactstrap components
 
 // core components
-
-const backgrounds = [
-  "assets/img/buildings.jpg",
-  "assets/img/cover.jpg",
-  "assets/img/office-1.jpg",
-  "assets/img/farid-askerov.jpg",,
-]
 
 function AuthHeader() {
     return (

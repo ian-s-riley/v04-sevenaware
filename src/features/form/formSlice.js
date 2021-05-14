@@ -84,7 +84,7 @@ export const { updateFormStatus, updateForm } = formSlice.actions;
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
 export const updateFormAsync = form => dispatch => {
-  //console.log('updateFormAsync: form', form)
+  console.log('updateFormAsync: form', form)
   API.graphql({ 
       query: updateFormMutation, 
       variables: { 

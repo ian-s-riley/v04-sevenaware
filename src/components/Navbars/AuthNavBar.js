@@ -8,10 +8,6 @@ import Headroom from "headroom.js";
 import {
   Button,
   Collapse,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
   NavbarBrand,
   Navbar,
   NavItem,
@@ -21,13 +17,10 @@ import {
 } from "reactstrap";
 // core components
 
-function BorrowerNavBar(prop) {
+function BorrowerNavBar() {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [bodyClick, setBodyClick] = React.useState(false);
   const [collapseOpen, setCollapseOpen] = React.useState(false);
-
-  const userId = prop.userId
-  const formId = prop.formId
 
   React.useEffect(() => {
     let headroom = new Headroom(document.getElementById("navbar-main"));
