@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 //AWS Amplify GraphQL libraries
-import { API, graphqlOperation } from 'aws-amplify';
+import { API } from 'aws-amplify';
 import { updateForm as updateFormMutation } from '../../graphql/mutations';
 import { createForm as createFormMutation } from '../../graphql/mutations';
 

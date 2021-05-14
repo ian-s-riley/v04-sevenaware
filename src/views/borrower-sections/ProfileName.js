@@ -26,7 +26,7 @@ import {
 } from "reactstrap";
 
 
-function ProfileAddress(prop) {
+function ProfileName(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
@@ -150,4 +150,4 @@ function ProfileAddress(prop) {
   );
 }
 
-export default ProfileAddress;
+export default ProfileName;

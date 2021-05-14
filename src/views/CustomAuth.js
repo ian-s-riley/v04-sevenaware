@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
@@ -9,8 +9,6 @@ import {
   Form,
   Label,
   Button,
-  Card,
-  CardTitle,
   Input,
   Container,
   Row,
@@ -39,7 +37,7 @@ function CustomAuth() {
 
   /* Create the form state and form input state */
   const [authState, setAuthState] = useState("signUp") 
-  console.log('customauth.js - authState', authState)
+  //console.log('customauth.js - authState', authState)
   const [formInputState, setFormInputState] = useState({ username: '', password: '', email: '', verificationCode: '' })
 
   /* onChange handler for form inputs */
@@ -135,7 +133,7 @@ function CustomAuth() {
               <FormGroup check>
                 <Label check>
                   <Input type="checkbox" />{' '}
-  I understand how 7(a)ware will <a>use and protect my data</a>. And I agree to the <a>terms & conditions</a>.
+  I understand how 7(a)ware will <a href="#">use and protect my data</a>. And I agree to the <a href="#">terms & conditions</a>.
   <span className="form-check-sign">
                     <span className="check"></span>
                   </span>
