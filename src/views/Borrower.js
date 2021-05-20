@@ -1,17 +1,17 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from "react";
 //amplify authentication
-import { Auth, Hub } from 'aws-amplify'
+import { Auth } from 'aws-amplify'
 
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
 import { listNotifications, listForms } from '../graphql/queries';
 
-//google charts
-//import Chart from "react-google-charts";
 //chartist chart control
 import Chartist from "react-chartist";
+import { VictoryPie } from "victory-pie";
 
+//parser for html in text
 import parse from 'html-react-parser';
 
 // redux store
@@ -67,7 +67,7 @@ function Borrower(prop) {
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(navigation.userId)
-  const [screenNavigation, setScreenNavigation] = useState(["Profile>Welcome"])    
+  const [screenNavigation, setScreenNavigation] = useState([])    
   const [stageHeader, setStageHeader] = useState("")    
   
   const [showReply, setShowReply] = useState(false)
@@ -93,12 +93,11 @@ function Borrower(prop) {
   async function fetchForm() {
       //get this user's form/application from the DB      
       if (userId) {
-        //const formFromAPI = await API.graphql({ query: listForms, filter: {userId: {eq: "e9148263-3344-4a09-8572-54829968eeaa"}} });
         const formFromAPI = await API.graphql(graphqlOperation(listForms, {
           filter: { userId: { eq: userId }},
         }))  
         const thisForm = formFromAPI.data.listForms.items[0]
-        //console.log('Borrower.js fetchForm: thisForm', thisForm)
+        console.log('Borrower.js fetchForm: thisForm', thisForm)
 
         //set the redux store
         dispatch(updateForm(thisForm))
@@ -141,7 +140,7 @@ function Borrower(prop) {
   }, [screenNavigation])
 
   const showScreen = () => {
-    //console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
@@ -182,19 +181,53 @@ function Borrower(prop) {
   
 
   //constants & variables  
-  const data={
-    labels: [form.percentComplete + " %", " "],
-    series: [form.percentComplete, 100 - form.percentComplete],
-  }
-  const options = {
-    width: "150px",
-    donut: true,
-    donutWidth: 50,
-    donutSolid: true,
-    startAngle: 270,
-    showLabel: true,
-  }
-  const type = "Pie";
+  // const data={
+  //   labels: [form.percentComplete + " %", " "],
+  //   series: [form.percentComplete, 100 - form.percentComplete],
+  // }
+  // const options = {
+  //   width: "150px",
+  //   donut: true,
+  //   donutWidth: 50,
+  //   donutSolid: true,
+  //   startAngle: 270,
+  //   showLabel: true,
+  // }
+  // const type = "Pie";
+
+  // const progressChart = (
+  // <Chartist
+  //   style={{                              
+  //     stroke: "white",
+  //   }}
+  //   data={{
+  //     labels: [form.percentComplete + " %", " "],
+  //     series: [form.percentComplete, 100-form.percentComplete],
+  //   }}
+  //   type="Pie"
+  //   options={{
+  //     height: "220px",
+  //     donut: true,
+  //     donutWidth: 70,
+  //     donutSolid: true,
+  //     startAngle: 270,
+  //     showLabel: true
+  //   }}
+  // />
+  // )
+
+  const myData = [
+    { x: " ", y: 100-form.percentComplete },
+    { x: " ", y: form.percentComplete },
+  ];
+
+  const progressChart = (
+  <VictoryPie
+    data={myData}
+    colorScale={["AliceBlue", "DodgerBlue"]}
+    radius={150}
+  />
+  )
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -225,7 +258,7 @@ function Borrower(prop) {
                     <Button
                       className="btn-just-icon"
                       onClick={() => {
-                        setScreenNavigation(["Start"])
+                        setScreenNavigation(["Profile>Welcome"])
                         toggle("2");
                       }}
                       color="info"
@@ -337,9 +370,9 @@ function Borrower(prop) {
                                     Reply
                                   </Button>
                                 </div>
-                                <p>
+                                  <>
                                   {parse(notification.body)}
-                                </p>
+                                  </>
                                 {showReply && (
                                   <Media className="media-post">
                                     <a
@@ -400,24 +433,7 @@ function Borrower(prop) {
                             {form.percentComplete}% Complete
                           </CardTitle>
                           <div className="accounts-suggestion">
-                          <Chartist
-                            style={{                              
-                              stroke: "white",
-                            }}
-                            data={{
-                              labels: [form.percentComplete + " %", " "],
-                              series: [form.percentComplete, 100-form.percentComplete],
-                            }}
-                            type="Pie"
-                            options={{
-                              height: "220px",
-                              donut: true,
-                              donutWidth: 70,
-                              donutSolid: true,
-                              startAngle: 270,
-                              showLabel: true
-                            }}
-                          />
+                          {progressChart}
                           </div>
                         </CardBody>
                       </Card>

@@ -56,12 +56,6 @@ function ProfileWelcome(prop) {
         prop.nextForm(newForm, screenNavigation)
     };
 
-    const handleBackClick = () => {
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.pop()
-        prop.nextForm(null, screenNavigation)
-    }
-
   return (
     <div className="profile-content section">
         <Container>        

@@ -1,0 +1,21 @@
+{
+  "name": "7aware_v04",
+  "description": "7(a)ware application",
+  "main": "index.html",
+  "authors": [
+    "Ian Riley <ian.s.riley@outlook.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ian-s-riley/v04-sevenaware",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chartist": "^0.11.4"
+  }
+}
