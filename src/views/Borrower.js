@@ -12,6 +12,8 @@ import { listNotifications, listForms } from '../graphql/queries';
 //chartist chart control
 import Chartist from "react-chartist";
 
+import parse from 'html-react-parser';
+
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -336,7 +338,7 @@ function Borrower(prop) {
                                   </Button>
                                 </div>
                                 <p>
-                                  {notification.body}
+                                  {parse(notification.body)}
                                 </p>
                                 {showReply && (
                                   <Media className="media-post">
