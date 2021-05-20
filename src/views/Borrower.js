@@ -54,6 +54,7 @@ import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Documents from "./borrower-sections/Documents";
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
 import ProfileName from "./borrower-sections/ProfileName";
+import ProfileID from "./borrower-sections/ProfileID";
 import ProfileAddress from "./borrower-sections/ProfileAddress";
 
 function Borrower(prop) {
@@ -146,7 +147,11 @@ function Borrower(prop) {
         setStageHeader("Profile")
         setCurrentForm(<ProfileAddress nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
-      case "Profile>Name":
+      case "Profile>ID":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileID nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
+        case "Profile>Name":
           setStageHeader("Profile")
           setCurrentForm(<ProfileName nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
@@ -393,7 +398,24 @@ function Borrower(prop) {
                             {form.percentComplete}% Complete
                           </CardTitle>
                           <div className="accounts-suggestion">
-                            <Chartist data={data} options={options} type={type} />
+                          <Chartist
+                            style={{                              
+                              stroke: "white",
+                            }}
+                            data={{
+                              labels: [form.percentComplete + " %", " "],
+                              series: [form.percentComplete, 100-form.percentComplete],
+                            }}
+                            type="Pie"
+                            options={{
+                              height: "220px",
+                              donut: true,
+                              donutWidth: 70,
+                              donutSolid: true,
+                              startAngle: 270,
+                              showLabel: true
+                            }}
+                          />
                           </div>
                         </CardBody>
                       </Card>

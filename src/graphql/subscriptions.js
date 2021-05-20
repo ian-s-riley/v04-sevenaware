@@ -336,12 +336,15 @@ export const onCreateNotification = /* GraphQL */ `
       toUserId
       fromEmail
       toEmail
+      fromName
+      toName
       action
       status
       badgeColor
       badgeIcon
       title
       body
+      htmlBody
       emailBody
       smsBody
       footerTitle
@@ -359,12 +362,15 @@ export const onUpdateNotification = /* GraphQL */ `
       toUserId
       fromEmail
       toEmail
+      fromName
+      toName
       action
       status
       badgeColor
       badgeIcon
       title
       body
+      htmlBody
       emailBody
       smsBody
       footerTitle
@@ -382,12 +388,15 @@ export const onDeleteNotification = /* GraphQL */ `
       toUserId
       fromEmail
       toEmail
+      fromName
+      toName
       action
       status
       badgeColor
       badgeIcon
       title
       body
+      htmlBody
       emailBody
       smsBody
       footerTitle

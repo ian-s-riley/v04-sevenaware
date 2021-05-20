@@ -115,8 +115,7 @@ function ProfileName(prop) {
                     <FormText>
                         Doing Businss As (DBA)
                     </FormText>
-                </FormGroup>         
-                <hr />
+                </FormGroup>    
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}

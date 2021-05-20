@@ -4,12 +4,10 @@ import React, {useState, useEffect} from "react";
 import { Auth } from 'aws-amplify';
 
 //AWS Amplify GraphQL libraries
-import { API, graphqlOperation } from 'aws-amplify';
-import { getForm, listNotifications, listForms } from '../../graphql/queries';
+import { API } from 'aws-amplify';
 import { 
     createUser as createUserMutation, 
     createForm as createFormMutation,
-    createNotification as createNotificationMutation, 
 } from '../../graphql/mutations';
 
 // redux store
@@ -18,6 +16,9 @@ import {
   updateForm,  
   selectForm,
 } from 'features/form/formSlice'
+import {
+    createNotificationAsync,  
+} from 'features/notification/notificationSlice'
 
 // reactstrap components
 import {
@@ -27,13 +28,9 @@ import {
   Label,
   FormText,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
   Modal,
 } from "reactstrap";
@@ -54,8 +51,14 @@ function ProfileSignUp(prop) {
 
     const thisScreenId = "Profile>SignUp"
     let nextScreenId = "Profile>ConfirmSignUp"
-    let percentComplete = "0"
+    let percentComplete = "0"    
+    
+    const sevenaEmail = "ianseatonriley.phone@gmail.com"
+    const sevenaName = "7(a)ware AI"
+    const lender = "Blue Credit Union"
     const lenderUserId = "ian.public@yahoo.com"
+    const lenderEmail = "ian.public@yahoo.com"
+    const lenderName = "Jane Banquer"                
 
     async function handleNextClick() {   
         //validation
@@ -145,47 +148,43 @@ function ProfileSignUp(prop) {
         }
 
         //update redux & graphql
-        dispatch(updateForm(newForm))
+        dispatch(updateForm(newForm))               
 
-        //send a notification to the lender
-        addNotification(
-            email, 
-            lenderUserId, 
-            "Welcome to 7(a)ware", 
-            "You've taken the first steps towards financing your businss with a SBA 7(a) loan. Pleaese continue with your application and check back often for updates and notifications.",
-            "7(a)ware Team"
-        )
-        //send a notification to the new user
-        addNotification(
-            lenderUserId, 
-            email,
-            "New User Sign Up", 
-            email + " has signed up as a new user and is starting a SBA 7(a) application.",
-            "7(a)ware Team"
-        )
-        
+        //send a notification to the new user/borrower
+        const borrowerNotificationTitle = "Welcome to 7(a)ware"
+        const borrowerNotificationText = "<p>Welcome to <b>7(a)ware</b>. I've been assigned as your account representitive here at " + lender + ".</p><p>Please continue entering your business & ownership information so we can help you get your SBA 7(a) loan.</p><p>Thank You<br/>-" + lenderName + "</p>"
+        const borrowerNotification = {
+            fromUserId: lenderUserId,
+            toUserId: email,
+            fromEmail: lenderEmail,
+            toEmail: email,
+            fromName: lenderName,
+            toName: email,
+            title: borrowerNotificationTitle,
+            body: borrowerNotificationText,
+            emailBody: borrowerNotificationText,
+        } 
+        dispatch(createNotificationAsync(borrowerNotification))
+
+        //send a notification to the new user 
+        const lenderNotificationTitle = "New User & Application Sign Up"
+        const lenderNotificationText = "<p>A new opportunity (" + email + ") has signed up for the <b>7(a)ware</b> service from the " + lender + " portal. You've been assigned as the account representitive.</p><p>We'll begin gathering business & ownership information and doing a Lexis/Nexis check. We'll send the next notifiation once they've gotten to that point.</p><p>Thanks<br/>-7(a)ware AI</p>"       
+        const lenderNotification = {
+            fromUserId: sevenaEmail,
+            toUserId: lenderUserId,
+            fromEmail: sevenaEmail,
+            toEmail: lenderUserId,
+            fromName: sevenaName,
+            toName: lenderName,
+            title: lenderNotificationTitle,
+            body: lenderNotificationText,
+            emailBody: lenderNotificationText,
+        } 
+        dispatch(createNotificationAsync(lenderNotification))
 
          //go to the next step, stage, or form
          prop.nextForm(newForm, screenNavigation)
     };
-
-    async function addNotification(toUserId, fromUserId, title, body, footer) {
-        const apiNotificationData = await API.graphql(
-            { query: createNotificationMutation, 
-                variables: { 
-                    input: {
-                        title: title, 
-                        toUserId: toUserId, 
-                        toEmail: toUserId, 
-                        fromUserId: fromUserId, 
-                        fromEmail: fromUserId, 
-                        body: body, 
-                        footer: footer}
-                 } 
-            }
-        )
-        //const newNotificationId = apiNotificationData.data.createNotification.id
-    }
 
     const handleBackClick = () => {
         let screenNavigation = Object.assign([], prop.navigation);

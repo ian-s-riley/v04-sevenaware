@@ -93,12 +93,15 @@ type Notification @model {
   toUserId: String!
   fromEmail: String
   toEmail: String
+  fromName: String
+  toName: String
   action: String
   status: String
   badgeColor: String
   badgeIcon: String
   title: String
   body: String
+  htmlBody: String
   emailBody: String
   smsBody: String
   footerTitle: String

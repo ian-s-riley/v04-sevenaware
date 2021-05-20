@@ -10,17 +10,17 @@ import {
 import {
   selectNavigation,
 } from 'features/form/navigationSlice'
+import {
+    createNotificationAsync,  
+} from 'features/notification/notificationSlice'
 
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
 } from "reactstrap";
 
@@ -28,16 +28,11 @@ import {
 function ProfileWelcome(prop) {
     const dispatch = useDispatch()
 
-    
     const [form, setForm] = useState(prop.form)
-    const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-    const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
     
-    const [isDirty, setIsDirty] = useState(false)
-
     const thisScreenId = "Profile>Welcome"
-    let nextScreenId = "Profile>Name"
-    let percentComplete = 2
+    let nextScreenId = "Profile>ID"
+    let percentComplete = 2            
 
     const handleNextClick = () => {   
         //validation
@@ -55,7 +50,7 @@ function ProfileWelcome(prop) {
         //update redux & graphql
         dispatch(updateFormAsync(newForm))
 
-        //send a notification
+        //send a notification        
   
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
@@ -77,22 +72,11 @@ function ProfileWelcome(prop) {
                 <hr />
                 <div className="text-center">
                     <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="sm"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
                         className="btn-just-icon pull-right"
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="sm"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

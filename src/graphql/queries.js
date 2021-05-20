@@ -255,12 +255,15 @@ export const getNotification = /* GraphQL */ `
       toUserId
       fromEmail
       toEmail
+      fromName
+      toName
       action
       status
       badgeColor
       badgeIcon
       title
       body
+      htmlBody
       emailBody
       smsBody
       footerTitle
@@ -283,12 +286,15 @@ export const listNotifications = /* GraphQL */ `
         toUserId
         fromEmail
         toEmail
+        fromName
+        toName
         action
         status
         badgeColor
         badgeIcon
         title
         body
+        htmlBody
         emailBody
         smsBody
         footerTitle

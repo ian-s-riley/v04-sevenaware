@@ -13,17 +13,13 @@ import {
   FormGroup,
   Form,
   Label,
-  FormText,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
 } from "reactstrap";
+import { createFormAsync } from "features/form/formSlice";
 
 
 function ProfileID(prop) {
@@ -39,7 +35,7 @@ function ProfileID(prop) {
 
     const handleNextClick = () => {   
         //validation
-        if (nameState !== "success") return
+        if (idState !== "success") return
          
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -56,7 +52,7 @@ function ProfileID(prop) {
         dispatch(updateFormAsync(newForm))
 
         //send a notification
-  
+
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
     };
@@ -95,28 +91,15 @@ function ProfileID(prop) {
                     id="fein" 
                     onChange = {event => {
                         if (verifyID(event.target.value)) {
-                            setNameState("success");
+                            setIDState("success");
                         } else {
-                            setNameState("error");
+                            setIDState("error");
                         }
                         handleChange(event)
                         }
                     }
                     />         
-                </FormGroup>  
-                <FormGroup>
-                    <Label for="dba" className="control-label">Does your business use a DBA?</Label>
-                    <Input 
-                    type="text" 
-                    name="dba" 
-                    id="dba" 
-                    onChange = {handleChange}
-                    />         
-                    <FormText>
-                        Doing Businss As (DBA)
-                    </FormText>
-                </FormGroup>         
-                <hr />
+                </FormGroup>   
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
