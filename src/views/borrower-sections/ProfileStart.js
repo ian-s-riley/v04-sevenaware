@@ -1,30 +1,18 @@
-import React, {useState, useEffect} from "react";
-
-//AWS Amplify GraphQL libraries
-import { API, graphqlOperation } from 'aws-amplify';
-import { getForm } from '../../graphql/queries';
-import { createForm as createFormMutation } from '../../graphql/mutations';
+import React from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateForm,  
 } from 'features/form/formSlice'
-import {
-  updateNavigation,
-  selectNavigation,
-} from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
 } from "reactstrap";
 
@@ -32,13 +20,7 @@ import {
 function ProfileStart(prop) {
     const dispatch = useDispatch()
 
-    const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-    const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
-    
-    const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
-
-    const thisScreenId = "Profile>Start"
+    //sconst thisScreenId = "Profile>Start"
     let nextScreenId = "Profile>SignUp"
     let percentComplete = 23
 
@@ -51,7 +33,7 @@ function ProfileStart(prop) {
         
         //update the local form store 
         const newForm = { 
-            ...form, 
+            ...prop.form, 
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
@@ -64,12 +46,6 @@ function ProfileStart(prop) {
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
     };
-
-    const handleBackClick = () => {
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.pop()
-        prop.nextForm(null, screenNavigation)
-    }
 
   return (
     <div className="profile-content section">

@@ -1,37 +1,24 @@
-import React, {useState} from "react";
+import React from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  selectForm,
   updateForm,
 } from 'features/form/formSlice'
-import {
-  updateNavigation,
-  selectNavigation,
-} from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
 } from "reactstrap";
 
 
 function Eligible(prop) {
-    const dispatch = useDispatch()
-    
-    const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
-
-    const thisScreenId = "Eligibility>Eligible"
+    const dispatch = useDispatch()    
     let nextScreenId = "Profile>Start"
     let percentComplete = 20
 
@@ -44,7 +31,7 @@ function Eligible(prop) {
         
         //update the local form store 
         const newForm = { 
-            ...form, 
+            ...prop.form, 
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }

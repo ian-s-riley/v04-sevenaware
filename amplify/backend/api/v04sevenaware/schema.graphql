@@ -48,6 +48,7 @@ type Form @model {
   forProfit: Boolean
   us: Boolean
   businessEmail: Boolean
+  entityType: String
   fein: String
   businessName: String
   dba: String

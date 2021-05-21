@@ -133,7 +133,7 @@ function CustomAuth() {
               <FormGroup check>
                 <Label check>
                   <Input type="checkbox" />{' '}
-  I understand how 7(a)ware will <a href="#">use and protect my data</a>. And I agree to the <a href="#">terms & conditions</a>.
+  I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
   <span className="form-check-sign">
                     <span className="check"></span>
                   </span>

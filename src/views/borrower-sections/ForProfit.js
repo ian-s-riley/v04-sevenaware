@@ -1,22 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateForm,  
-  selectForm,
 } from 'features/form/formSlice'
-import {
-    updateNavigation,
-    selectNavigation,
-  } from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
@@ -29,9 +22,6 @@ function ForProfit(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
-
-    const thisScreenId = "Eligibility>ForProfit"
     let nextScreenId = "Eligibility>US"
     let percentComplete = 12
 
@@ -69,7 +59,6 @@ function ForProfit(prop) {
     function handleChange(e) {
         const { id, checked } = e.currentTarget;
         setForm({ ...form, [id]: checked })
-        setIsDirty(true)
     }
 
   return (

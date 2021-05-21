@@ -1,18 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 
 //AWS Amplify GraphQL libraries
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateFormAsync,  
 } from 'features/form/formSlice'
-import {
-  selectNavigation,
-} from 'features/form/navigationSlice'
-import {
-    createNotificationAsync,  
-} from 'features/notification/notificationSlice'
 
 // reactstrap components
 import {
@@ -27,11 +21,9 @@ import {
 
 function ProfileWelcome(prop) {
     const dispatch = useDispatch()
-
-    const [form, setForm] = useState(prop.form)
     
-    const thisScreenId = "Profile>Welcome"
-    let nextScreenId = "Profile>ID"
+    //const thisScreenId = "Profile>Welcome"
+    let nextScreenId = "Profile>Entity"
     let percentComplete = 2            
 
     const handleNextClick = () => {   
@@ -43,7 +35,7 @@ function ProfileWelcome(prop) {
         
         //update the local form store 
         const newForm = { 
-            ...form, 
+            ...prop.form, 
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
@@ -60,7 +52,7 @@ function ProfileWelcome(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="6">
+            <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">
                 <label>Let’s gather some initial information on your business to speed-up your application process...</label>
                 <hr />

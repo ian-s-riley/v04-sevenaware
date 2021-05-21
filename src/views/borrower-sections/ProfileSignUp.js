@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
@@ -11,10 +11,9 @@ import {
 } from '../../graphql/mutations';
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateForm,  
-  selectForm,
 } from 'features/form/formSlice'
 import {
     createNotificationAsync,  
@@ -39,17 +38,14 @@ import {
 function ProfileSignUp(prop) {
     const dispatch = useDispatch()
     
-    const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [password2, setPassword2] = useState("");
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
     const [password2State, setPassword2State] = useState("");
     const [userExists, setUserExists] = useState(false);
 
-    const thisScreenId = "Profile>SignUp"
+    //const thisScreenId = "Profile>SignUp"
     let nextScreenId = "Profile>ConfirmSignUp"
     let percentComplete = "0"    
     
@@ -87,7 +83,7 @@ function ProfileSignUp(prop) {
     //save the new user and form
     async function createNewUserAndForm(newUserName) {
         //create the new user
-        const apiUserData = await API.graphql(
+        await API.graphql(
         { query: createUserMutation, 
             variables: { 
                 input: {                    
@@ -128,20 +124,19 @@ function ProfileSignUp(prop) {
         }    
 
         //create the new form for this user
-        const apiFormData = await API.graphql(
+        await API.graphql(
             { query: createFormMutation, 
                 variables: { input: newFormData } 
             }
         )
-        const newFormId = apiFormData.data.createForm.id
-
+        
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
 
         //update the local form store 
         const newForm = { 
-            ...form, 
+            ...prop.form, 
             businessEmail: email,
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
@@ -203,7 +198,7 @@ function ProfileSignUp(prop) {
 
     const verifyPassword = value => {
         
-        var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$/
+        var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-“!@#%&/,><’:;|_~`])\S{8,99}$/
         //console.log('verifyPassword - passwordRex.test(' + value + ')', passwordRex.test(value))
         if (passwordRex.test(value) && value.length > 0) {
         return true;
@@ -211,11 +206,8 @@ function ProfileSignUp(prop) {
         return false;
     };
 
-    const verifyPassword2 = value => {
-        
-        var passwordRex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$/
-        //console.log('verifyPassword - passwordRex.test(' + value + ')', passwordRex.test(value))
-        if (passwordRex.test(value) && value.length > 0 && value === password) {
+    const verifyPassword2 = value => {        
+        if (value === password) {
         return true;
         }
         return false;
@@ -282,7 +274,6 @@ function ProfileSignUp(prop) {
                     } else {
                         setPassword2State("error");
                     }
-                    setPassword2(event.target.value);
                     }}
                 />
             </FormGroup>

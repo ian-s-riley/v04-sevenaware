@@ -9,9 +9,7 @@ import {
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
@@ -24,9 +22,6 @@ function Ineligible(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
-
-    const thisScreenId = "Eligibility>Ineligible"
     let nextScreenId = "Eligibility>ForProfit"
     let percentComplete = 7
 
@@ -70,7 +65,6 @@ function Ineligible(prop) {
     function handleChange(e) {
         const { id, checked } = e.currentTarget;
         setForm({ ...form, [id]: checked })
-        setIsDirty(true)
     }
 
   return (

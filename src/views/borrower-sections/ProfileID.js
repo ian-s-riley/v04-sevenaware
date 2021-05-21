@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateFormAsync,  
-  selectForm,
 } from 'features/form/formSlice'
 
 // reactstrap components
@@ -24,10 +23,10 @@ function ProfileID(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
+    //const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
 
-    const thisScreenId = "Profile>ID"
+    //const thisScreenId = "Profile>ID"
     let nextScreenId = "Profile>Address"
     let percentComplete = "12"
 
@@ -72,7 +71,7 @@ function ProfileID(prop) {
     function handleChange(e) {
         const {id, value} = e.currentTarget;
         setForm({ ...form, [id]: value})
-        setIsDirty(true)
+        //setIsDirty(true)
     }
 
   return (

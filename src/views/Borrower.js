@@ -8,7 +8,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { listNotifications, listForms } from '../graphql/queries';
 
 //chartist chart control
-import Chartist from "react-chartist";
+//import Chartist from "react-chartist";
 import { VictoryPie } from "victory-pie";
 
 //parser for html in text
@@ -31,10 +31,6 @@ import {
   Card,
   CardBody,
   CardTitle,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
   Input,
   Media,
   NavItem,
@@ -46,7 +42,6 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
-  ButtonToggle,
 } from "reactstrap";
 
 // core components
@@ -55,9 +50,8 @@ import BorrowerHeader from "components/Headers/BorrowerHeader.js";
 import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Documents from "./borrower-sections/Documents";
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
-import ProfileName from "./borrower-sections/ProfileName";
+import ProfileEntity from "./borrower-sections/ProfileEntity";
 import ProfileID from "./borrower-sections/ProfileID";
-import ProfileAddress from "./borrower-sections/ProfileAddress";
 
 function Borrower(prop) {
   const dispatch = useDispatch()    
@@ -144,17 +138,13 @@ function Borrower(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
-      case "Profile>Address":
-        setStageHeader("Profile")
-        setCurrentForm(<ProfileAddress nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
       case "Profile>ID":
           setStageHeader("Profile")
           setCurrentForm(<ProfileID nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
-        case "Profile>Name":
+        case "Profile>Entity":
           setStageHeader("Profile")
-          setCurrentForm(<ProfileName nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          setCurrentForm(<ProfileEntity nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>Welcome":
           setStageHeader("Welcome")
@@ -426,7 +416,7 @@ function Borrower(prop) {
                         )}
                       </div>
                     </Col>
-                    <Col md="4" sm="6">
+                    <Col md="3" sm="6">
                       <Card className="card-with-shadow">
                         <CardBody>
                           <CardTitle tag="h5">

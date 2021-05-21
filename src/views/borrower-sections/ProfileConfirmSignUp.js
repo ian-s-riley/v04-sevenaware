@@ -1,14 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
-
-// redux store
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  updateForm,  
-  selectForm,
-} from 'features/form/formSlice'
 
 // reactstrap components
 import {
@@ -18,13 +11,9 @@ import {
   Label,
   FormText,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
   Modal,
 } from "reactstrap";
@@ -33,10 +22,7 @@ const initialErrorState = {error: false, title: "", message: ""}
 
 
 function ProfileSignUp(prop) {
-    const dispatch = useDispatch()
     
-    const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
     const [email, setEmail] = useState(prop.form.businessEmail)
     const [emailState, setEmailState] = useState("");
     const [verification, setVerification] = useState("")
@@ -44,9 +30,7 @@ function ProfileSignUp(prop) {
     const [authError, setAuthError] = useState(initialErrorState)
     //console.log('ProfileConfirmSignup.js - authError', authError)
 
-    const thisScreenId = "Profile>ConfirmSignUp"
     let nextScreenId = "SignIn"
-    let percentComplete = "25"
 
     async function handleNextClick() {   
         //validation
@@ -117,12 +101,6 @@ function ProfileSignUp(prop) {
         }
     };
 
-    const handleBackClick = () => {
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.pop()
-        prop.nextForm(null, screenNavigation)
-    }
-
     // function that returns true if value is email, false otherwise
     const verifyEmail = value => {        
         var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -144,7 +122,7 @@ function ProfileSignUp(prop) {
                     type="text" 
                     name="businessEmail" 
                     id="businessEmail" 
-                    defaultValue={form.businessEmail}
+                    defaultValue={prop.form.businessEmail}
                     onChange = {event => {
                         if (verifyEmail(event.target.value)) {
                             setEmailState("success");

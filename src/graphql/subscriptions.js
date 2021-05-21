@@ -114,6 +114,7 @@ export const onCreateForm = /* GraphQL */ `
       forProfit
       us
       businessEmail
+      entityType
       fein
       businessName
       dba
@@ -155,6 +156,7 @@ export const onUpdateForm = /* GraphQL */ `
       forProfit
       us
       businessEmail
+      entityType
       fein
       businessName
       dba
@@ -196,6 +198,7 @@ export const onDeleteForm = /* GraphQL */ `
       forProfit
       us
       businessEmail
+      entityType
       fein
       businessName
       dba

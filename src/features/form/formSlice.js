@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 //AWS Amplify GraphQL libraries
 import { API } from 'aws-amplify';
 import { updateForm as updateFormMutation } from '../../graphql/mutations';
-import { createForm as createFormMutation } from '../../graphql/mutations';
 
 export const formSlice = createSlice({
   name: 'form',
@@ -32,6 +31,7 @@ export const formSlice = createSlice({
     forProfit: true,
     us: true,
     businessEmail: "",
+    entityType: "",
     fein: "",
     businessName: "",
     dba: "",
@@ -67,6 +67,7 @@ export const formSlice = createSlice({
       state.forProfit = action.payload.forProfit
       state.us = action.payload.us
       state.businessEmail = action.payload.businessEmail
+      state.entityType = action.payload.entityType
       state.fein = action.payload.fein
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
@@ -113,6 +114,7 @@ export const updateFormAsync = form => dispatch => {
           forProfit: form.forProfit,
           us: form.us,
           businessEmail: form.businessEmail,
+          entityType: form.entityType,
           fein: form.fein,
           businessName: form.businessName,
           dba: form.dba,
@@ -125,33 +127,6 @@ export const updateFormAsync = form => dispatch => {
   dispatch(updateForm(form));
 };
 
-export const createFormAsync = form => dispatch => {
-  //console.log('createForm: form', form)
-  const formFromAPI = API.graphql({ 
-      query: createFormMutation, 
-      variables: { 
-        input: {
-          userId: form.userId, 
-          screenId: "Start",
-          screenNavigation: "Start",
-          percentComplete:0,
-          loanAmount: 0,
-          forProfit: true,
-          us: true,
-        }
-      } 
-  })
-  .then (data => {
-    console.log(data)
-  }) 
-  console.log('createForm: formFromAPI', formFromAPI)  
-  //const newFormId = formFromAPI.data.createForm.id
-  // const newForm = {
-  //   ...formFromAPI, 
-  //   id: newFormId,
-  // }
-  // dispatch(updateForm(newForm));
-};
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

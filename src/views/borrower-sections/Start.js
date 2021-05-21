@@ -1,26 +1,18 @@
-import React, {useState} from "react";
+import React from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateForm,  
-  selectForm,
 } from 'features/form/formSlice'
-import {
-  updateNavigation,
-  selectNavigation,
-} from 'features/form/navigationSlice'
 
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
 } from "reactstrap";
 

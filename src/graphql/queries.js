@@ -93,6 +93,7 @@ export const getForm = /* GraphQL */ `
       forProfit
       us
       businessEmail
+      entityType
       fein
       businessName
       dba
@@ -139,6 +140,7 @@ export const listForms = /* GraphQL */ `
         forProfit
         us
         businessEmail
+        entityType
         fein
         businessName
         dba

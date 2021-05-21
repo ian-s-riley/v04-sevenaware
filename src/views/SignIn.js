@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
@@ -14,14 +14,9 @@ import {
   Label,
   FormText,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Container,
   Row,
   Col,
-  CustomInput,
-  UncontrolledTooltip,
   Modal,
 } from "reactstrap";
 
@@ -32,7 +27,6 @@ const override = css`
 `;
 
 function SignIn() {   
-    const [isDirty, setIsDirty] = useState(false)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailState, setEmailState] = useState("");

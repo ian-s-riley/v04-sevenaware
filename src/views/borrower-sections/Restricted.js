@@ -1,18 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   updateForm,  
-  selectForm,
 } from 'features/form/formSlice'
 
 // reactstrap components
 import {
   Button,
-  FormGroup,
   Form,
-  Input,
   Container,
   Row,
   Col,
@@ -25,9 +22,6 @@ function Restricted(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    const [isDirty, setIsDirty] = useState(false)
-
-    const thisScreenId = "Eligibility>Restricted"
     let nextScreenId = "Eligibility>Ineligible"
     let percentComplete = 5
 
@@ -72,7 +66,6 @@ function Restricted(prop) {
     function handleChange(e) {
         const { id, checked } = e.currentTarget;
         setForm({ ...form, [id]: checked })
-        setIsDirty(true)
     }
 
   return (
