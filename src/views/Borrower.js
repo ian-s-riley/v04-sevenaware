@@ -51,7 +51,7 @@ import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Documents from "./borrower-sections/Documents";
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
 import ProfileEntity from "./borrower-sections/ProfileEntity";
-import ProfileID from "./borrower-sections/ProfileID";
+import ProfileFEIN from "./borrower-sections/ProfileFEIN";
 
 function Borrower(prop) {
   const dispatch = useDispatch()    
@@ -138,9 +138,9 @@ function Borrower(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
-      case "Profile>ID":
+      case "Profile>FEIN":
           setStageHeader("Profile")
-          setCurrentForm(<ProfileID nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          setCurrentForm(<ProfileFEIN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
         case "Profile>Entity":
           setStageHeader("Profile")

@@ -50,6 +50,7 @@ type Form @model {
   businessEmail: Boolean
   entityType: String
   fein: String
+  noFein: Boolean
   businessName: String
   dba: String
   businessImage: String

@@ -95,6 +95,7 @@ export const getForm = /* GraphQL */ `
       businessEmail
       entityType
       fein
+      noFein
       businessName
       dba
       businessImage
@@ -142,6 +143,7 @@ export const listForms = /* GraphQL */ `
         businessEmail
         entityType
         fein
+        noFein
         businessName
         dba
         businessImage

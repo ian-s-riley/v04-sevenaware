@@ -30,7 +30,7 @@ function ProfileEntity(prop) {
     const [isDirty, setIsDirty] = useState(false)
 
     //const thisScreenId = "Profile>Entity"
-    let nextScreenId = "Profile>ID"
+    let nextScreenId = "Profile>FEIN"
     let percentComplete = "5"
 
     const handleNextClick = () => {   
@@ -38,6 +38,7 @@ function ProfileEntity(prop) {
         if (entityType === "Select One" || entityType === "" || !entityType) return
          
         //save the new form to the navigation path for this user    
+        if (entityType === "Sole Proprietor") { nextScreenId = "Profile>SSN" }
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
         
