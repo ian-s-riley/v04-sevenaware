@@ -20,23 +20,29 @@ import {
   Col,
   UncontrolledTooltip,
   FormText,
+  Modal,
 } from "reactstrap";
 
-function ProfileFEIN(prop) {
+function ProfileSSN(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
+    const [idType, setIdType] = useState("SSN");
+    const [idError, setIdError] = useState(false);
 
-    //const thisScreenId = "Profile>FEIN"
+    //const thisScreenId = "Profile>SSN"
     let nextScreenId = "Profile>Address"
     let percentComplete = "12"
 
     const handleNextClick = () => {   
         //validation
-        if (idState !== "success" && !form.noFein) return
-         
+        if (idState !== "success") {
+            setIdError(true)
+            return
+        }
+
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
@@ -44,8 +50,7 @@ function ProfileFEIN(prop) {
         //update the local form store 
         const newForm = { 
             ...form, 
-            fein: form.fein,
-            noFein: form.noFein,
+            ssn: form.ssn,
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
@@ -67,17 +72,20 @@ function ProfileFEIN(prop) {
 
     // function that returns true if value is email, false otherwise
     const verifyID = value => {         
+        console.log('verifyID - value:', value.substr(0,3))
+        if (value.substr(0,3) === '666' || value.substr(0,3) === '000') {return false}
         var idRex = /^[0-9-]*$/;
-        if (idRex.test(value) && value.length > 0) {
-            console.log('verifyPassword - valid', value)
+        if (idRex.test(value)) {
             return true;
         }
-        console.log('verifyPassword - invalid', value)
         return false;
     };
 
     function handleChange(e) {
         const {id, value} = e.currentTarget;
+        if (value[0] === "9") {
+            setIdType("TIN")
+        }
         setForm({ ...form, [id]: value})
         setIsDirty(true)
     }
@@ -88,14 +96,14 @@ function ProfileFEIN(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">                         
-                <Label>Please enter your <b>{prop.form.entityType}’s</b> Federal Employer Identification Number:</Label>
+                <Label>You indicated that you operate as a {form.entityType}.  Therefore, you use your Social Security Number or Individual Taxpayer Identification Number as your Taxpayer Identification Number, please enter it now:</Label>
                 <FormGroup className={idState === "success" ? "has-success" : null}>
-                    <Label for="fein" className="control-label">FEIN</Label>
+                    <Label for="ssn" className="control-label">{idType}</Label>
                     <InputMask 
-                        id="fein"
-                        mask="99-9999999" 
+                        id="ssn"
+                        mask="999-99-9999" 
                         maskPlaceholder="#"
-                        value={form.fein || ""}
+                        value={form.ssn || ""}
                         alwaysShowMask={true}
                         onChange = {event => {
                         if (verifyID(event.target.value)) {
@@ -111,23 +119,9 @@ function ProfileFEIN(prop) {
                     />       
                     </InputMask>
                     <FormText>
-                    You indicated that you use a Federal Employer Identification Number (“FEIN”).
+                    SSN or ITIN is input as the applicant’s Taxpayer Identification Number (“TIN”)
                     </FormText>  
                 </FormGroup>   
-                <FormGroup check>
-                    <Label check>
-                    <Input 
-                        id="noFein"
-                        type="checkbox" 
-                        defaultChecked={form.noFein}     
-                        onClick={handleChange}
-                    />{' '}
-                        I have not received a FEIN from the IRS yet.
-                        <span className="form-check-sign">
-                            <span className="check"></span>
-                        </span>
-                    </Label>
-                </FormGroup> 
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
@@ -157,8 +151,27 @@ function ProfileFEIN(prop) {
             </Col>
         </Row>
         </Container>
+        <Modal isOpen={idError} toggle={() => setIdError(false)}>
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLiveLabel">
+            Incorrect {idType}
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setIdError(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>It looks like you have not entered a valid {idType}</p>          
+        </div>
+      </Modal>
     </div>
   );
 }
 
-export default ProfileFEIN;
+export default ProfileSSN;

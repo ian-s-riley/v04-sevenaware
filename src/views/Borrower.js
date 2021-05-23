@@ -52,6 +52,7 @@ import Documents from "./borrower-sections/Documents";
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
 import ProfileEntity from "./borrower-sections/ProfileEntity";
 import ProfileFEIN from "./borrower-sections/ProfileFEIN";
+import ProfileSSN from "./borrower-sections/ProfileSSN";
 
 function Borrower(prop) {
   const dispatch = useDispatch()    
@@ -138,6 +139,10 @@ function Borrower(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>SSN":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileSSN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>FEIN":
           setStageHeader("Profile")
           setCurrentForm(<ProfileFEIN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)

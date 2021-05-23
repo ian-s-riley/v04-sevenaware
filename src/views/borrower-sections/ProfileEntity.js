@@ -106,28 +106,52 @@ function ProfileEntity(prop) {
                         {entityType || "Select One"}
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem onClick={handleChange} value="Sole Proprietor">
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="Sole Proprietor"
+                                id="menuSoleProprietor">
                                 Sole Proprietor
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="Partnership">
+                            <UncontrolledTooltip placement="top" target="menuSoleProprietor" delay={0}>
+                                A <b>sole proprietor</b> personally owns the 100% of the business.
+                            </UncontrolledTooltip>
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="Partnership"
+                                id="menuPartnership">
                                 Partnership
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="Corporation">
+                            <UncontrolledTooltip placement="top" target="menuPartnership" delay={0}>
+                                In a <em>partnership</em> ownership of the business is shared with multiple entities.
+                            </UncontrolledTooltip>
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="Corporation">
                                 Corporation
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="Limited Liability Company">
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="Limited Liability Company">
                                 Limited Liability Company
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="Trust">
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="Trust">
                                 Trust
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="Cooperative">
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="Cooperative">
                                 Cooperative
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="ESOP">
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="ESOP">
                                 ESOP
                             </DropdownItem>
-                            <DropdownItem onClick={handleChange} value="401(k) Plan">
+                            <DropdownItem 
+                                onClick={handleChange} 
+                                value="401(k) Plan">
                                 401(k) Plan
                             </DropdownItem>
                         </DropdownMenu>
