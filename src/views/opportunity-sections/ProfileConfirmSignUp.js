@@ -133,7 +133,7 @@ function ProfileSignUp(prop) {
                         }}
                     /> 
                     <FormText>
-                    We recommend an equity owner that is an authorized person create the account.
+                    Please enter the email address you used to sign up for your7(a)ware account.
                     </FormText>        
                 </FormGroup> 
                 <FormGroup className={verificationState === "success" ? "has-success" : null}>
@@ -154,7 +154,6 @@ function ProfileSignUp(prop) {
                 />        
             </FormGroup> 
             
-                <hr />
                 <div className="text-center">
                     <Button
                         className="btn-round pull-right"

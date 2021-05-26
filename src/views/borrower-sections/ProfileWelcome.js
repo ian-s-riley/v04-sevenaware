@@ -1,13 +1,5 @@
 import React from "react";
 
-//AWS Amplify GraphQL libraries
-
-// redux store
-import { useDispatch } from 'react-redux';
-import {
-  updateFormAsync,  
-} from 'features/form/formSlice'
-
 // reactstrap components
 import {
   Button,
@@ -20,11 +12,9 @@ import {
 
 
 function ProfileWelcome(prop) {
-    const dispatch = useDispatch()
     
     //const thisScreenId = "Profile>Welcome"
-    let nextScreenId = "Profile>Entity"
-    let percentComplete = 2            
+    let nextScreenId = "Profile>Entity"        
 
     const handleNextClick = () => {   
         //validation
@@ -34,13 +24,9 @@ function ProfileWelcome(prop) {
         screenNavigation.push(nextScreenId)
         
         //update the local form store 
-        const newForm = { 
-            ...prop.form, 
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
-         }
+        const newForm = null
+        
         //update redux & graphql
-        dispatch(updateFormAsync(newForm))
 
         //send a notification        
   

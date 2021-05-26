@@ -52,29 +52,33 @@ function Start(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="6">
+          <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">
-                <label>Let's determine if you are eligible for a 7(a) loan by answering a few questions</label>
-                <hr />
-                <div className="text-center">
-                  <Button
-                    className="btn-just-icon pull-right"
-                    onClick={handleNextClick}
-                    color="info"
-                    id="tooltip924342661"
-                    size="md"
-                  >
-                    <i className="nc-icon nc-minimal-right" />
-                  </Button>
-                  <UncontrolledTooltip delay={0} target="tooltip924342661">
-                    {nextScreenId}
-                  </UncontrolledTooltip>
-                </div>
+                <Row>                    
+                    <Col className="ml-auto mr-auto" md="8">
+                    <label>Let's determine if you are eligible for a 7(a) loan by answering a few questions.</label>  
+                    </Col>
+                    <Col className="ml-auto mr-auto align-items-center d-flex" md="2">
+                      <Button
+                          className="btn-just-icon"
+                          onClick={handleNextClick}
+                          color="info"
+                          id="tooltip924342661"
+                          size="lg"
+                      >
+                          <i className="nc-icon nc-minimal-right" />
+                      </Button>
+                      <UncontrolledTooltip delay={0} target="tooltip924342661">
+                          {nextScreenId}
+                      </UncontrolledTooltip>
+                    </Col>
+                </Row>                
             </Form>
             </Col>
         </Row>
         </Container>
     </div>
+    
   );
 }
 

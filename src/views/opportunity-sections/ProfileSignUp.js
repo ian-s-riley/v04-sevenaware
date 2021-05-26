@@ -44,6 +44,7 @@ function ProfileSignUp(prop) {
     const [passwordState, setPasswordState] = useState("");
     const [password2State, setPassword2State] = useState("");
     const [userExists, setUserExists] = useState(false);
+    const [agreeSevenAware, setAgreeSevenAware] = useState(false);
 
     //const thisScreenId = "Profile>SignUp"
     let nextScreenId = "Profile>ConfirmSignUp"
@@ -61,6 +62,7 @@ function ProfileSignUp(prop) {
         if (emailState !== "success") {return false}
         if (passwordState !== "success") {return false}
         if (password2State !== "success") {return false}
+        if (!agreeSevenAware) {return false}
 
         //amplify auth sign up
         try {
@@ -218,7 +220,7 @@ function ProfileSignUp(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="6">
+            <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">                
                 <FormGroup className={emailState === "success" ? "has-success" : null}>
                 <Label for="businessEmail" className="control-label">Email Address (User ID)</Label>
@@ -280,23 +282,29 @@ function ProfileSignUp(prop) {
 
             </Col>
             </Row>
-            
+
                 <FormGroup check>
                     <Label check>
-                    <Input type="checkbox" />{' '}
-                    I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
-                    <span className="form-check-sign">
-                        <span className="check"></span>
-                    </span>
+                    <Input 
+                        id="agreeSevenAware"
+                        type="checkbox" 
+                        defaultChecked={agreeSevenAware}     
+                        onClick={() => setAgreeSevenAware(!agreeSevenAware)}
+                    />{' '}
+                        I understand how 7(a)ware will use and protect my data. And I agree to the terms & conditions.
+                        <span className="form-check-sign">
+                            <span className="check"></span>
+                        </span>
                     </Label>
-                </FormGroup>
+                </FormGroup> 
+
                 <hr />
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -308,7 +316,7 @@ function ProfileSignUp(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

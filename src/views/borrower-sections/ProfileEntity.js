@@ -26,7 +26,6 @@ function ProfileEntity(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    const [entityType, setEntityType] = useState(prop.form.entityType)
     const [isDirty, setIsDirty] = useState(false)
 
     //const thisScreenId = "Profile>Entity"
@@ -35,18 +34,18 @@ function ProfileEntity(prop) {
 
     const handleNextClick = () => {   
         //validation
-        if (entityType === "Select One" || entityType === "" || !entityType) return
+        if (form.entityType === "Select One" || form.entityType === "" || !form.entityType) return
          
         //save the new form to the navigation path for this user    
-        if (entityType === "Sole Proprietor") { nextScreenId = "Profile>SSN" }
+        if (form.entityType === "Sole Proprietor") { nextScreenId = "Profile>SSN" }
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
         
+        let newForm = null
         if (isDirty) {
             //update the local form store 
-            const newForm = { 
+            newForm = { 
                 ...form, 
-                entityType: entityType,
                 screenNavigation: screenNavigation.join(','),
                 percentComplete: percentComplete,
             }
@@ -54,14 +53,11 @@ function ProfileEntity(prop) {
             //update redux & graphql
             dispatch(updateFormAsync(newForm))
 
-            //send a notification
+            //send a notification            
+        }
 
-            //go to the next step, stage, or form
-            prop.nextForm(newForm, screenNavigation)
-        } else {
-            //go to the next step, stage, or form
-            prop.nextForm(null, screenNavigation)
-        }    
+        //go to the next step, stage, or form
+        prop.nextForm(newForm, screenNavigation)
     };
 
     const handleBackClick = () => {
@@ -73,7 +69,6 @@ function ProfileEntity(prop) {
     function handleChange(e) {
         //console.log('handleChange - e.value', e.currentTarget.value)
         const entity = e.currentTarget.value;
-        setEntityType(entity)
         setForm({ ...form, entityType: entity})
         setIsDirty(true)
     }
@@ -103,7 +98,7 @@ function ProfileEntity(prop) {
                         data-toggle="dropdown"
                         type="button"
                         >
-                        {entityType || "Select One"}
+                        {form.entityType || "Select One"}
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem 

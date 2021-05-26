@@ -31,19 +31,19 @@ import {
 import AuthNavBar from "components/Navbars/AuthNavBar.js";
 import AuthHeader from "components/Headers/AuthHeader.js";
 import FooterAuth from "components/Footers/FooterAuth.js";
-import Start from "./borrower-sections/Start";
-import Restricted from "./borrower-sections/Restricted";
-import RestrictedYes from "./borrower-sections/RestrictedYes";
-import Ineligible from "./borrower-sections/Ineligible";
-import IneligibleYes from "./borrower-sections/IneligibleYes";
-import ForProfit from "./borrower-sections/ForProfit";
-import ForProfitNo from "./borrower-sections/ForProfitNo";
-import US from "./borrower-sections/US";
-import USNo from "./borrower-sections/USNo";
-import Eligible from "./borrower-sections/Eligible";
-import ProfileStart from "./borrower-sections/ProfileStart";
-import ProfileSignUp from "./borrower-sections/ProfileSignUp";
-import ProfileConfirmSignUp from "./borrower-sections/ProfileConfirmSignUp";
+import Start from "./opportunity-sections/Start";
+import Restricted from "./opportunity-sections/Restricted";
+import RestrictedYes from "./opportunity-sections/RestrictedYes";
+import Ineligible from "./opportunity-sections/Ineligible";
+import IneligibleYes from "./opportunity-sections/IneligibleYes";
+import ForProfit from "./opportunity-sections/ForProfit";
+import ForProfitNo from "./opportunity-sections/ForProfitNo";
+import US from "./opportunity-sections/US";
+import USNo from "./opportunity-sections/USNo";
+import Eligible from "./opportunity-sections/Eligible";
+import ProfileStart from "./opportunity-sections/ProfileStart";
+import ProfileSignUp from "./opportunity-sections/ProfileSignUp";
+import ProfileConfirmSignUp from "./opportunity-sections/ProfileConfirmSignUp";
 
 import SignIn from "./SignIn"
 
@@ -51,7 +51,7 @@ function Opportunity() {
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
   const [form, setForm] = useState(useSelector(selectForm))
-  const [stageHeader, setStageHeader] = useState("")
+  const [screenHeader, setScreenHeader] = useState("Welcome")
   const [authState, setAuthState] = useState("eligibility") 
 
   const [currentForm, setCurrentForm] = useState()
@@ -65,63 +65,63 @@ function Opportunity() {
 
     switch (screenId) {
       case "Profile>ConfirmSignUp":
-            setStageHeader("Profile")
+            setScreenHeader("Profile")
             setCurrentForm(<ProfileConfirmSignUp nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
             break;  
       case "Profile>SignUp":
-            setStageHeader("Profile")
+            setScreenHeader("7(a)ware Account Profile")
             setCurrentForm(<ProfileSignUp nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
             break;
         case "Profile>Start":
-            setStageHeader("Profile")
+            setScreenHeader("Thank you for beginning the loan application process.")
             setCurrentForm(<ProfileStart nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
             break;
         case "Eligibility>Eligible":
-            setStageHeader("Eligibility Complete")
+            setScreenHeader("It looks like your business is eligible for a 7(a) loan.")
             setCurrentForm(<Eligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
             break;
       case "Eligibility>US>No":
-            setStageHeader("Eligibility")
+            setScreenHeader("Eligibility Warning")
             setCurrentForm(<USNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
             break;
       case "Eligibility>US":
-            setStageHeader("Eligibility")
+            setScreenHeader("Is your business entity established & located in the US or its territories?")
             setCurrentForm(<US nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
             break;
       case "Eligibility>ForProfit>No":
-        setStageHeader("Eligibility")
+        setScreenHeader("Eligibility Warning")
         setCurrentForm(<ForProfitNo nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>ForProfit":
-        setStageHeader("Eligibility")
+        setScreenHeader("Is your business a for-profit entity?")
         setCurrentForm(<ForProfit nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Ineligible>Yes":
-        setStageHeader("Eligibility")
+        setScreenHeader("Eligibility Warning")
         setCurrentForm(<IneligibleYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Ineligible":
-        setStageHeader("Eligibility")
+        setScreenHeader("If your business is one the following it is INELIGIBLE…")
         setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Restricted>Yes":
-        setStageHeader("Eligibility")
+        setScreenHeader("Eligibility Warning")
         setCurrentForm(<RestrictedYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Restricted":
-        setStageHeader("Eligibility")
+        setScreenHeader("Does your business generate revenue from any of the following activities?")
         setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Start":
-        setStageHeader("Let's Get Started")
+        setScreenHeader("Let's Get Started")
         setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "SignIn":
-          setStageHeader("Sign Into your Account")
+          setScreenHeader("Sign Into your Account")
           setCurrentForm(<SignIn />)
           break;
       default:
-        setStageHeader("404 Page Not Found")
+        setScreenHeader("404 Page Not Found")
         setCurrentForm(null)
     }
   };
@@ -198,34 +198,13 @@ function Opportunity() {
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
                 <div className="name">
                 <h4>
-                    Welcome<br />
-                    <small>{navigation.userName}</small>
+                    {screenHeader}
                 </h4>
                 </div>
               </Col>
             </Row>
-            <div className="profile-tabs">
-              <div className="nav-tabs-navigation">
-                <div className="nav-tabs-wrapper">
-                  <Nav id="tabs" role="tablist" tabs>                    
-                    <NavItem>
-                      <NavLink
-                        className={activeTab === "2" ? "active" : ""}
-                        onClick={() => {
-                          toggle("2");
-                        }}
-                      >
-                        Application
-                      </NavLink>
-                    </NavItem>                                     
-                  </Nav>
-                </div>
-              </div>
-              <TabContent activeTab={activeTab}>                
-                <TabPane tabId="2" id="application" role="tabpanel">
-                  {currentForm}
-                </TabPane>
-              </TabContent>
+            <div className="profile-tabs">              
+            {currentForm}
             </div>
           </Container>
         </div>

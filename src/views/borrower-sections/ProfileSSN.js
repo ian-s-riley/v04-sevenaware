@@ -8,6 +8,9 @@ import {
 
 import InputMask from "react-input-mask";
 
+// react plugin used to create datetimepicker
+import ReactDatetime from "react-datetime";
+
 // reactstrap components
 import {
   Button,
@@ -21,6 +24,9 @@ import {
   UncontrolledTooltip,
   FormText,
   Modal,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
 } from "reactstrap";
 
 function ProfileSSN(prop) {
@@ -30,10 +36,12 @@ function ProfileSSN(prop) {
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
     const [idType, setIdType] = useState("SSN");
+    const [id, setId] = useState("");
+    const [expiry, setExpiry] = useState(null);
     const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>SSN"
-    let nextScreenId = "Profile>Address"
+    let nextScreenId = "Profile>Joint"
     let percentComplete = "12"
 
     const handleNextClick = () => {   
@@ -42,23 +50,40 @@ function ProfileSSN(prop) {
             setIdError(true)
             return
         }
+        if (idType === "TIN" && !expiry) return 
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
-        
-        //update the local form store 
-        const newForm = { 
-            ...form, 
-            ssn: form.ssn,
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
-         }
-    
-        //update redux & graphql
-        dispatch(updateFormAsync(newForm))
 
-        //send a notification
+        let newForm = null
+        if (isDirty) {
+          //update the local form store 
+          if (idType === "SSN") {
+            newForm = { 
+              ...form, 
+              ssn: id,
+              tin: "",
+              tinExpiry: null,
+              screenNavigation: screenNavigation.join(','),
+              percentComplete: percentComplete,
+            }
+          } else {
+            newForm = { 
+              ...form, 
+              ssn: "",
+              tin: id,
+              tinExpiry: expiry,
+              screenNavigation: screenNavigation.join(','),
+              percentComplete: percentComplete,
+            }
+          }         
+
+          //update redux & graphql
+          dispatch(updateFormAsync(newForm))
+
+          //send a notification          
+        }
 
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
@@ -72,7 +97,7 @@ function ProfileSSN(prop) {
 
     // function that returns true if value is email, false otherwise
     const verifyID = value => {         
-        console.log('verifyID - value:', value.substr(0,3))
+        //console.log('verifyID - value:', value.substr(0,3))
         if (value.substr(0,3) === '666' || value.substr(0,3) === '000') {return false}
         var idRex = /^[0-9-]*$/;
         if (idRex.test(value)) {
@@ -82,13 +107,21 @@ function ProfileSSN(prop) {
     };
 
     function handleChange(e) {
-        const {id, value} = e.currentTarget;
+        const {id, value} = e.currentTarget;        
         if (value[0] === "9") {
             setIdType("TIN")
-        }
-        setForm({ ...form, [id]: value})
+        } else {
+            setIdType("SSN")
+        }        
+        setId(value)
         setIsDirty(true)
     }
+
+    function handleDateChange(e) {
+      //console.log('handleDateChange - e', e._d)
+      setExpiry(e._d)
+      setIsDirty(true)
+  }
 
   return (
     <div className="profile-content section">
@@ -100,10 +133,10 @@ function ProfileSSN(prop) {
                 <FormGroup className={idState === "success" ? "has-success" : null}>
                     <Label for="ssn" className="control-label">{idType}</Label>
                     <InputMask 
-                        id="ssn"
+                        id="id"
                         mask="999-99-9999" 
                         maskPlaceholder="#"
-                        value={form.ssn || ""}
+                        value={id}
                         alwaysShowMask={true}
                         onChange = {event => {
                         if (verifyID(event.target.value)) {
@@ -118,10 +151,31 @@ function ProfileSSN(prop) {
                         type="text"                 
                     />       
                     </InputMask>
-                    <FormText>
-                    SSN or ITIN is input as the applicant’s Taxpayer Identification Number (“TIN”)
-                    </FormText>  
-                </FormGroup>   
+                </FormGroup>  
+                {idType === "TIN" && (
+                    <FormGroup>
+                    <Label for="ssn" className="control-label">ITIN Expiration Date</Label>
+                  <InputGroup className="date" id="datetimepicker">
+                    <ReactDatetime
+                      onChange={handleDateChange}
+                      timeFormat={false}
+                      inputProps={{
+                        className: "form-control",
+                      }}
+                    />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText>
+                        <span className="glyphicon glyphicon-calendar">
+                          <i className="fa fa-calendar" />
+                        </span>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <FormText>
+                    It appears that you applied to the U.S. Government for an Individual Tax Identification ({id}) as your number which you use this as your TIN.  Please indicate the date that it expires.
+                  </FormText>
+                </FormGroup>
+                )} 
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}

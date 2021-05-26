@@ -51,6 +51,9 @@ type Form @model {
   entityType: String
   fein: String
   noFein: Boolean
+  ssn: String
+  tin: String
+  tinExpiration: String
   businessName: String
   dba: String
   businessImage: String

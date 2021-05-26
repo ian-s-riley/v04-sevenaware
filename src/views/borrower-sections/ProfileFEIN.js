@@ -30,7 +30,7 @@ function ProfileFEIN(prop) {
     const [idState, setIDState] = useState("");
 
     //const thisScreenId = "Profile>FEIN"
-    let nextScreenId = "Profile>Address"
+    let nextScreenId = "Profile>Joint"
     let percentComplete = "12"
 
     const handleNextClick = () => {   
@@ -40,20 +40,21 @@ function ProfileFEIN(prop) {
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
-        
-        //update the local form store 
-        const newForm = { 
-            ...form, 
-            fein: form.fein,
-            noFein: form.noFein,
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
-         }
-    
-        //update redux & graphql
-        dispatch(updateFormAsync(newForm))
 
-        //send a notification
+        let newForm = null
+        if (isDirty) {
+            //update the local form store 
+            newForm = { 
+                ...form, 
+                screenNavigation: screenNavigation.join(','),
+                percentComplete: percentComplete,
+            }
+
+            //update redux & graphql
+            dispatch(updateFormAsync(newForm))
+
+            //send a notification            
+        }
 
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)

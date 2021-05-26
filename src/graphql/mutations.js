@@ -129,6 +129,9 @@ export const createForm = /* GraphQL */ `
       entityType
       fein
       noFein
+      ssn
+      tin
+      tinExpiration
       businessName
       dba
       businessImage
@@ -175,6 +178,9 @@ export const updateForm = /* GraphQL */ `
       entityType
       fein
       noFein
+      ssn
+      tin
+      tinExpiration
       businessName
       dba
       businessImage
@@ -221,6 +227,9 @@ export const deleteForm = /* GraphQL */ `
       entityType
       fein
       noFein
+      ssn
+      tin
+      tinExpiration
       businessName
       dba
       businessImage

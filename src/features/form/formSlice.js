@@ -34,6 +34,9 @@ export const formSlice = createSlice({
     entityType: "",
     fein: "",
     noFein: false,
+    ssn: "",
+    tin: "",
+    tinExpiry: null,
     businessName: "",
     dba: "",
     businessAddressId: "",
@@ -71,6 +74,9 @@ export const formSlice = createSlice({
       state.entityType = action.payload.entityType
       state.fein = action.payload.fein
       state.noFein = action.payload.noFein
+      state.ssn = action.payload.ssn
+      state.tin = action.payload.tin
+      state.tinExpiry = action.payload.tinExpiry
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
       state.businessAddressId = action.payload.businessAddressId
@@ -119,6 +125,9 @@ export const updateFormAsync = form => dispatch => {
           entityType: form.entityType,
           fein: form.fein,
           noFein: form.noFein,
+          ssn: form.ssn,
+          tin: form.tin,
+          tinExpiry: form.tinExpiry,
           businessName: form.businessName,
           dba: form.dba,
           businessAddressId: form.businessAddressId,

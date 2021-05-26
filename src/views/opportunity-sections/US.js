@@ -3,7 +3,7 @@ import React, {useState} from "react";
 // redux store
 import { useDispatch } from 'react-redux';
 import {
-  updateForm,  
+  updateForm, 
 } from 'features/form/formSlice'
 
 // reactstrap components
@@ -18,16 +18,17 @@ import {
 } from "reactstrap";
 
 
-function ForProfit(prop) {
+function US(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    let nextScreenId = "Eligibility>US"
-    let percentComplete = 12
+    let nextScreenId = "Eligibility>Eligible"
+    let percentComplete = 17
 
     const handleNextClick = () => {   
         //validation
         if (!form.forProfit) {nextScreenId = "Eligibility>ForProfit>No"}
+        if (!form.us) {nextScreenId = "Eligibility>US>No"}
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -37,6 +38,7 @@ function ForProfit(prop) {
         const newForm = { 
             ...form, 
             forProfit: form.forProfit,
+            us: form.us,
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
@@ -55,7 +57,7 @@ function ForProfit(prop) {
         screenNavigation.pop()
         prop.nextForm(null, screenNavigation)
     }
-        
+
     function handleChange(e) {
         const { id, checked } = e.currentTarget;
         setForm({ ...form, [id]: checked })
@@ -65,9 +67,8 @@ function ForProfit(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="6">
+            <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">                
-                <label>Is your business a for-profit entity?</label>
                 <ul className="notifications">
                     <li className="notification-item d-flex justify-content-between align-items-center">
                         {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
@@ -81,13 +82,26 @@ function ForProfit(prop) {
                         />
                     </li>                                  
                 </ul>
+                <ul className="notifications">
+                    <li className="notification-item d-flex justify-content-between align-items-center">
+                        {form.us ? "Yes, this is a US business. " : "No, this is not a US business. "}
+                        <CustomInput
+                        defaultChecked={form.us}
+                        onChange={handleChange}
+                        type="switch"
+                        id="us"
+                        name="us"
+                        className="custom-switch-info"
+                        />
+                    </li>                                
+                </ul>
                 <hr />
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -99,7 +113,7 @@ function ForProfit(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>
@@ -115,4 +129,4 @@ function ForProfit(prop) {
   );
 }
 
-export default ForProfit;
+export default US;

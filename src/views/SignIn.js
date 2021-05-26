@@ -116,10 +116,10 @@ function SignIn() {
                 </div> 
             ) : (
                 <Button
-                className="pull-right"
+                className="pull-right btn-round"
                 onClick={signIn}
                 color="info"
-                size="sm"
+                size="md"
             >
                 Sign In
             </Button>

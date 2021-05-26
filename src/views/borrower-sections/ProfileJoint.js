@@ -3,32 +3,52 @@ import React, {useState} from "react";
 // redux store
 import { useDispatch } from 'react-redux';
 import {
-  updateForm, 
+  updateFormAsync,  
 } from 'features/form/formSlice'
+
+import InputMask from "react-input-mask";
+
+// react plugin used to create datetimepicker
+import ReactDatetime from "react-datetime";
 
 // reactstrap components
 import {
   Button,
+  FormGroup,
   Form,
+  Label,
+  Input,
   Container,
   Row,
   Col,
-  CustomInput,
   UncontrolledTooltip,
+  FormText,
+  Modal,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  CustomInput,
 } from "reactstrap";
 
-
-function US(prop) {
+function ProfileJointTaxes(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
-    let nextScreenId = "Eligibility>Eligible"
-    let percentComplete = 17
+    const [isDirty, setIsDirty] = useState(false)
+    const [idState, setIDState] = useState("");
+    const [idType, setIdType] = useState("SSN");
+    const [idError, setIdError] = useState(false);
+
+    //const thisScreenId = "Profile>Joint"
+    let nextScreenId = "Profile>Address"
+    let percentComplete = "15"
 
     const handleNextClick = () => {   
         //validation
-        if (!form.forProfit) {nextScreenId = "Eligibility>ForProfit>No"}
-        if (!form.us) {nextScreenId = "Eligibility>US>No"}
+        if (idState !== "success") {
+            setIdError(true)
+            return
+        }
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -37,17 +57,15 @@ function US(prop) {
         //update the local form store 
         const newForm = { 
             ...form, 
-            forProfit: form.forProfit,
-            us: form.us,
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
     
         //update redux & graphql
-        dispatch(updateForm(newForm))
+        dispatch(updateFormAsync(newForm))
 
         //send a notification
-  
+
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
     };
@@ -58,46 +76,43 @@ function US(prop) {
         prop.nextForm(null, screenNavigation)
     }
 
+    // function that returns true if value is email, false otherwise
+    const verifyID = value => {         
+        console.log('verifyID - value:', value.substr(0,3))
+        if (value.substr(0,3) === '666' || value.substr(0,3) === '000') {return false}
+        var idRex = /^[0-9-]*$/;
+        if (idRex.test(value)) {
+            return true;
+        }
+        return false;
+    };
+
     function handleChange(e) {
-        const { id, checked } = e.currentTarget;
-        setForm({ ...form, [id]: checked })
+        const {id, value} = e.currentTarget;
+        if (value[0] === "9") {
+            setIdType("TIN")
+        }
+        setForm({ ...form, [id]: value})
+        setIsDirty(true)
     }
 
   return (
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="6">
-            <Form className="settings-form">                
-                <label>Is your business a for-profit entity?</label>
-                <ul className="notifications">
-                    <li className="notification-item d-flex justify-content-between align-items-center">
-                        {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
-                        <CustomInput
-                        defaultChecked={form.forProfit}
+            <Col className="ml-auto mr-auto" md="8">
+            <Form className="settings-form">                         
+                <FormGroup className={idState === "success" ? "has-success" : null}>
+                    <CustomInput
+                        defaultChecked={form.ineligibleNonProfit}
                         onChange={handleChange}
                         type="switch"
-                        id="forProfit"
-                        name="forProfit"
+                        id="ineligibleNonProfit"
+                        name="ineligibleNonProfit"
                         className="custom-switch-info"
                         />
-                    </li>                                  
-                </ul>
-                <label>Is your Business Entity established & located in the US or its territories?</label>
-                <ul className="notifications">
-                    <li className="notification-item d-flex justify-content-between align-items-center">
-                        {form.us ? "Yes, this is a US business. " : "No, this is not a US business. "}
-                        <CustomInput
-                        defaultChecked={form.us}
-                        onChange={handleChange}
-                        type="switch"
-                        id="us"
-                        name="us"
-                        className="custom-switch-info"
-                        />
-                    </li>                                
-                </ul>
-                <hr />
+                </FormGroup>  
+                <hr/>                
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
@@ -127,8 +142,27 @@ function US(prop) {
             </Col>
         </Row>
         </Container>
+        <Modal isOpen={idError} toggle={() => setIdError(false)}>
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLiveLabel">
+            Incorrect {idType}
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setIdError(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>It looks like you have not entered a valid {idType}</p>          
+        </div>
+      </Modal>
     </div>
   );
 }
 
-export default US;
+export default ProfileJointTaxes;

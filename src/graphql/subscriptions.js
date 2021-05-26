@@ -117,6 +117,9 @@ export const onCreateForm = /* GraphQL */ `
       entityType
       fein
       noFein
+      ssn
+      tin
+      tinExpiration
       businessName
       dba
       businessImage
@@ -160,6 +163,9 @@ export const onUpdateForm = /* GraphQL */ `
       entityType
       fein
       noFein
+      ssn
+      tin
+      tinExpiration
       businessName
       dba
       businessImage
@@ -203,6 +209,9 @@ export const onDeleteForm = /* GraphQL */ `
       entityType
       fein
       noFein
+      ssn
+      tin
+      tinExpiration
       businessName
       dba
       businessImage
