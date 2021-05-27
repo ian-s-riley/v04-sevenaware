@@ -1,19 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Auth } from 'aws-amplify';
+
 // nodejs library that concatenates strings
 import classnames from "classnames";
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
 // reactstrap components
 import {
-  Button,
   Collapse,
   NavbarBrand,
   Navbar,
-  NavItem,
   Nav,
   Container,
-  UncontrolledTooltip,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 // core components
 
@@ -66,9 +69,6 @@ function BorrowerNavBar() {
             <NavbarBrand id="navbar-brand" to="/index" tag={Link}>
               7(a)ware
             </NavbarBrand>
-            <UncontrolledTooltip placement="bottom" target="navbar-brand">
-              SBA 7(a) Lending Solutions
-            </UncontrolledTooltip>
             <button
               className="navbar-toggler"
               id="navigation"
@@ -87,29 +87,26 @@ function BorrowerNavBar() {
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
               
-              
-            <NavItem>
-              <Button
-                    className="btn-neutral"
-                    color="link"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                  >
-                    <i className="fa fa-user" />
-                  </Button>
-
-                  <Button
-                    className="btn-neutral"
-                    color="link"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                  >
-                    <i className="fa fa-envelope" />
-                  </Button>
-                  
-              </NavItem>
+            <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle className="mr-2" color="default" nav>
+                <i className="fa fa-user" />
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-primary" right>
+                  <DropdownItem to="/" tag={Link}>
+                    My Application
+                  </DropdownItem>
+                  <DropdownItem to="/" tag={Link}>
+                    My Profile
+                  </DropdownItem>
+                  <DropdownItem to="/" tag={Link}>
+                    Help!
+                  </DropdownItem>
+                  <hr/>
+                  <DropdownItem to="/" tag={Link} onClick={() => Auth.signOut()}>
+                    Sign Out
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>              
             </Nav>
           </Collapse>
         </Container>

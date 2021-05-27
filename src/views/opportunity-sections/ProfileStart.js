@@ -51,11 +51,11 @@ function ProfileStart(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-          <Col className="ml-auto mr-auto" md="6">
+          <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">
                 <Row>                    
                     <Col className="ml-auto mr-auto" md="8">
-                    <label>Let’s get started building your business profile.</label>  
+                    <label>Let’s get started building your business profile by getting an account email and password set up for secure access to your loan application.</label>  
                     </Col>
                     <Col className="ml-auto mr-auto align-items-center d-flex" md="2">
                       <Button

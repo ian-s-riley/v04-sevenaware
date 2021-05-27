@@ -17,55 +17,7 @@ function FooterBorrower(prop) {
       <footer className="footer footer-white">
         <Container>
           <Row>
-          <nav className="footer-nav">
-              <ul>              
-                {authState === "eligibility" && (
-                <li>
-                  <a
-                    href="#"
-                    className="mr-1"
-                    onClick={prop.signIn}
-                  >
-                    Sign In
-                  </a>
-                </li>
-                )}
-                {authState === "confirmSignUp" && (
-                <li>
-                  <a
-                    href="#"
-                    className="mr-1"
-                    onClick={prop.signIn}
-                  >
-                    Sign In
-                  </a>
-                </li>
-                )}
-                {authState === "signIn" && (
-                <>
-                <li>
-                  <a
-                    href="#"
-                    className="mr-1"
-                    onClick={prop.gotoEligibility}
-                  >
-                    Eligibility
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="mr-1"
-                    onClick={prop.gotoConfirmSignUp}
-                  >
-                    Confirm Sign Up
-                  </a>
-                </li>
-                </>
-                )}
-              </ul>
-            </nav>
-            <div className="credits ml-auto">
+            <div className="credits ml-auto mr-auto">
               <span className="copyright">
                 © {new Date().getFullYear()}
                 {" "}7(a)ware

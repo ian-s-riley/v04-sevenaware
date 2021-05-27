@@ -61,7 +61,7 @@ function Eligible(prop) {
             <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">
                 <label>
-                If you click on the ‘APPLY NOW’ button you will be invited to create a password protected account. We have found it a good practice to have an equity owner and authorized person create the account.
+                Click on the ‘APPLY NOW’ button to be invited to create a password protected account. We have found it a good practice to have an equity owner and authorized person create the account.
                 </label>
                 <hr />
                 <div className="text-center">
@@ -69,7 +69,7 @@ function Eligible(prop) {
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="lg"
+                        size="md"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -81,7 +81,7 @@ function Eligible(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="lg"
+                        size="md"
                     >
                         Apply Now
                         <i className="nc-icon nc-minimal-right" />

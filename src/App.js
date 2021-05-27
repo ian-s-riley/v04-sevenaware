@@ -31,10 +31,10 @@ import "assets/demo/react-demo.css";
 
 // pages
 import Error404 from "views/examples/Error404.js";
-// others
-import CustomAuth from "views/CustomAuth.js"
-import Borrower from "views/Borrower.js";
+import SignIn from "authentication/SignIn"
+import VerifySignUp from "authentication/VerifySignUp"
 import Opportunity from "views/Opportunity.js";
+import Borrower from "views/Borrower.js";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -81,14 +81,9 @@ function App() {
         </Switch>
         ) : (
         <Switch>
-          <Route
-            path="/opportunity"
-            render={(props) => <Opportunity {...props} />}
-          />
-          <Route 
-            path="/auth" 
-            render={(props) => <CustomAuth {...props} />} 
-          />
+          <Route path="/opportunity" render={(props) => <Opportunity {...props} />}/>
+          <Route path="/signin" render={(props) => <SignIn {...props} />} />
+          <Route path="/verify" render={(props) => <VerifySignUp {...props} />} />
           <Route path="/error-404" render={(props) => <Error404 {...props} />} />
           <Redirect to="/opportunity" />
         </Switch>

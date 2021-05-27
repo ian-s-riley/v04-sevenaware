@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Auth } from 'aws-amplify';
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   selectForm,
 } from 'features/form/formSlice'
@@ -16,11 +16,6 @@ import {
 // reactstrap components
 import {
   Button,
-  NavItem,
-  NavLink,
-  Nav,
-  TabContent,
-  TabPane,
   Container,
   Row,
   Col,
@@ -43,9 +38,6 @@ import USNo from "./opportunity-sections/USNo";
 import Eligible from "./opportunity-sections/Eligible";
 import ProfileStart from "./opportunity-sections/ProfileStart";
 import ProfileSignUp from "./opportunity-sections/ProfileSignUp";
-import ProfileConfirmSignUp from "./opportunity-sections/ProfileConfirmSignUp";
-
-import SignIn from "./SignIn"
 
 function Opportunity() {
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
@@ -64,10 +56,6 @@ function Opportunity() {
     //console.log('Opportunity.js - showForm - screenId', screenId)
 
     switch (screenId) {
-      case "Profile>ConfirmSignUp":
-            setScreenHeader("Profile")
-            setCurrentForm(<ProfileConfirmSignUp nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-            break;  
       case "Profile>SignUp":
             setScreenHeader("7(a)ware Account Profile")
             setCurrentForm(<ProfileSignUp nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -116,10 +104,6 @@ function Opportunity() {
         setScreenHeader("Let's Get Started")
         setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
-      case "SignIn":
-          setScreenHeader("Sign Into your Account")
-          setCurrentForm(<SignIn />)
-          break;
       default:
         setScreenHeader("404 Page Not Found")
         setCurrentForm(null)

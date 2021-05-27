@@ -17,7 +17,7 @@ function BorrowerHeader() {
     className="page-header page-header-xxs settings-background"
     style={{
       backgroundImage: "url(" +
-      require("assets/img/buildings.jpg").default +
+      require("assets/img/header-blue-2.jpg").default +
       ")"
     }}
     ></div>

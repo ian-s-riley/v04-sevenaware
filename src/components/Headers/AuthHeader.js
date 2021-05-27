@@ -11,7 +11,7 @@ function AuthHeader() {
         className="page-header page-header-xxs settings-background"
         style={{
         backgroundImage: "url(" +
-        require("assets/img/cover.jpg").default +
+        require("assets/img/header-blue-1.jpg").default +
         ")"
         }}
         ></div>

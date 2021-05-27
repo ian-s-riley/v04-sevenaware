@@ -9,7 +9,7 @@ import { listNotifications, listForms } from '../graphql/queries';
 
 //chartist chart control
 //import Chartist from "react-chartist";
-import {VictoryPie, VictoryTheme} from 'victory';
+import { VictoryPie } from "victory-pie";
 
 //parser for html in text
 import parse from 'html-react-parser';
@@ -55,7 +55,7 @@ import ProfileFEIN from "./borrower-sections/ProfileFEIN";
 import ProfileSSN from "./borrower-sections/ProfileSSN";
 import ProfileJoint from "./borrower-sections/ProfileJoint";
 
-function Borrower(prop) {
+function Application() {
   const dispatch = useDispatch()    
     
   const [form, setForm] = useState(useSelector(selectForm))
@@ -128,13 +128,54 @@ function Borrower(prop) {
       //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
       setNotifications(notificationsFromAPI)
     }
-  }  
+  }
+
+  const [currentForm, setCurrentForm] = useState()
+  useEffect(() => {
+    showScreen()
+  }, [screenNavigation])
+
+  const showScreen = () => {
+    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    const screenId = screenNavigation.slice(-1)[0];
+
+    switch (screenId) {
+      case "Profile>Joint":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileJoint nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
+      case "Profile>SSN":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileSSN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
+      case "Profile>FEIN":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileFEIN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
+        case "Profile>Entity":
+          setStageHeader("Profile")
+          setCurrentForm(<ProfileEntity nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
+      case "Profile>Welcome":
+          setStageHeader("Welcome")
+          setCurrentForm(<ProfileWelcome nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
+      default:
+        setStageHeader("404 Page Not Found")
+        setCurrentForm(null)
+    }
+  };
 
   const [activeTab, setActiveTab] = React.useState("1");
   const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
+  };
+
+  const gotoNextForm = (newForm, screenNavigation) => {
+    newForm && setForm(newForm)
+    setScreenNavigation(screenNavigation)
   };
 
   
@@ -181,34 +222,12 @@ function Borrower(prop) {
   ];
 
   const progressChart = (
-    <VictoryPie
-          padAngle={0}
-          // used to hide labels
-          labelComponent={<span/>}
-          innerRadius={30}
-          width={200} height={200}
-          data={[{'key': "", 'y': 85}, {'key': "", 'y': 15} ]}
-          colorScale={["#19B3A6", "#EEEEEE" ]}
-      />
+  <VictoryPie
+    data={myData}
+    colorScale={["AliceBlue", "DodgerBlue"]}
+    radius={150}
+  />
   )
-
-  const progressChart2 = (
-    <svg width={200} height={200}>
-      <text x={100} y={110} textAnchor="middle" >
-        {form.percentComplete}%
-      </text>
-      <VictoryPie
-          padAngle={0}
-          // used to hide labels
-          //labelComponent={<span/>}
-          innerRadius={70}
-          width={200} height={200}
-          data={[{'key': "", 'y': 85}, {'key': "", 'y': 15} ]}
-          colorScale={["#19B3A6", "#EEEEEE" ]}
-      />
-    </svg>
-  )
-
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -238,7 +257,10 @@ function Borrower(prop) {
                   <div className="following">
                     <Button
                       className="btn-just-icon"
-                      onClick={() => {}}
+                      onClick={() => {
+                        setScreenNavigation(["Profile>Welcome"])
+                        toggle("2");
+                      }}
                       color="info"
                       id="tooltip924342351"
                       size="sm"
@@ -254,11 +276,20 @@ function Borrower(prop) {
             </Row>
             <Row className="owner">
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
-              <div className="name">
-                    <h5>
-                      Welcome<br /><small>{userId}</small>
-                    </h5>
+                {activeTab === "2" ? (
+                  <div className="name">
+                    <h4>
+                      {stageHeader}
+                    </h4>
                   </div>
+                ) : (
+                  <div className="name">
+                    <h4>
+                      Welcome<br />
+                      <small>{userId}</small>
+                    </h4>
+                  </div>
+                )}
               </Col>
             </Row>
             <div className="profile-tabs">
@@ -272,7 +303,7 @@ function Borrower(prop) {
                           toggle("1");
                         }}
                       >
-                        Dashboard
+                        Home
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -282,7 +313,7 @@ function Borrower(prop) {
                           toggle("2");
                         }}
                       >
-                        Notifications
+                        Application
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -292,7 +323,7 @@ function Borrower(prop) {
                           toggle("3");
                         }}
                       >
-                        Documents
+                        Library
                       </NavLink>
                     </NavItem>                    
                   </Nav>
@@ -301,22 +332,118 @@ function Borrower(prop) {
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" id="home">
                   <Row>
-                  <Col className="ml-auto mr-auto">
-                    <Card className="card-with-shadow">
-                      <CardBody>
-                        <CardTitle tag="h5">  
-                        Business Profile & Ownership                        
-                        </CardTitle>
-                        <Row>
-                        <Col className="border" md="4">
-                        {progressChart}
-                        </Col>
-                        <Col className="border" md="4" tag="h5">
-                          <small>{form.percentComplete}% Complete</small>
-                        </Col>
-                        <Col className="" md="4">
-                          <div className="hashtag-suggestions pull-right">
-                            <h5>Timeline</h5>
+                  <Col className="ml-auto mr-auto" md="8">
+                    <div className="media-area">
+
+                        {notifications.map((notification, key) => {
+                          return (
+                            <Media key={key}>
+                              <a
+                                className="pull-left"
+                                href="#"
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <div className="avatar">
+                                  <Media
+                                    alt="..."
+                                    object
+                                    src={
+                                      require("assets/img/placeholder-2.jpg")
+                                        .default
+                                    }
+                                  />
+                                </div>
+                              </a>
+                              <Media body>
+                                <Media heading tag="h6">
+                                  {notification.fromUserId}
+                                </Media>
+                                <div className="pull-right">
+                                  <h6 className="text-muted">{new Date(notification.createdAt).toLocaleDateString("en-US")}</h6>
+                                  <Button
+                                    className="btn-link pull-right"
+                                    color="info"
+                                    href="#"
+                                    onClick={() => setShowReply(!showReply)}
+                                  >
+                                    <i className="fa fa-reply mr-1" />
+                                    Reply
+                                  </Button>
+                                </div>
+                                  <>
+                                  {parse(notification.body)}
+                                  </>
+                                {showReply && (
+                                  <Media className="media-post">
+                                    <a
+                                      className="pull-left author"
+                                      href="#"
+                                      onClick={(e) => e.preventDefault()}
+                                    >
+                                      <div className="avatar">
+                                        <Media
+                                          alt="..."
+                                          object
+                                          src={
+                                            require("assets/img/placeholder-2.jpg")
+                                              .default
+                                          }
+                                        />
+                                      </div>
+                                    </a>
+                                    <Media body>
+                                      <Input
+                                        placeholder="What's up?"
+                                        rows="4"
+                                        type="textarea"
+                                      />
+                                      <div className="media-footer">
+                                        <Button
+                                          className="pull-right"
+                                          color="info"
+                                          href="#"
+                                          onClick={(e) => e.preventDefault()}
+                                        >
+                                          Reply
+                                  </Button>
+                                      </div>
+                                    </Media>
+                                  </Media>
+                                )}
+                              </Media>
+                            </Media>
+                          );
+                        })}
+                        {false && (
+                          <>
+                            <br />
+                            <div className="text-center">
+                              <Button className="btn-round" color="info" outline>
+                                Show more notifications
+                          </Button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </Col>
+                    <Col md="3" sm="6">
+                      <Card className="card-with-shadow">
+                        <CardBody>
+                          <CardTitle tag="h5">
+                            {form.percentComplete}% Complete
+                          </CardTitle>
+                          <div className="accounts-suggestion">
+                          {progressChart}
+                          </div>
+                        </CardBody>
+                      </Card>
+                      {/* end card */}
+                      <Card className="card-with-shadow">
+                        <CardBody>
+                          <CardTitle tag="h5">
+                            Timeline
+                          </CardTitle>
+                          <div className="hashtag-suggestions">
                             <ul className="list-unstyled">
                               {screenNavigation.map((screen, key) => {
                                 return (
@@ -333,111 +460,14 @@ function Borrower(prop) {
                               }
                             </ul>
                           </div>
-                        </Col>
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </Col>
+                        </CardBody>
+                      </Card>
+                      {/* end card */}
+                    </Col>
                   </Row>
                 </TabPane>
                 <TabPane tabId="2" id="application" role="tabpanel">
-                <Row>
-                  <Col className="ml-auto mr-auto" md="8">
-                    
-                  <div className="media-area">
-
-                  {notifications.map((notification, key) => {
-                    return (
-                      <Media key={key}>
-                        <a
-                          className="pull-left"
-                          href="#"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <div className="avatar">
-                            <Media
-                              alt="..."
-                              object
-                              src={
-                                require("assets/img/placeholder-2.jpg")
-                                  .default
-                              }
-                            />
-                          </div>
-                        </a>
-                        <Media body>
-                          <Media heading tag="h6">
-                            {notification.fromUserId}
-                          </Media>
-                          <div className="pull-right">
-                            <h6 className="text-muted">{new Date(notification.createdAt).toLocaleDateString("en-US")}</h6>
-                            <Button
-                              className="btn-link pull-right"
-                              color="info"
-                              href="#"
-                              onClick={() => setShowReply(!showReply)}
-                            >
-                              <i className="fa fa-reply mr-1" />
-                              Reply
-                            </Button>
-                          </div>
-                            <>
-                            {parse(notification.body)}
-                            </>
-                          {showReply && (
-                            <Media className="media-post">
-                              <a
-                                className="pull-left author"
-                                href="#"
-                                onClick={(e) => e.preventDefault()}
-                              >
-                                <div className="avatar">
-                                  <Media
-                                    alt="..."
-                                    object
-                                    src={
-                                      require("assets/img/placeholder-2.jpg")
-                                        .default
-                                    }
-                                  />
-                                </div>
-                              </a>
-                              <Media body>
-                                <Input
-                                  placeholder="What's up?"
-                                  rows="4"
-                                  type="textarea"
-                                />
-                                <div className="media-footer">
-                                  <Button
-                                    className="pull-right"
-                                    color="info"
-                                    href="#"
-                                    onClick={(e) => e.preventDefault()}
-                                  >
-                                    Reply
-                            </Button>
-                                </div>
-                              </Media>
-                            </Media>
-                          )}
-                        </Media>
-                      </Media>
-                    );
-                  })}
-                  {false && (
-                    <>
-                      <br />
-                      <div className="text-center">
-                        <Button className="btn-round" color="info" outline>
-                          Show more notifications
-                    </Button>
-                      </div>
-                    </>
-                  )}
-                  </div>
-                  </Col>
-                </Row>
+                  {currentForm}
                 </TabPane>
                 <TabPane tabId="3" id="documents" role="tabpanel">
                   <Documents />
@@ -452,4 +482,4 @@ function Borrower(prop) {
   );
 }
 
-export default Borrower;
+export default Application;

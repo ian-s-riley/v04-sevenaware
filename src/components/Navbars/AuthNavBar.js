@@ -1,23 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 // nodejs library that concatenates strings
 import classnames from "classnames";
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
 // reactstrap components
 import {
-  Button,
   Collapse,
   NavbarBrand,
   Navbar,
-  NavItem,
   Nav,
   Container,
-  UncontrolledTooltip,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 // core components
 
-function BorrowerNavBar() {
+function AuthNavBar() {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [bodyClick, setBodyClick] = React.useState(false);
   const [collapseOpen, setCollapseOpen] = React.useState(false);
@@ -66,9 +68,6 @@ function BorrowerNavBar() {
             <NavbarBrand id="navbar-brand" to="/index" tag={Link}>
               7(a)ware
             </NavbarBrand>
-            <UncontrolledTooltip placement="bottom" target="navbar-brand">
-              SBA 7(a) Lending Solutions
-            </UncontrolledTooltip>
             <button
               className="navbar-toggler"
               id="navigation"
@@ -87,19 +86,23 @@ function BorrowerNavBar() {
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
               
-              
-            <NavItem>
-              <Button
-                    className="btn-neutral"
-                    color="link"
-                    href="#"
-                    onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                  >
-                    <i className="fa fa-user" />
-                  </Button>
-                  
-              </NavItem>
+            <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle className="mr-2" color="default" nav>
+                <i className="fa fa-user" />
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-success" right>
+                  <DropdownItem to="/signin" tag={Link}>
+                    Sign In
+                  </DropdownItem>
+                  <hr/>
+                  <DropdownItem tag={Link} to="/opportunity">
+                    Sign Up
+                  </DropdownItem>
+                  <DropdownItem tag={Link} to="/verify">
+                    Verify Sign Up
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>              
             </Nav>
           </Collapse>
         </Container>
@@ -108,4 +111,4 @@ function BorrowerNavBar() {
   );
 }
 
-export default BorrowerNavBar;
+export default AuthNavBar;

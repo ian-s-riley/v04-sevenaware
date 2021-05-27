@@ -15,20 +15,7 @@ function FooterBorrower() {
       <footer className="footer footer-white">
         <Container>
           <Row>
-            <nav className="footer-nav">
-              <ul>
-                <li>
-                  <a
-                    href="#"
-                    onClick={() => Auth.signOut()}
-                    className="mr-1"
-                  >
-                    Sign Out
-                  </a>
-                </li>
-              </ul>
-            </nav>
-            <div className="credits ml-auto">
+            <div className="credits ml-auto mr-auto">
               <span className="copyright">
                 © {new Date().getFullYear()}
                 {" "}7(a)ware

@@ -52,7 +52,7 @@ function Start(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-          <Col className="ml-auto mr-auto" md="6">
+          <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">
                 <Row>                    
                     <Col className="ml-auto mr-auto" md="8">
@@ -62,7 +62,7 @@ function Start(prop) {
                       <Button
                           className="btn-just-icon"
                           onClick={handleNextClick}
-                          color="info"
+                          color="success"
                           id="tooltip924342661"
                           size="lg"
                       >
