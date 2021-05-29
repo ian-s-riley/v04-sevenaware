@@ -53,7 +53,7 @@ function Opportunity() {
 
   const showScreen = () => {
     const screenId = screenNavigation.slice(-1)[0];
-    //console.log('Opportunity.js - showForm - screenId', screenId)
+    console.log('Opportunity.js - showForm - screenId', screenId)
 
     switch (screenId) {
       case "Profile>SignUp":
@@ -105,8 +105,8 @@ function Opportunity() {
         setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       default:
-        setScreenHeader("404 Page Not Found")
-        setCurrentForm(null)
+        setScreenHeader("Let's Get Started")
+        setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
     }
   };
 

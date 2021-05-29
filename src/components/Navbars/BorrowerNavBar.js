@@ -47,6 +47,11 @@ function BorrowerNavBar() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
   });
+
+  function signOut() {
+    Auth.signOut()
+  }
+
   return (
     <>
       {bodyClick ? (
@@ -102,7 +107,7 @@ function BorrowerNavBar() {
                     Help!
                   </DropdownItem>
                   <hr/>
-                  <DropdownItem to="/" tag={Link} onClick={() => Auth.signOut()}>
+                  <DropdownItem to="/" tag={Link} onClick={signOut}>
                     Sign Out
                   </DropdownItem>
                 </DropdownMenu>

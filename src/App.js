@@ -72,19 +72,15 @@ function App() {
       <BrowserRouter>
         {isAuthenticated ? (
         <Switch>
-          <Route
-            path="/borrower"
-            render={(props) => <Borrower {...props} />}
-          />
-          <Route path="/error-404" render={(props) => <Error404 {...props} />} />
+          <Route path="/borrower" render={(props) => <Borrower {...props} />}/>        
           <Redirect to="/borrower" />
         </Switch>
         ) : (
         <Switch>
-          <Route path="/opportunity" render={(props) => <Opportunity {...props} />}/>
-          <Route path="/signin" render={(props) => <SignIn {...props} />} />
-          <Route path="/verify" render={(props) => <VerifySignUp {...props} />} />
-          <Route path="/error-404" render={(props) => <Error404 {...props} />} />
+          <Route exact path="/opportunity" render={(props) => <Opportunity {...props} />}/>
+          <Route exact path="/signin" render={(props) => <SignIn {...props} />} />
+          <Route exact path="/verify" render={(props) => <VerifySignUp {...props} />} />
+          <Route exact path="/error-404" render={(props) => <Error404 {...props} />} />
           <Redirect to="/opportunity" />
         </Switch>
         )}  

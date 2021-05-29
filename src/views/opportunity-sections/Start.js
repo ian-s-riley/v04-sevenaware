@@ -62,7 +62,7 @@ function Start(prop) {
                       <Button
                           className="btn-just-icon"
                           onClick={handleNextClick}
-                          color="success"
+                          color="info"
                           id="tooltip924342661"
                           size="lg"
                       >

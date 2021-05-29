@@ -5,14 +5,7 @@ import { Auth } from 'aws-amplify'
 
 //AWS Amplify GraphQL libraries
 import { API, graphqlOperation } from 'aws-amplify';
-import { listNotifications, listForms } from '../graphql/queries';
-
-//chartist chart control
-//import Chartist from "react-chartist";
-import {VictoryPie, VictoryTheme} from 'victory';
-
-//parser for html in text
-import parse from 'html-react-parser';
+import { listForms } from '../graphql/queries';
 
 // redux store
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,48 +18,19 @@ import {
   updateNavigation,
 } from 'features/form/navigationSlice'
 
-// reactstrap components
-import {
-  Button,
-  Card,
-  CardBody,
-  CardTitle,
-  Input,
-  Media,
-  NavItem,
-  NavLink,
-  Nav,
-  TabContent,
-  TabPane,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip,
-} from "reactstrap";
-
 // core components
 import BorrowerNavBar from "components/Navbars/BorrowerNavBar.js";
 import BorrowerHeader from "components/Headers/BorrowerHeader.js";
 import FooterBorrower from "components/Footers/FooterBorrower.js";
-import Documents from "./borrower-sections/Documents";
-import ProfileWelcome from "./borrower-sections/ProfileWelcome";
-import ProfileEntity from "./borrower-sections/ProfileEntity";
-import ProfileFEIN from "./borrower-sections/ProfileFEIN";
-import ProfileSSN from "./borrower-sections/ProfileSSN";
-import ProfileJoint from "./borrower-sections/ProfileJoint";
+import Dashboard from "../views/Dashboard";
+import Application from "../views/Application";
 
 function Borrower(prop) {
   const dispatch = useDispatch()    
     
   const [form, setForm] = useState(useSelector(selectForm))
-  const [notifications, setNotifications] = useState([])    
-
-  const [navigation, setNavigation] = useState(useSelector(selectNavigation))
-  const [userId, setUserId] = useState(navigation.userId)
-  const [screenNavigation, setScreenNavigation] = useState([])    
-  const [stageHeader, setStageHeader] = useState("")    
-  
-  const [showReply, setShowReply] = useState(false)
+  const [showForm, setShowForm] = useState(false)
+  const [userId, setUserId] = useState()
 
   useEffect(() => {
     checkUser()
@@ -93,121 +57,19 @@ function Borrower(prop) {
           filter: { userId: { eq: userId }},
         }))  
         const thisForm = formFromAPI.data.listForms.items[0]
-        console.log('Borrower.js fetchForm: thisForm', thisForm)
+        //console.log('Borrower.js fetchForm: thisForm', thisForm)
 
         //set the redux store
         dispatch(updateForm(thisForm))
 
         // //set the local store
         setForm(thisForm)
-
-        //get the navigation path for this form
-        const newScreenNavigation = thisForm.screenNavigation.split(',')
-        const newNav = {
-          ...navigation,
-          formId: thisForm.id,
-          userId: userId,
-          screenNavigation: newScreenNavigation
-        }
-        dispatch(updateNavigation(newNav))
-        setScreenNavigation(newScreenNavigation)
       }
     }
-    
-  useEffect(() => {
-    fetchNotifications()
-  }, [userId])  
 
-  async function fetchNotifications() {
-    if (userId) {
-      const apiData = await API.graphql(graphqlOperation(listNotifications, {
-        filter: { toUserId: { eq: userId } },
-      }))
-  
-      const notificationsFromAPI = apiData.data.listNotifications.items
-      //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
-      setNotifications(notificationsFromAPI)
+    function handleShowForm() {
+      setShowForm(true)
     }
-  }  
-
-  const [activeTab, setActiveTab] = React.useState("1");
-  const toggle = (tab) => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
-    }
-  };
-
-  
-
-  //constants & variables  
-  // const data={
-  //   labels: [form.percentComplete + " %", " "],
-  //   series: [form.percentComplete, 100 - form.percentComplete],
-  // }
-  // const options = {
-  //   width: "150px",
-  //   donut: true,
-  //   donutWidth: 50,
-  //   donutSolid: true,
-  //   startAngle: 270,
-  //   showLabel: true,
-  // }
-  // const type = "Pie";
-
-  // const progressChart = (
-  // <Chartist
-  //   style={{                              
-  //     stroke: "white",
-  //   }}
-  //   data={{
-  //     labels: [form.percentComplete + " %", " "],
-  //     series: [form.percentComplete, 100-form.percentComplete],
-  //   }}
-  //   type="Pie"
-  //   options={{
-  //     height: "220px",
-  //     donut: true,
-  //     donutWidth: 70,
-  //     donutSolid: true,
-  //     startAngle: 270,
-  //     showLabel: true
-  //   }}
-  // />
-  // )
-
-  const myData = [
-    { x: " ", y: 100-form.percentComplete },
-    { x: " ", y: form.percentComplete },
-  ];
-
-  const progressChart = (
-    <VictoryPie
-          padAngle={0}
-          // used to hide labels
-          labelComponent={<span/>}
-          innerRadius={30}
-          width={200} height={200}
-          data={[{'key': "", 'y': 85}, {'key': "", 'y': 15} ]}
-          colorScale={["#19B3A6", "#EEEEEE" ]}
-      />
-  )
-
-  const progressChart2 = (
-    <svg width={200} height={200}>
-      <text x={100} y={110} textAnchor="middle" >
-        {form.percentComplete}%
-      </text>
-      <VictoryPie
-          padAngle={0}
-          // used to hide labels
-          //labelComponent={<span/>}
-          innerRadius={70}
-          width={200} height={200}
-          data={[{'key': "", 'y': 85}, {'key': "", 'y': 15} ]}
-          colorScale={["#19B3A6", "#EEEEEE" ]}
-      />
-    </svg>
-  )
 
 
   document.documentElement.classList.remove("nav-open");
@@ -224,228 +86,13 @@ function Borrower(prop) {
     <>
       <BorrowerNavBar />
       <div className="wrapper">
-        <BorrowerHeader />
-        <div className="profile-content section-white-gray">
-          <Container>
-            <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="2" sm="4" xs="6">
-                <div className="avatar">
-                  <img
-                    alt="..."
-                    className="img-circle img-responsive"
-                    src={require("assets/img/form-1.jpg").default}
-                  />
-                  <div className="following">
-                    <Button
-                      className="btn-just-icon"
-                      onClick={() => {}}
-                      color="info"
-                      id="tooltip924342351"
-                      size="sm"
-                    >
-                      <i className={"nc-icon nc-minimal-right"} />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      Continue your application...
-                    </UncontrolledTooltip>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-            <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
-              <div className="name">
-                    <h5>
-                      Welcome<br /><small>{userId}</small>
-                    </h5>
-                  </div>
-              </Col>
-            </Row>
-            <div className="profile-tabs">
-              <div className="nav-tabs-navigation">
-                <div className="nav-tabs-wrapper">
-                  <Nav id="tabs" role="tablist" tabs>
-                  <NavItem>
-                      <NavLink
-                        className={activeTab === "1" ? "active" : ""}
-                        onClick={() => {
-                          toggle("1");
-                        }}
-                      >
-                        Dashboard
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={activeTab === "2" ? "active" : ""}
-                        onClick={() => {
-                          toggle("2");
-                        }}
-                      >
-                        Notifications
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={activeTab === "3" ? "active" : ""}
-                        onClick={() => {
-                          toggle("3");
-                        }}
-                      >
-                        Documents
-                      </NavLink>
-                    </NavItem>                    
-                  </Nav>
-                </div>
-              </div>
-              <TabContent activeTab={activeTab}>
-                <TabPane tabId="1" id="home">
-                  <Row>
-                  <Col className="ml-auto mr-auto">
-                    <Card className="card-with-shadow">
-                      <CardBody>
-                        <CardTitle tag="h5">  
-                        Business Profile & Ownership                        
-                        </CardTitle>
-                        <Row>
-                        <Col className="border" md="4">
-                        {progressChart}
-                        </Col>
-                        <Col className="border" md="4" tag="h5">
-                          <small>{form.percentComplete}% Complete</small>
-                        </Col>
-                        <Col className="" md="4">
-                          <div className="hashtag-suggestions pull-right">
-                            <h5>Timeline</h5>
-                            <ul className="list-unstyled">
-                              {screenNavigation.map((screen, key) => {
-                                return (
-                                <li key={key}>
-                                <a
-                                  href="#"
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  {screen}
-                                </a>
-                                </li>
-                                )
-                              })
-                              }
-                            </ul>
-                          </div>
-                        </Col>
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  </Row>
-                </TabPane>
-                <TabPane tabId="2" id="application" role="tabpanel">
-                <Row>
-                  <Col className="ml-auto mr-auto" md="8">
-                    
-                  <div className="media-area">
-
-                  {notifications.map((notification, key) => {
-                    return (
-                      <Media key={key}>
-                        <a
-                          className="pull-left"
-                          href="#"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <div className="avatar">
-                            <Media
-                              alt="..."
-                              object
-                              src={
-                                require("assets/img/placeholder-2.jpg")
-                                  .default
-                              }
-                            />
-                          </div>
-                        </a>
-                        <Media body>
-                          <Media heading tag="h6">
-                            {notification.fromUserId}
-                          </Media>
-                          <div className="pull-right">
-                            <h6 className="text-muted">{new Date(notification.createdAt).toLocaleDateString("en-US")}</h6>
-                            <Button
-                              className="btn-link pull-right"
-                              color="info"
-                              href="#"
-                              onClick={() => setShowReply(!showReply)}
-                            >
-                              <i className="fa fa-reply mr-1" />
-                              Reply
-                            </Button>
-                          </div>
-                            <>
-                            {parse(notification.body)}
-                            </>
-                          {showReply && (
-                            <Media className="media-post">
-                              <a
-                                className="pull-left author"
-                                href="#"
-                                onClick={(e) => e.preventDefault()}
-                              >
-                                <div className="avatar">
-                                  <Media
-                                    alt="..."
-                                    object
-                                    src={
-                                      require("assets/img/placeholder-2.jpg")
-                                        .default
-                                    }
-                                  />
-                                </div>
-                              </a>
-                              <Media body>
-                                <Input
-                                  placeholder="What's up?"
-                                  rows="4"
-                                  type="textarea"
-                                />
-                                <div className="media-footer">
-                                  <Button
-                                    className="pull-right"
-                                    color="info"
-                                    href="#"
-                                    onClick={(e) => e.preventDefault()}
-                                  >
-                                    Reply
-                            </Button>
-                                </div>
-                              </Media>
-                            </Media>
-                          )}
-                        </Media>
-                      </Media>
-                    );
-                  })}
-                  {false && (
-                    <>
-                      <br />
-                      <div className="text-center">
-                        <Button className="btn-round" color="info" outline>
-                          Show more notifications
-                    </Button>
-                      </div>
-                    </>
-                  )}
-                  </div>
-                  </Col>
-                </Row>
-                </TabPane>
-                <TabPane tabId="3" id="documents" role="tabpanel">
-                  <Documents />
-                </TabPane>
-              </TabContent>
-            </div>
-          </Container>
-        </div>
+        <BorrowerHeader />    
+        {showForm ? (
+          <Application form={form} />                            
+        ) : (
+          <Dashboard showForm={handleShowForm} />                            
+        )}
+        
       </div>
       <FooterBorrower />
     </>
