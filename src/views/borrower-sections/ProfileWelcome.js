@@ -38,29 +38,32 @@ function ProfileWelcome(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="8">
+        <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">
-                <label>Let’s gather some initial information on your business to speed-up your application process...</label>
-                <hr />
-                <div className="text-center">
+                <Row>                    
+                    <Col className="ml-auto mr-auto" md="8">
+                    <label>Let’s gather some initial information on your business to speed-up your application process...</label>
+                    </Col>
+                    <Col className="ml-auto mr-auto align-items-center d-flex" md="2">
                     <Button
-                        className="btn-just-icon pull-right"
+                        className="btn-just-icon"
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>
                     <UncontrolledTooltip delay={0} target="tooltip924342661">
                         {nextScreenId}
                     </UncontrolledTooltip>
-                </div>
+                    </Col>
+                </Row>                
             </Form>
             </Col>
         </Row>
         </Container>
-    </div>
+    </div>    
   );
 }
 

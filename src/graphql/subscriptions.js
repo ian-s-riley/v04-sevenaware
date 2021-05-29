@@ -120,6 +120,7 @@ export const onCreateForm = /* GraphQL */ `
       ssn
       tin
       tinExpiration
+      jointTaxes
       businessName
       dba
       businessImage
@@ -166,6 +167,7 @@ export const onUpdateForm = /* GraphQL */ `
       ssn
       tin
       tinExpiration
+      jointTaxes
       businessName
       dba
       businessImage
@@ -212,6 +214,7 @@ export const onDeleteForm = /* GraphQL */ `
       ssn
       tin
       tinExpiration
+      jointTaxes
       businessName
       dba
       businessImage

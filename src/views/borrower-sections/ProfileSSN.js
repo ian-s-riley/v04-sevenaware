@@ -64,7 +64,7 @@ function ProfileSSN(prop) {
               ...form, 
               ssn: id,
               tin: "",
-              tinExpiry: null,
+              //tinExpiry: null,
               screenNavigation: screenNavigation.join(','),
               percentComplete: percentComplete,
             }
@@ -73,7 +73,7 @@ function ProfileSSN(prop) {
               ...form, 
               ssn: "",
               tin: id,
-              tinExpiry: expiry,
+              //tinExpiry: expiry,
               screenNavigation: screenNavigation.join(','),
               percentComplete: percentComplete,
             }
@@ -181,7 +181,7 @@ function ProfileSSN(prop) {
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -193,7 +193,7 @@ function ProfileSSN(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

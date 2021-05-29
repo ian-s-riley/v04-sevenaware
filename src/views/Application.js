@@ -93,19 +93,19 @@ function Application(prop) {
 
     switch (screenId) {
       case "Profile>Joint":
-          setStageHeader("Profile")
+          setStageHeader("Do you file your taxes jointly or individually?")
           setCurrentForm(<ProfileJoint nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>SSN":
-          setStageHeader("Profile")
+          setStageHeader("Please enter your Tax Identification Number:")
           setCurrentForm(<ProfileSSN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>FEIN":
-          setStageHeader("Profile")
+          setStageHeader("Please enter your " + form.entityType + "’s Federal Employer Identification Number:")
           setCurrentForm(<ProfileFEIN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
         case "Profile>Entity":
-          setStageHeader("Profile")
+          setStageHeader("Under what type of legal entity does your business operate?")
           setCurrentForm(<ProfileEntity nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>Welcome":

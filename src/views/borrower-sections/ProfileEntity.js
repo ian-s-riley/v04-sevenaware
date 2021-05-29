@@ -80,15 +80,8 @@ function ProfileEntity(prop) {
             <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">     
             <Row>
-            <Col className="ml-auto mr-auto" md="8">
-            <FormGroup className="has-success">
-                <Label>
-                Under what type of legal entity does your business operate?
-                </Label>
-            </FormGroup>
-            </Col>
-            <Col className="ml-auto mr-auto" md="4">
-            <FormGroup className="pull-right">
+            <Col className="text-center ml-auto mr-auto" md="6" >
+            <FormGroup>
             <UncontrolledDropdown className="btn-group">
                         <DropdownToggle
                         aria-expanded={false}
@@ -155,13 +148,12 @@ function ProfileEntity(prop) {
 
             </Col>
             </Row>
-            <hr/>
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -173,7 +165,7 @@ function ProfileEntity(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

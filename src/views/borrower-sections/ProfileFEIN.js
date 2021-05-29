@@ -89,7 +89,6 @@ function ProfileFEIN(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="8">
             <Form className="settings-form">                         
-                <Label>Please enter your <b>{prop.form.entityType}’s</b> Federal Employer Identification Number:</Label>
                 <FormGroup className={idState === "success" ? "has-success" : null}>
                     <Label for="fein" className="control-label">FEIN</Label>
                     <InputMask 
@@ -129,12 +128,13 @@ function ProfileFEIN(prop) {
                         </span>
                     </Label>
                 </FormGroup> 
+                <br />
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
                         className="btn-just-icon pull-left"
                         id="tooltip924342662"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-left" />
                     </Button>
@@ -146,7 +146,7 @@ function ProfileFEIN(prop) {
                         onClick={handleNextClick}
                         color="info"
                         id="tooltip924342661"
-                        size="md"
+                        size="lg"
                     >
                         <i className="nc-icon nc-minimal-right" />
                     </Button>

@@ -36,19 +36,13 @@ function ProfileJointTaxes(prop) {
     const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
-    const [idType, setIdType] = useState("SSN");
-    const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>Joint"
     let nextScreenId = "Profile>Address"
-    let percentComplete = "15"
+    let percentComplete = "17"
 
     const handleNextClick = () => {   
         //validation
-        if (idState !== "success") {
-            setIdError(true)
-            return
-        }
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -76,91 +70,70 @@ function ProfileJointTaxes(prop) {
         prop.nextForm(null, screenNavigation)
     }
 
-    // function that returns true if value is email, false otherwise
-    const verifyID = value => {         
-        console.log('verifyID - value:', value.substr(0,3))
-        if (value.substr(0,3) === '666' || value.substr(0,3) === '000') {return false}
-        var idRex = /^[0-9-]*$/;
-        if (idRex.test(value)) {
-            return true;
-        }
-        return false;
-    };
-
     function handleChange(e) {
-        const {id, value} = e.currentTarget;
-        if (value[0] === "9") {
-            setIdType("TIN")
-        }
-        setForm({ ...form, [id]: value})
+        const {id, checked} = e.currentTarget;
+        console.log('handleChange - id', id)
+        console.log('handleChange - checked', checked)
+        setForm({ ...form, [id]: checked})
         setIsDirty(true)
     }
 
   return (
     <div className="profile-content section">
         <Container>        
+        
         <Row>
             <Col className="ml-auto mr-auto" md="8">
-            <Form className="settings-form">                         
-                <FormGroup className={idState === "success" ? "has-success" : null}>
-                    <CustomInput
-                        defaultChecked={form.ineligibleNonProfit}
-                        onChange={handleChange}
-                        type="switch"
-                        id="ineligibleNonProfit"
-                        name="ineligibleNonProfit"
-                        className="custom-switch-info"
-                        />
-                </FormGroup>  
-                <hr/>                
-                <div className="text-center">
-                    <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="md"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
-                        className="btn-just-icon pull-right"
-                        onClick={handleNextClick}
-                        color="info"
-                        id="tooltip924342661"
-                        size="md"
-                    >
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        {nextScreenId}
-                    </UncontrolledTooltip>
-                </div>
+            
+            <Form className="settings-form">
+              <Row>
+                <Col className="ml-auto mr-auto">
+                    <ul className="notifications">
+                        <li className="notification-item d-flex justify-content-between align-items-center">
+                            {form.jointTaxes ? "I file my taxes jointly. " : "I file my taxes individually. "}
+                            <CustomInput
+                            defaultChecked={form.forProfit}
+                            onChange={handleChange}
+                            type="switch"
+                            id="jointTaxes"
+                            name="jointTaxes"
+                            className="custom-switch-info"
+                            />
+                        </li>       
+                    </ul>
+                </Col>
+              </Row>  
+              <hr />
+              <div className="text-center">
+                <Button
+                    onClick={handleBackClick}
+                    className="btn-just-icon pull-left"
+                    id="tooltip924342662"
+                    size="lg"
+                >
+                    <i className="nc-icon nc-minimal-left" />
+                </Button>
+                <UncontrolledTooltip delay={0} target="tooltip924342662">
+                    Previous
+                </UncontrolledTooltip>
+                <Button
+                    className="btn-just-icon pull-right"
+                    onClick={handleNextClick}
+                    color="info"
+                    id="tooltip924342661"
+                    size="lg"
+                >
+                    <i className="nc-icon nc-minimal-right" />
+                </Button>
+                <UncontrolledTooltip delay={0} target="tooltip924342661">
+                    {nextScreenId}
+                </UncontrolledTooltip>
+            </div>              
             </Form>
+
             </Col>
         </Row>
         </Container>
-        <Modal isOpen={idError} toggle={() => setIdError(false)}>
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLiveLabel">
-            Incorrect {idType}
-          </h5>
-          <button
-            aria-label="Close"
-            className="close"
-            data-dismiss="modal"
-            type="button"
-            onClick={() => setIdError(false)}
-          >
-            <span aria-hidden={true}>×</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <p>It looks like you have not entered a valid {idType}</p>          
-        </div>
-      </Modal>
     </div>
   );
 }

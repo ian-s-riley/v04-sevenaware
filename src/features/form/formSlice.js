@@ -37,6 +37,7 @@ export const formSlice = createSlice({
     ssn: "",
     tin: "",
     tinExpiry: null,
+    jointTaxes: null,
     businessName: "",
     dba: "",
     businessAddressId: "",
@@ -77,6 +78,7 @@ export const formSlice = createSlice({
       state.ssn = action.payload.ssn
       state.tin = action.payload.tin
       state.tinExpiry = action.payload.tinExpiry
+      state.jointTaxes = action.payload.jointTaxes
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
       state.businessAddressId = action.payload.businessAddressId
@@ -128,6 +130,7 @@ export const updateFormAsync = form => dispatch => {
           ssn: form.ssn,
           tin: form.tin,
           tinExpiry: form.tinExpiry,
+          jointTaxes: form.jointTaxes,
           businessName: form.businessName,
           dba: form.dba,
           businessAddressId: form.businessAddressId,
