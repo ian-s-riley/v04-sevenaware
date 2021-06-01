@@ -56,6 +56,10 @@ function Opportunity() {
     console.log('Opportunity.js - showForm - screenId', screenId)
 
     switch (screenId) {
+      case "Profile>ConfirmSignUp":
+          setScreenHeader("Verify 7(a)ware Account Profile")
+          setCurrentForm(<ProfileConfirmSignUp nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>SignUp":
             setScreenHeader("7(a)ware Account Profile")
             setCurrentForm(<ProfileSignUp nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)

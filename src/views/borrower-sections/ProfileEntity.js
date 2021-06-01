@@ -30,7 +30,7 @@ function ProfileEntity(prop) {
 
     //const thisScreenId = "Profile>Entity"
     let nextScreenId = "Profile>FEIN"
-    let percentComplete = "5"
+    let percentComplete = "10"
 
     const handleNextClick = () => {   
         //validation

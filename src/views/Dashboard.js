@@ -47,61 +47,14 @@ import Documents from "./borrower-sections/Documents";
 function Dashboard(prop) {
   const dispatch = useDispatch()    
     
-  const [form, setForm] = useState(useSelector(selectForm))
+  const [form, setForm] = useState(prop.form)
   const [notifications, setNotifications] = useState([])    
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(navigation.userId)
-  const [screenNavigation, setScreenNavigation] = useState([])    
-  const [stageHeader, setStageHeader] = useState("")    
+  const [screenNavigation, setScreenNavigation] = useState(prop.form.screenNavigation.split(","))    
   
   const [showReply, setShowReply] = useState(false)
-
-  useEffect(() => {
-    checkUser()
-  }, [])
-
-  async function checkUser() {
-    try {
-        const thisUser = await Auth.currentAuthenticatedUser()        
-        setUserId(thisUser.username)
-        //console.log('checkuser - user signed in - thisUser:', thisUser.username)
-      } catch (error) {
-          console.log('checkUser - error signing in:', error)
-      }               
-  }
-
-  useEffect(() => {
-      fetchForm()
-  }, [userId])
-
-  async function fetchForm() {
-      //get this user's form/application from the DB      
-      if (userId) {
-        const formFromAPI = await API.graphql(graphqlOperation(listForms, {
-          filter: { userId: { eq: userId }},
-        }))  
-        const thisForm = formFromAPI.data.listForms.items[0]
-        console.log('Borrower.js fetchForm: thisForm', thisForm)
-
-        //set the redux store
-        dispatch(updateForm(thisForm))
-
-        // //set the local store
-        setForm(thisForm)
-
-        //get the navigation path for this form
-        const newScreenNavigation = thisForm.screenNavigation.split(',')
-        const newNav = {
-          ...navigation,
-          formId: thisForm.id,
-          userId: userId,
-          screenNavigation: newScreenNavigation
-        }
-        dispatch(updateNavigation(newNav))
-        setScreenNavigation(newScreenNavigation)
-      }
-    }
     
   useEffect(() => {
     fetchNotifications()
@@ -114,13 +67,26 @@ function Dashboard(prop) {
       }))
   
       const notificationsFromAPI = apiData.data.listNotifications.items
+      //console.log("fetchNotifications - count", notificationsFromAPI.length)
       //console.log('fetchNotifications: notificationsFromAPI', notificationsFromAPI)
       setNotifications(notificationsFromAPI)
     }
   } 
   
-  function gotoForm() {
+  function gotoForm(screen) {
+    let newScreenNavigation = form.screenNavigation
+    if (screen) {
+      newScreenNavigation = screenNavigation.slice(0, screenNavigation.indexOf(screen)+1)
+    }
+    
+    console.log('gotoForm - newScreenNavigation', newScreenNavigation)
 
+    const newNav = {
+      ...navigation,
+      screenNavigation: newScreenNavigation
+    }
+    dispatch(updateNavigation(newNav))
+    prop.showForm()
   }
 
   const [activeTab, setActiveTab] = React.useState("1");
@@ -129,30 +95,29 @@ function Dashboard(prop) {
       setActiveTab(tab);
     }
   };
-  
 
-const progressChart = (
-  <svg viewBox="0 0 400 400" >
-  <VictoryPie
-    standalone={false}
-    width={400} height={400}
-    data={[
-      {x: "A", y: form.percentComplete},
-      {x: "B", y: 100-form.percentComplete}
-    ]}
-    innerRadius={70} labelRadius={100}
-    labelComponent={<span/>}
-    colorScale={"cool"}
-    style={{ labels: { fontSize: 20, fill: "white"}}}
-  />
-  <VictoryLabel
-    textAnchor="middle" verticalAnchor="middle"
-    x={200} y={200}
-    style={{fontSize: 30}}
-    text={form.percentComplete + "%"}
-  />
-  </svg>
-)
+  const progressChart = (
+    <svg viewBox="0 0 400 400" >
+      <VictoryPie
+        standalone={false}
+        width={400} height={400}
+        data={[
+          {x: "A", y: form.percentComplete},
+          {x: "B", y: 100-form.percentComplete}
+        ]}
+        innerRadius={70} labelRadius={100}
+        labelComponent={<span/>}
+        colorScale={"cool"}
+        style={{ labels: { fontSize: 20, fill: "white"}}}
+      />
+      <VictoryLabel
+        textAnchor="middle" verticalAnchor="middle"
+        x={200} y={200}
+        style={{fontSize: 30}}
+        text={form.percentComplete + "%"}
+      />
+      </svg>
+  )
 
 const stepsEligibility = (["Eligibility>Restricted","Eligibility>Ineligible","Eligibility>ForProfit","Eligibility>US","Eligibility>Eligible"])
 const progressChartEligibility = (
@@ -203,7 +168,7 @@ const progressChartEligibility = (
                   <div className="following">
                     <Button
                       className="btn-just-icon"
-                      onClick={prop.showForm}
+                      onClick={gotoForm}
                       color="info"
                       id="tooltip924342351"
                       size="sm"
@@ -266,11 +231,13 @@ const progressChartEligibility = (
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" id="home">
                   <Row>
-                    <Col className="" md="2">{progressChart}</Col>
+                    <Col className="" md="2">
+                    {progressChart}
+                    </Col>
                     <Col className="" md="6">
                           <h4>Business Profile & Ownership</h4>
                           <h5><small>{form.percentComplete}% Complete</small></h5>
-                          <a href="#" onClick={prop.showForm}>
+                          <a href="#" onClick={gotoForm}>
                             Click here to continue your application
                           </a>
                         </Col>
@@ -283,7 +250,7 @@ const progressChartEligibility = (
                                 <li key={key}>
                                 <a
                                   href="#"
-                                  onClick={(e) => e.preventDefault()}
+                                  onClick={() => gotoForm(screen)}
                                 >
                                   {screen}
                                 </a>
@@ -428,7 +395,7 @@ const progressChartEligibility = (
           </Container>
         </div>
     </>
-  );
+  )
 }
 
 export default Dashboard;

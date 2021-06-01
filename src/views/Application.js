@@ -43,44 +43,12 @@ function Application(prop) {
     
   //const [form, setForm] = useState(useSelector(selectForm))   
   const [form, setForm] = useState(prop.form)   
-  console.log('Application.js - form', form)
+  //console.log('Application.js - form', form)
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(form.userId)
-  const [screenNavigation, setScreenNavigation] = useState(form.screenNavigation.split(','))    
+  const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)    
   const [stageHeader, setStageHeader] = useState("")    
-
-  // useEffect(() => {
-  //     fetchForm()
-  // }, [])
-
-  // async function fetchForm() {
-  //     //get this user's form/application from the DB      
-  //     if (userId) {
-  //       const formFromAPI = await API.graphql(graphqlOperation(listForms, {
-  //         filter: { userId: { eq: userId }},
-  //       }))  
-  //       const thisForm = formFromAPI.data.listForms.items[0]
-  //       console.log('Borrower.js fetchForm: thisForm', thisForm)
-
-  //       //set the redux store
-  //       dispatch(updateForm(thisForm))
-
-  //       // //set the local store
-  //       setForm(thisForm)
-
-  //       //get the navigation path for this form
-  //       const newScreenNavigation = thisForm.screenNavigation.split(',')
-  //       const newNav = {
-  //         ...navigation,
-  //         formId: thisForm.id,
-  //         userId: userId,
-  //         screenNavigation: newScreenNavigation
-  //       }
-  //       dispatch(updateNavigation(newNav))
-  //       setScreenNavigation(newScreenNavigation)
-  //     }
-  //   }
 
   const [currentForm, setCurrentForm] = useState()
   useEffect(() => {
@@ -88,10 +56,14 @@ function Application(prop) {
   }, [screenNavigation])
 
   const showScreen = () => {
-    console.log('Borrower.js - showForm - screenNavigation', screenNavigation)
+    console.log('Application.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>JointFirst":
+          setStageHeader("Is the principal’s " + (form.ssn !== "") ? "SSN" : "TIN" + " listed as the first or second tax ID number on the tax return?")
+          setCurrentForm(<ProfileJoint nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>Joint":
           setStageHeader("Do you file your taxes jointly or individually?")
           setCurrentForm(<ProfileJoint nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -110,7 +82,7 @@ function Application(prop) {
           break;
       case "Profile>Welcome":
           setStageHeader("Welcome")
-          setCurrentForm(<ProfileWelcome nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          setCurrentForm(<ProfileWelcome nextForm={prop.gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       default:
         setStageHeader("404 Page Not Found")

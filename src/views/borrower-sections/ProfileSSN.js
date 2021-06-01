@@ -42,7 +42,7 @@ function ProfileSSN(prop) {
 
     //const thisScreenId = "Profile>SSN"
     let nextScreenId = "Profile>Joint"
-    let percentComplete = "12"
+    let percentComplete = "20"
 
     const handleNextClick = () => {   
         //validation

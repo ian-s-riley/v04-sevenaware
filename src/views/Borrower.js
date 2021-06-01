@@ -8,15 +8,13 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { listForms } from '../graphql/queries';
 
 // redux store
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  selectForm,
   updateForm,
 } from 'features/form/formSlice'
-import {
-  selectNavigation,
-  updateNavigation,
-} from 'features/form/navigationSlice'
+
+import { css } from "@emotion/core";
+import PulseLoader from "react-spinners/PulseLoader";
 
 // core components
 import BorrowerNavBar from "components/Navbars/BorrowerNavBar.js";
@@ -25,10 +23,16 @@ import FooterBorrower from "components/Footers/FooterBorrower.js";
 import Dashboard from "../views/Dashboard";
 import Application from "../views/Application";
 
-function Borrower(prop) {
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: white;
+`;
+
+function Borrower() {
   const dispatch = useDispatch()    
     
-  const [form, setForm] = useState(useSelector(selectForm))
+  const [form, setForm] = useState()
   const [showForm, setShowForm] = useState(false)
   const [userId, setUserId] = useState()
 
@@ -62,7 +66,7 @@ function Borrower(prop) {
         //set the redux store
         dispatch(updateForm(thisForm))
 
-        // //set the local store
+        //set the local store
         setForm(thisForm)
       }
     }
@@ -87,12 +91,17 @@ function Borrower(prop) {
       <BorrowerNavBar />
       <div className="wrapper">
         <BorrowerHeader />    
-        {showForm ? (
-          <Application form={form} />                            
+        {form ? (
+          showForm ? (
+            <Application form={form} />                            
+          ) : (
+            <Dashboard showForm={handleShowForm} form={form} />                            
+          )
         ) : (
-          <Dashboard showForm={handleShowForm} />                            
-        )}
-        
+          <div className="sweet-loading">
+              <PulseLoader color={"#51bcda"} loading={true} css={override} size={15} />
+          </div> 
+        )}        
       </div>
       <FooterBorrower />
     </>

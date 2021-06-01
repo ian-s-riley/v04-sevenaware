@@ -30,8 +30,8 @@ function ProfileFEIN(prop) {
     const [idState, setIDState] = useState("");
 
     //const thisScreenId = "Profile>FEIN"
-    let nextScreenId = "Profile>Joint"
-    let percentComplete = "12"
+    let nextScreenId = "Profile>BusinessTIN"
+    let percentComplete = "20"
 
     const handleNextClick = () => {   
         //validation

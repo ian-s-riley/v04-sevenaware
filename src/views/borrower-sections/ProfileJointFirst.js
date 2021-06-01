@@ -6,9 +6,15 @@ import {
   updateFormAsync,  
 } from 'features/form/formSlice'
 
+import InputMask from "react-input-mask";
+
+// react plugin used to create datetimepicker
+import ReactDatetime from "react-datetime";
+
 // reactstrap components
 import {
   Button,
+  FormGroup,
   Form,
   Label,
   Input,
@@ -16,6 +22,12 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
+  FormText,
+  Modal,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  CustomInput,
 } from "reactstrap";
 
 function ProfileJointTaxes(prop) {
@@ -27,7 +39,7 @@ function ProfileJointTaxes(prop) {
 
     //const thisScreenId = "Profile>Joint"
     let nextScreenId = "Profile>BusinessTIN"
-    let percentComplete = "25"
+    let percentComplete = "30"
 
     const handleNextClick = () => {   
         //validation
@@ -38,19 +50,16 @@ function ProfileJointTaxes(prop) {
         screenNavigation.push(nextScreenId)
         
         //update the local form store 
-        let newForm = null
-        if (isDirty) {
-            const newForm = { 
-                ...form, 
-                screenNavigation: screenNavigation.join(','),
-                percentComplete: percentComplete,
-            }
-        
-            //update redux & graphql
-            dispatch(updateFormAsync(newForm))
+        const newForm = { 
+            ...form, 
+            screenNavigation: screenNavigation.join(','),
+            percentComplete: percentComplete,
+         }
+    
+        //update redux & graphql
+        dispatch(updateFormAsync(newForm))
 
-            //send a notification
-        }
+        //send a notification
 
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
