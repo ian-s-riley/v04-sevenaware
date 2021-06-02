@@ -1,22 +1,24 @@
 import React from "react";
 
 // reactstrap components
+import { Button, Container } from "reactstrap";
 
 // core components
 
 function AuthHeader() {
-    return (
-        <>
-        <div
-        className="page-header page-header-xxs settings-background"
-        style={{
+
+  return (
+    <>
+      <div
+      className="page-header page-header-xxs settings-background"
+      style={{
         backgroundImage: "url(" +
-        require("assets/img/header-blue-1.jpg").default +
+        require("assets/img/cover-1.jpg").default +
         ")"
-        }}
-        ></div>
-        <div className="filter" />
-        </>
+      }}
+      ></div>
+      <div className="filter" />
+    </>
     )
 }
 

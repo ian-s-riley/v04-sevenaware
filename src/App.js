@@ -17,6 +17,8 @@
 
 import React, {useEffect, useState} from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { createBrowserHistory } from "history";
+
 import store from './app/store';
 import { Provider } from 'react-redux';
 
@@ -33,8 +35,11 @@ import "assets/demo/react-demo.css";
 import Error404 from "views/examples/Error404.js";
 import SignIn from "authentication/SignIn"
 import VerifySignUp from "authentication/VerifySignUp"
+import Landing from "views/Landing.js";
 import Opportunity from "views/Opportunity.js";
 import Borrower from "views/Borrower.js";
+
+const hist = createBrowserHistory();
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -69,19 +74,20 @@ function App() {
 
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter history={hist}>
         {isAuthenticated ? (
         <Switch>
           <Route path="/borrower" render={(props) => <Borrower {...props} />}/>        
-          <Redirect to="/borrower" />
+          <Redirect from="/" to="/borrower" />
         </Switch>
         ) : (
         <Switch>
-          <Route exact path="/opportunity" render={(props) => <Opportunity {...props} />}/>
-          <Route exact path="/signin" render={(props) => <SignIn {...props} />} />
-          <Route exact path="/verify" render={(props) => <VerifySignUp {...props} />} />
-          <Route exact path="/error-404" render={(props) => <Error404 {...props} />} />
-          <Redirect to="/opportunity" />
+          <Route path="/landing" render={(props) => <Landing {...props} />} />
+          <Route path="/opportunity" render={(props) => <Opportunity {...props} />} />
+          <Route path="/signin" render={(props) => <SignIn {...props} />} />
+          <Route path="/verify" render={(props) => <VerifySignUp {...props} />} />
+          <Route path="/error-404" render={(props) => <Error404 {...props} />} />
+          <Redirect from="/" to="/landing" />
         </Switch>
         )}  
       </BrowserRouter>

@@ -17,6 +17,9 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
+
 
 function Ineligible(prop) {
     const dispatch = useDispatch()
@@ -71,12 +74,13 @@ function Ineligible(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
+            <Col className="ml-auto mr-auto" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
             
             <Form className="settings-form">
               <Row>
-                <Col className="ml-auto mr-auto">
-                    <ul className="notifications">
+                <Col className="ml-auto mr-auto" md="10">
+                <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
                             Consumer and marketing cooperatives, charitable, religious, or other non-profit institutions{" "}
                             <CustomInput
@@ -85,7 +89,7 @@ function Ineligible(prop) {
                             type="switch"
                             id="ineligibleNonProfit"
                             name="ineligibleNonProfit"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -96,7 +100,7 @@ function Ineligible(prop) {
                             type="switch"
                             id="ineligibleRealEstate"
                             name="ineligibleRealEstate"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li>   
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -107,7 +111,7 @@ function Ineligible(prop) {
                             type="switch"
                             id="ineligibleLending"
                             name="ineligibleLending"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -118,7 +122,7 @@ function Ineligible(prop) {
                             type="switch"
                             id="restrictedPackaging"
                             name="restrictedPackaging"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -129,7 +133,7 @@ function Ineligible(prop) {
                             type="switch"
                             id="ineligiblePyramid"
                             name="ineligiblePyramid"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -140,7 +144,7 @@ function Ineligible(prop) {
                             type="switch"
                             id="ineligibleGambling"
                             name="ineligibleGambling"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -151,41 +155,21 @@ function Ineligible(prop) {
                             type="switch"
                             id="ineligibleIllegal"
                             name="ineligibleIllegal"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li>                
                     </ul>
                 </Col>
-              </Row>                
-              <div className="text-center">
-                <Button
-                    onClick={handleBackClick}
-                    className="btn-just-icon pull-left"
-                    id="tooltip924342662"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-left" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342662">
-                    Previous
-                </UncontrolledTooltip>
-                <Button
-                    className="btn-just-icon pull-right"
-                    onClick={handleNextClick}
-                    color="info"
-                    id="tooltip924342661"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-right" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342661">
-                    {nextScreenId}
-                </UncontrolledTooltip>
-            </div>        
+              </Row>               
             </Form>
             </Col>
+            <Col className="d-flex align-items-center justify-content-center" md="2">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
+            </Col>
         </Row>
-        </Container>
+        </Container>                        
     </div>
   );
 }

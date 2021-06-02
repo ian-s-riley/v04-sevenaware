@@ -6020,8 +6020,8 @@ textarea.form-control {
   margin-top: 30px; }
   .media .avatar {
     margin: 0 auto;
-    width: 64px;
-    height: 64px;
+    width: 30px;
+    height: 30px;
     overflow: hidden;
     border-radius: 50%;
     margin-right: 15px;
@@ -9176,12 +9176,12 @@ a.pswp__share--download:hover {
   padding-right: 0px; }
 
 .twitter-redesign .following {
-  margin-top: -45px;
-  margin-left: 75px; }
+  margin-top: -35px;
+  margin-left: 5px; }
 
   .following {
-    margin-top: -45px;
-    margin-left: 75px; }
+    margin-top: -55px;
+    margin-left: 5px; }
 
 .twitter-redesign .hashtag-suggestions li {
   margin-bottom: 5px; }

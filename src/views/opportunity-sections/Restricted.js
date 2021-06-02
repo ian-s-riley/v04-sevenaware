@@ -8,14 +8,15 @@ import {
 
 // reactstrap components
 import {
-  Button,
   Form,
   Container,
   Row,
   Col,
   CustomInput,
-  UncontrolledTooltip,
 } from "reactstrap";
+
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 
 function Restricted(prop) {
@@ -72,11 +73,12 @@ function Restricted(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
+            <Col className="ml-auto mr-auto" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
             
             <Form className="settings-form">
               <Row>
-                <Col className="ml-auto mr-auto">
+                <Col className="ml-auto mr-auto" md="10">
                     <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
                             Speculative trading activities?{" "}
@@ -86,7 +88,7 @@ function Restricted(prop) {
                             type="switch"
                             id="restrictedSpeculative"
                             name="restrictedSpeculative"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -97,7 +99,7 @@ function Restricted(prop) {
                             type="switch"
                             id="restrictedCoins"
                             name="restrictedCoins"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li>   
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -108,7 +110,7 @@ function Restricted(prop) {
                             type="switch"
                             id="restrictedLending"
                             name="restrictedLending"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -119,7 +121,7 @@ function Restricted(prop) {
                             type="switch"
                             id="restrictedPackaging"
                             name="restrictedPackaging"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -130,7 +132,7 @@ function Restricted(prop) {
                             type="switch"
                             id="restrictedPyramid"
                             name="restrictedPyramid"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
@@ -141,49 +143,31 @@ function Restricted(prop) {
                             type="switch"
                             id="restrictedGambling"
                             name="restrictedGambling"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li>       
                         <li className="notification-item d-flex justify-content-between align-items-center">
+                            <div className="mr-2">
                             Firms involved in illegal activities that are against the law in the jurisdiction where the business is located (including cannabis)?{" "}
+                            </div>
                             <CustomInput
                             defaultChecked={form.restrictedIllegal}
                             onChange={handleChange}
                             type="switch"
                             id="restrictedIllegal"
                             name="restrictedIllegal"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li>          
                     </ul>
                 </Col>
-              </Row>  
-              <div className="text-center">
-                <Button
-                    onClick={handleBackClick}
-                    className="btn-just-icon pull-left"
-                    id="tooltip924342662"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-left" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342662">
-                    Previous
-                </UncontrolledTooltip>
-                <Button
-                    className="btn-just-icon pull-right"
-                    onClick={handleNextClick}
-                    color="info"
-                    id="tooltip924342661"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-right" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342661">
-                    {nextScreenId}
-                </UncontrolledTooltip>
-            </div>              
+              </Row>               
             </Form>
+            </Col>
+            <Col className="d-flex align-items-center justify-content-center" md="2">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
             </Col>
         </Row>
         </Container>

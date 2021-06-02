@@ -20,12 +20,23 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
+  Card,
+  CardBody,
+  CardTitle,
+  CardFooter,
+  Form,
+  Input
 } from "reactstrap";
 
 // core components
 import AuthNavBar from "components/Navbars/AuthNavBar.js";
 import AuthHeader from "components/Headers/AuthHeader.js";
 import FooterAuth from "components/Footers/FooterAuth.js";
+import LandingPageHeader from "components/Headers/LandingPageHeader.js";
+import MultiDropdownNavbar from "components/Navbars/MultiDropdownNavbar.js";
+import FooterWhite from "components/Footers/FooterWhite.js";
+
+
 import Start from "./opportunity-sections/Start";
 import Restricted from "./opportunity-sections/Restricted";
 import RestrictedYes from "./opportunity-sections/RestrictedYes";
@@ -39,11 +50,12 @@ import Eligible from "./opportunity-sections/Eligible";
 import ProfileStart from "./opportunity-sections/ProfileStart";
 import ProfileSignUp from "./opportunity-sections/ProfileSignUp";
 
+
 function Opportunity() {
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [screenNavigation, setScreenNavigation] = useState(navigation.screenNavigation)
   const [form, setForm] = useState(useSelector(selectForm))
-  const [screenHeader, setScreenHeader] = useState("Welcome")
+  const [screenHeader, setScreenHeader] = useState("Eligibility>Restricted")
   const [authState, setAuthState] = useState("eligibility") 
 
   const [currentForm, setCurrentForm] = useState()
@@ -104,13 +116,10 @@ function Opportunity() {
         setScreenHeader("Does your business generate revenue from any of the following activities?")
         setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
-      case "Start":
-        setScreenHeader("Let's Get Started")
-        setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
       default:
-        setScreenHeader("Let's Get Started")
-        setCurrentForm(<Start nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        setScreenHeader("Does your business generate revenue from any of the following activities?")
+        setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        break;
     }
   };
 
@@ -154,55 +163,21 @@ function Opportunity() {
   return (
     <>
       <AuthNavBar />
+      <AuthHeader />
       <div className="wrapper">
-        <AuthHeader />
-        <div className="profile-content section-white-gray">
-          <Container>
-            <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="2" sm="4" xs="6">
-                <div className="avatar">
-                  <img
-                    alt="..."
-                    className="img-circle img-responsive"
-                    src={require("assets/img/form-1.jpg").default}
-                  />
-                  <div className="following">
-                    <Button
-                      className="btn-just-icon"
-                      color="info"
-                      id="tooltip924342351"
-                      size="sm"
-                    >
-                      <i className="nc-icon nc-simple-add" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      "Check your eligibility..."
-                    </UncontrolledTooltip>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-            <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
-                <div className="name">
-                <h4>
-                    {screenHeader}
-                </h4>
-                </div>
-              </Col>
-            </Row>
-            <div className="profile-tabs">              
-            {currentForm}
+        <Row className="owner">
+          <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
+            <div className="name">
+            <h4>
+                {screenHeader}
+            </h4>
             </div>
-          </Container>
+          </Col>
+        </Row>
+        <div>              
+          {currentForm}
         </div>
       </div>
-      <FooterAuth 
-        authState={authState}
-        signIn={() => gotoSignIn()}
-        gotoEligibility={() => gotoEligibility()} 
-        gotoConfirmSignUp={() => gotoConfirmSignUp()}
-      />
     </>
   );
 }

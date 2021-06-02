@@ -30,7 +30,7 @@ function LandingPageHeader() {
         style={{
           backgroundImage:
             "url(" +
-            require("assets/img/sections/david-marcu.jpg").default +
+            require("assets/img/cover.jpg").default +
             ")",
         }}
       >
