@@ -121,10 +121,10 @@ function Dashboard(prop) {
 
 const stepsEligibility = (["Eligibility>Restricted","Eligibility>Ineligible","Eligibility>ForProfit","Eligibility>US","Eligibility>Eligible"])
 const progressChartEligibility = (
-  <svg viewBox="0 0 400 400" >
+  <svg viewBox="0 0 300 300" >
   <VictoryPie
     standalone={false}
-    width={400} height={400}
+    width={300} height={300}
     data={[
       {x: "A", y: 100}
     ]}
@@ -135,7 +135,7 @@ const progressChartEligibility = (
   />
   <VictoryLabel
     textAnchor="middle" verticalAnchor="middle"
-    x={200} y={200}
+    x={150} y={150}
     style={{fontSize: 30}}
     text="100%"
   />
@@ -156,39 +156,16 @@ const progressChartEligibility = (
   return (
     <>
         <div className="profile-content section-white-gray">
-          <Container>
-            <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="2" sm="4" xs="6">
-                <div className="avatar">
-                  <img
-                    alt="..."
-                    className="img-circle img-responsive"
-                    src={require("assets/img/form-1.jpg").default}
-                  />
-                  <div className="following">
-                    <Button
-                      className="btn-just-icon"
-                      onClick={gotoForm}
-                      color="info"
-                      id="tooltip924342351"
-                      size="sm"
-                    >
-                      <i className={"nc-icon nc-minimal-right"} />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      Continue your application...
-                    </UncontrolledTooltip>
-                  </div>
-                </div>
-              </Col>
-            </Row>
+          <Container>            
             <Row className="owner">
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
-              <div className="name">
-                    <h5>
-                      Welcome<br /><small>{userId}</small>
-                    </h5>
-                  </div>
+              <div className="d-flex align-items-center justify-content-center">
+                <h4>
+                    Welcome
+                    <br />
+                    <small>{form.userId}</small>
+                </h4>
+                </div>
               </Col>
             </Row>
             <div className="profile-tabs">

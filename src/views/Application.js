@@ -107,31 +107,7 @@ function Application(prop) {
 
   return (
         <div className="profile-content section-white-gray">
-          <Container>
-            <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="2" sm="4" xs="6">
-                <div className="avatar">
-                  <img
-                    alt="..."
-                    className="img-circle img-responsive"
-                    src={require("assets/img/form-1.jpg").default}
-                  />
-                  <div className="following">
-                    <Button
-                      className="btn-just-icon"
-                      color="info"
-                      id="tooltip924342351"
-                      size="sm"
-                    >
-                      <i className={"nc-icon nc-minimal-right"} />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342351">
-                      Continue your application...
-                    </UncontrolledTooltip>
-                  </div>
-                </div>
-              </Col>
-            </Row>
+          <Container>            
             <Row className="owner">
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
                 <div className="name">

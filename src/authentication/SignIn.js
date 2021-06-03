@@ -131,8 +131,8 @@ function SignIn() {
                     </FormGroup>
                     <div className="text-center">
                     {loading ? (
-                        <div className="sweet-loading pull-right">
-                            <PulseLoader color={"#51bcda"} loading={loading} css={override} size={15} />
+                        <div className="sweet-loading">
+                            <PulseLoader color={"#175e11"} loading={loading} css={override} size={15} />
                         </div> 
                     ) : (
                         <Button

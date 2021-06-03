@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // reactstrap components
-import { Button, Container, NavLink } from "reactstrap";
+import { Button, Container, NavLink, Row, Col } from "reactstrap";
 
 // core components
 import AuthNavBar from "components/Navbars/AuthNavBar.js";
@@ -33,16 +33,32 @@ function Landing() {
               Let's determine if you are eligible by answering a few questions.
               </h5>
               <br />
-              <NavLink to="/opportunity" tag={Link}>
-              <Button
-                className="btn-round"
-                color="neutral"
-                type="button"
-                outline
-              >
-                Get Started
-              </Button>
-              </NavLink>              
+              <Row>
+                <Col md="6">
+                <NavLink to="/opportunity" tag={Link}>
+                  <Button
+                    className="btn-round pull-right"
+                    color="neutral"
+                    type="button"
+                    outline
+                  >
+                    Get Started
+                  </Button>
+                </NavLink> 
+                </Col>
+                <Col md="6">
+                  <NavLink to="/signin" tag={Link}>
+                    <Button
+                      className="btn-round pull-left"
+                      color="neutral"
+                      type="button"
+                      outline
+                    >
+                      Sign In
+                    </Button>
+                  </NavLink>
+                </Col>
+              </Row>                               
             </div>
           </Container>
         </div>

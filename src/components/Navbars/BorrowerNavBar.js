@@ -24,17 +24,18 @@ function BorrowerNavBar() {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [bodyClick, setBodyClick] = React.useState(false);
   const [collapseOpen, setCollapseOpen] = React.useState(false);
-
+  
   React.useEffect(() => {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
     headroom.init();
+
     const updateNavbarColor = () => {
       if (
         document.documentElement.scrollTop > 499 ||
         document.body.scrollTop > 499
       ) {
-        setNavbarColor("");
+        setNavbarColor("bg-info");
       } else if (
         document.documentElement.scrollTop < 500 ||
         document.body.scrollTop < 500
@@ -66,13 +67,19 @@ function BorrowerNavBar() {
       ) : null}
       <Navbar
         className={classnames("fixed-top", navbarColor)}
-        expand="lg"
         id="navbar-main"
+        expand="lg"
       >
         <Container>
           <div className="navbar-translate">
-            <NavbarBrand id="navbar-brand" to="/index" tag={Link}>
-              7(a)ware
+            <NavbarBrand id="navbar-brand" to="/" tag={Link}>
+              <img
+                  alt="Home"               
+                  style={{
+                    height: "20px"
+                  }}
+                  src={require("assets/img/7alogo.png").default}
+                />
             </NavbarBrand>
             <button
               className="navbar-toggler"
@@ -84,17 +91,16 @@ function BorrowerNavBar() {
                 setCollapseOpen(true);
               }}
             >
-              <span className="navbar-toggler-bar bar1" />
-              <span className="navbar-toggler-bar bar2" />
-              <span className="navbar-toggler-bar bar3" />
+              <span className="navbar-toggler-bar bar1"></span>
+              <span className="navbar-toggler-bar bar2"></span>
+              <span className="navbar-toggler-bar bar3"></span>
             </button>
           </div>
           <Collapse navbar isOpen={collapseOpen}>
-            <Nav className="ml-auto" navbar>
-              
+            <Nav className="ml-auto" navbar>                            
             <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle className="mr-2" color="default" nav>
-                <i className="fa fa-user" />
+                <DropdownToggle className="mr-2" nav>
+                  <i className="fa fa-3x fa-bars"></i>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-primary" right>
                   <DropdownItem to="/" tag={Link}>
@@ -111,13 +117,13 @@ function BorrowerNavBar() {
                     Sign Out
                   </DropdownItem>
                 </DropdownMenu>
-              </UncontrolledDropdown>              
+              </UncontrolledDropdown>     
             </Nav>
           </Collapse>
         </Container>
       </Navbar>
     </>
-  );
+  );          
 }
 
 export default BorrowerNavBar;
