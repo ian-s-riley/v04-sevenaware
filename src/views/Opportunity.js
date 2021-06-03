@@ -32,12 +32,9 @@ import {
 import AuthNavBar from "components/Navbars/AuthNavBar.js";
 import AuthHeader from "components/Headers/AuthHeader.js";
 import FooterAuth from "components/Footers/FooterAuth.js";
-import LandingPageHeader from "components/Headers/LandingPageHeader.js";
-import MultiDropdownNavbar from "components/Navbars/MultiDropdownNavbar.js";
 import FooterWhite from "components/Footers/FooterWhite.js";
 
 
-import Start from "./opportunity-sections/Start";
 import Restricted from "./opportunity-sections/Restricted";
 import RestrictedYes from "./opportunity-sections/RestrictedYes";
 import Ineligible from "./opportunity-sections/Ineligible";
@@ -165,9 +162,9 @@ function Opportunity() {
       <AuthNavBar />
       <AuthHeader />
       <div className="wrapper">
-        <Row className="owner">
+        <Row>
           <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
-            <div className="name">
+            <div className="d-flex align-items-center justify-content-center">
             <h4>
                 {screenHeader}
             </h4>

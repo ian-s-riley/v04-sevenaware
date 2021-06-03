@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useHistory } from "react-router-dom";
 
 /* Import the Amplify Auth API */
 import { Auth } from 'aws-amplify';
@@ -38,6 +39,7 @@ import {
 import Buttons from "../opportunity-sections/Buttons";
 
 function ProfileSignUp(prop) {
+    const history = useHistory()
     const dispatch = useDispatch()
     
     const [email, setEmail] = useState("")
@@ -132,17 +134,11 @@ function ProfileSignUp(prop) {
                 variables: { input: newFormData } 
             }
         )
-        
-        //save the new form to the navigation path for this user    
-        let screenNavigation = Object.assign([], prop.navigation);
-        screenNavigation.push(nextScreenId)
 
         //update the local form store 
         const newForm = { 
             ...prop.form, 
             businessEmail: email,
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
         }
 
         //update redux & graphql
@@ -181,7 +177,7 @@ function ProfileSignUp(prop) {
         dispatch(createNotificationAsync(lenderNotification))
 
          //go to the next step, stage, or form
-         prop.nextForm(newForm, screenNavigation)
+         history.replace("/verify")    
     };
 
     const handleBackClick = () => {

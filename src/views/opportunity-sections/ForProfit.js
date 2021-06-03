@@ -8,14 +8,15 @@ import {
 
 // reactstrap components
 import {
-  Button,
   Form,
   Container,
   Row,
   Col,
   CustomInput,
-  UncontrolledTooltip,
 } from "reactstrap";
+
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 
 function ForProfit(prop) {
@@ -65,11 +66,12 @@ function ForProfit(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
+            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
             
             <Form className="settings-form">
               <Row>
-                <Col className="ml-auto mr-auto">
+                <Col className="ml-auto mr-auto" md="10">
                     <ul className="notifications">
                         <li className="notification-item d-flex justify-content-between align-items-center">
                             {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
@@ -79,46 +81,23 @@ function ForProfit(prop) {
                             type="switch"
                             id="forProfit"
                             name="forProfit"
-                            className="custom-switch-info"
+                            className="custom-switch-primary"
                             />
                         </li>       
                     </ul>
                 </Col>
-              </Row>  
-              <hr />
-              <div className="text-center">
-                <Button
-                    onClick={handleBackClick}
-                    className="btn-just-icon pull-left"
-                    id="tooltip924342662"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-left" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342662">
-                    Previous
-                </UncontrolledTooltip>
-                <Button
-                    className="btn-just-icon pull-right"
-                    onClick={handleNextClick}
-                    color="info"
-                    id="tooltip924342661"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-right" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342661">
-                    {nextScreenId}
-                </UncontrolledTooltip>
-            </div>              
+              </Row>               
             </Form>
-            
-            
-                                           
+            </Col>
+            <Col className="d-flex align-items-center" md="2">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
             </Col>
         </Row>
         </Container>
     </div>
+                
   );
 }
 

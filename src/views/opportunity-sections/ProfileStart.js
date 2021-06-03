@@ -8,13 +8,14 @@ import {
 
 // reactstrap components
 import {
-  Button,
   Form,
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
 } from "reactstrap";
+
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 
 function ProfileStart(prop) {
@@ -51,32 +52,25 @@ function ProfileStart(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-          <Col className="ml-auto mr-auto" md="8">
+            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
+            <Col className="ml-auto mr-auto" md="8">
+            
             <Form className="settings-form">
-                <Row>                    
-                    <Col className="ml-auto mr-auto" md="8">
-                    <label>Let’s get started building your business profile by getting an account email and password set up for secure access to your loan application.</label>  
-                    </Col>
-                    <Col className="ml-auto mr-auto align-items-center d-flex" md="2">
-                      <Button
-                          className="btn-just-icon"
-                          onClick={handleNextClick}
-                          color="info"
-                          id="tooltip924342661"
-                          size="lg"
-                      >
-                          <i className="nc-icon nc-minimal-right" />
-                      </Button>
-                      <UncontrolledTooltip delay={0} target="tooltip924342661">
-                          {nextScreenId}
-                      </UncontrolledTooltip>
-                    </Col>
-                </Row>                
+              <Row>
+                <Col className="ml-auto mr-auto" md="10">
+                    <label>
+                    Let’s get started building your business profile by getting an account email and password set up for secure access to your loan application.
+                    </label>
+                </Col>
+              </Row>
             </Form>
+            </Col>
+            <Col className="d-flex align-items-center" md="2">
+            <Buttons next={handleNextClick} />
             </Col>
         </Row>
         </Container>
-    </div>
+    </div>    
 
   );
 }

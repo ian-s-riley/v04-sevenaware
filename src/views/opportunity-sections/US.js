@@ -17,6 +17,8 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 function US(prop) {
     const dispatch = useDispatch()
@@ -27,7 +29,6 @@ function US(prop) {
 
     const handleNextClick = () => {   
         //validation
-        if (!form.forProfit) {nextScreenId = "Eligibility>ForProfit>No"}
         if (!form.us) {nextScreenId = "Eligibility>US>No"}
 
         //save the new form to the navigation path for this user    
@@ -37,7 +38,6 @@ function US(prop) {
         //update the local form store 
         const newForm = { 
             ...form, 
-            forProfit: form.forProfit,
             us: form.us,
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
@@ -67,65 +67,37 @@ function US(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
+            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
-            <Form className="settings-form">                
-                <ul className="notifications">
-                    <li className="notification-item d-flex justify-content-between align-items-center">
-                        {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
-                        <CustomInput
-                        defaultChecked={form.forProfit}
-                        onChange={handleChange}
-                        type="switch"
-                        id="forProfit"
-                        name="forProfit"
-                        className="custom-switch-info"
-                        />
-                    </li>                                  
-                </ul>
-                <ul className="notifications">
-                    <li className="notification-item d-flex justify-content-between align-items-center">
-                        {form.us ? "Yes, this is a US business. " : "No, this is not a US business. "}
-                        <CustomInput
-                        defaultChecked={form.us}
-                        onChange={handleChange}
-                        type="switch"
-                        id="us"
-                        name="us"
-                        className="custom-switch-info"
-                        />
-                    </li>                                
-                </ul>
-                <hr />
-                <div className="text-center">
-                    <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
-                        className="btn-just-icon pull-right"
-                        onClick={handleNextClick}
-                        color="info"
-                        id="tooltip924342661"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        {nextScreenId}
-                    </UncontrolledTooltip>
-                </div>
+            
+            <Form className="settings-form">
+              <Row>
+                <Col className="ml-auto mr-auto" md="10">
+                    <ul className="notifications">
+                        <li className="notification-item d-flex justify-content-between align-items-center">
+                            {form.us ? "Yes, this is a US business. " : "No, this is not a US business. "}
+                            <CustomInput
+                            defaultChecked={form.us}
+                            onChange={handleChange}
+                            type="switch"
+                            id="us"
+                            name="us"
+                            className="custom-switch-primary"
+                            />
+                        </li>                                
+                    </ul>
+                </Col>
+              </Row>               
             </Form>
+            </Col>
+            <Col className="d-flex align-items-center" md="2">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
             </Col>
         </Row>
         </Container>
-    </div>
+    </div>        
   );
 }
 

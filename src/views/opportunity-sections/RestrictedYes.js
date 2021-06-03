@@ -7,9 +7,11 @@ import {
     Container,
     Row,
     Col,
-    UncontrolledTooltip,
+    Label,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 function RestrictedYes(prop) {
 
@@ -21,33 +23,30 @@ function RestrictedYes(prop) {
 
     return (
         <div className="profile-content section">
-            <Container>
-                <Row>
-                    <Col className="ml-auto mr-auto" md="6">
-                    <Form className="settings-form">
-                        <Row>
-                            <Col className="ml-auto mr-auto align-items-center d-flex" md="2">
-                                <Button
-                                    onClick={handleBackClick}
-                                    className="btn-just-icon pull-left"
-                                    id="tooltip924342661"
-                                    size="lg"
-                                >
-                                    <i className="nc-icon nc-minimal-left" />
-                                </Button>
-                                <UncontrolledTooltip delay={0} target="tooltip924342661">
-                                    Back
-                                </UncontrolledTooltip>
-                            </Col>
-                            <Col className="ml-auto mr-auto" md="8">
-                            <label>Your business does not quality for a 7(a) loan from the SBA due to involvement in restricted business activities.</label>
-                            </Col>
-                        </Row>                
-                    </Form>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
+        <Container>        
+        <Row>
+            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
+            <Col className="ml-auto mr-auto" md="8">
+            
+            <Form className="settings-form">
+              <Row>
+                <Col className="ml-auto mr-auto" md="10">
+                    <Label>
+                    Your business does not quality for a 7(a) loan from the SBA due to involvement in restricted business activities.
+                    </Label>
+                </Col>
+              </Row>               
+            </Form>
+            </Col>
+            <Col className="d-flex align-items-center" md="2">
+
+                <Buttons back={handleBackClick}/>
+
+            </Col>
+        </Row>
+        </Container>
+    </div>
+        
     );
 }
 

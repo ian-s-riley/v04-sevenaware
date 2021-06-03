@@ -58,28 +58,23 @@ function Eligible(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
+            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
+            
             <Form className="settings-form">
-                <label>
-                Click on the ‘APPLY NOW’ button to be invited to create a password protected account. We have found it a good practice to have an equity owner and authorized person create the account.
-                </label>
-                <hr />
-                <div className="text-center">
+              <Row>
+                <Col className="ml-auto mr-auto" md="10">
+                    <label>
+                        Click on the ‘APPLY NOW’ button to be invited to create a password protected account. We have found it a good practice to have an equity owner and authorized person create the account.
+                    </label>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex align-items-center justify-content-center" md="12">
                     <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="md"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
-                        className="pull-right btn-round"
+                        className="btn-round "
                         onClick={handleNextClick}
-                        color="info"
+                        color="primary"
                         id="tooltip924342661"
                         size="md"
                     >
@@ -89,12 +84,15 @@ function Eligible(prop) {
                     <UncontrolledTooltip delay={0} target="tooltip924342661">
                         Apply Now
                     </UncontrolledTooltip>
-                </div>
+                </Col>
+              </Row>               
             </Form>
             </Col>
+            <Col className="d-flex align-items-center" md="2"></Col>
         </Row>
         </Container>
     </div>
+        
   );
 }
 

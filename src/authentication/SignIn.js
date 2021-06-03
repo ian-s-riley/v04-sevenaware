@@ -80,27 +80,6 @@ function SignIn() {
         <div className="profile-content section-white-gray">
           <Container>
             <Row className="owner">
-              <Col className="ml-auto mr-auto text-center" md="2" sm="4" xs="6">
-                <div className="avatar">
-                  <img
-                    alt="..."
-                    className="img-circle img-responsive"
-                    src={require("assets/img/form-1.jpg").default}
-                  />
-                  <div className="following">
-                    <Button
-                      className="btn-just-icon"
-                      color="info"
-                      id="tooltip924342351"
-                      size="sm"
-                    >
-                      <i className="fa fa-user" />
-                    </Button>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-            <Row className="owner">
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
                 <div className="name">
                 <h4>
@@ -157,9 +136,9 @@ function SignIn() {
                         </div> 
                     ) : (
                         <Button
-                        className="pull-right btn-round"
+                        className="btn-round"
                         onClick={signIn}
-                        color="info"
+                        color="primary"
                         size="md"
                     >
                         Sign In

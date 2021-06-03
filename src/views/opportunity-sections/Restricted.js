@@ -73,7 +73,7 @@ function Restricted(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="2"></Col>
+            <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
             
             <Form className="settings-form">
@@ -164,9 +164,9 @@ function Restricted(prop) {
               </Row>               
             </Form>
             </Col>
-            <Col className="d-flex align-items-center justify-content-center" md="2">
+            <Col className="d-flex align-items-center" md="2">
 
-                <Buttons next={handleNextClick} back={handleBackClick}/>
+                <Buttons next={handleNextClick}/>
 
             </Col>
         </Row>
