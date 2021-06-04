@@ -33,6 +33,7 @@ import AuthNavBar from "components/Navbars/AuthNavBar.js";
 import AuthHeader from "components/Headers/AuthHeader.js";
 import FooterAuth from "components/Footers/FooterAuth.js";
 import FooterWhite from "components/Footers/FooterWhite.js";
+import FooterGray from "components/Footers/FooterGray.js";
 
 
 import Restricted from "./opportunity-sections/Restricted";
@@ -175,6 +176,7 @@ function Opportunity() {
           {currentForm}
         </div>
       </div>
+      <FooterGray/>
     </>
   );
 }
