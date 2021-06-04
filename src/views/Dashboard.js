@@ -77,9 +77,8 @@ function Dashboard(prop) {
     let newScreenNavigation = form.screenNavigation
     if (screen) {
       newScreenNavigation = screenNavigation.slice(0, screenNavigation.indexOf(screen)+1)
-    }
-    
-    console.log('gotoForm - newScreenNavigation', newScreenNavigation)
+    }    
+    //console.log('gotoForm - newScreenNavigation', newScreenNavigation)
 
     const newNav = {
       ...navigation,
@@ -119,7 +118,7 @@ function Dashboard(prop) {
       </svg>
   )
 
-const stepsEligibility = (["Eligibility>Restricted","Eligibility>Ineligible","Eligibility>ForProfit","Eligibility>US","Eligibility>Eligible"])
+const stepsEligibility = (["Eligibility>Restricted","Eligibility>Ineligible","Eligibility>ForProfit","Eligibility>US"])
 const progressChartEligibility = (
   <svg viewBox="0 0 400 400" >
   <VictoryPie
@@ -127,8 +126,9 @@ const progressChartEligibility = (
     width={400} height={400}
     data={[
       {x: "A", y: 25},
-      {x: "B", y: 50},
+      {x: "B", y: 25},
       {x: "C", y: 25},
+      {x: "D", y: 25},
     ]}
     innerRadius={85} labelRadius={100}
     labelComponent={<span/>}

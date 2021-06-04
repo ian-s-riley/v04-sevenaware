@@ -55,6 +55,7 @@ type Form @model {
   tin: String
   tinExpiration: String
   jointTaxes: Boolean
+  jointFirst: Boolean
   businessName: String
   dba: String
   businessImage: String

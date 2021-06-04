@@ -36,14 +36,14 @@ import ProfileWelcome from "./borrower-sections/ProfileWelcome";
 import ProfileEntity from "./borrower-sections/ProfileEntity";
 import ProfileFEIN from "./borrower-sections/ProfileFEIN";
 import ProfileSSN from "./borrower-sections/ProfileSSN";
-import ProfileJoint from "./borrower-sections/ProfileJoint";
+import ProfileJointTaxes from "./borrower-sections/ProfileJointTaxes";
 
 function Application(prop) {
   const dispatch = useDispatch()    
     
   //const [form, setForm] = useState(useSelector(selectForm))   
   const [form, setForm] = useState(prop.form)   
-  //console.log('Application.js - form', form)
+  console.log('Application.js - form', form)
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(form.userId)
@@ -56,17 +56,13 @@ function Application(prop) {
   }, [screenNavigation])
 
   const showScreen = () => {
-    console.log('Application.js - showForm - screenNavigation', screenNavigation)
+    //console.log('Application.js - showForm - screenNavigation', screenNavigation)
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
-      case "Profile>JointFirst":
-          setStageHeader("Is the principal’s " + (form.ssn !== "") ? "SSN" : "TIN" + " listed as the first or second tax ID number on the tax return?")
-          setCurrentForm(<ProfileJoint nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-          break;
-      case "Profile>Joint":
+      case "Profile>JointTaxes":
           setStageHeader("Do you file your taxes jointly or individually?")
-          setCurrentForm(<ProfileJoint nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          setCurrentForm(<ProfileJointTaxes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>SSN":
           setStageHeader("Please enter your Tax Identification Number:")

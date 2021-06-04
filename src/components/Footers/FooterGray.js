@@ -18,19 +18,19 @@ function FooterGray() {
                   <a
                     href="#" onClick={(e) => e.preventDefault()}
                     target="_blank"
-                    className="mr-1"
                   >
-                    Roaring Brook Ventures
+                    7(a)ware
                   </a>
                 </li>
                 <li>
                   <a
                     href="#" onClick={(e) => e.preventDefault()}
                     target="_blank"
+                    className="mr-1"
                   >
-                    About 7(a)ware
+                    Roaring Brook Ventures
                   </a>
-                </li>
+                </li>                
               </ul>
             </nav>
             <div className="credits ml-auto">

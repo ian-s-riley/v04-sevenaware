@@ -39,17 +39,17 @@ function ProfileSSN(prop) {
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
     const [idType, setIdType] = useState("SSN");
-    const [id, setId] = useState("");
+    const [id, setId] = useState(prop.form.ssn === "" ? (prop.form.tin) : (prop.form.ssn));
     const [expiry, setExpiry] = useState(null);
     const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>SSN"
-    let nextScreenId = "Profile>Joint"
+    let nextScreenId = "Profile>JointTaxes"
     let percentComplete = "20"
 
     const handleNextClick = () => {   
         //validation
-        if (idState !== "success") {
+        if (idState !== "success" && isDirty) {
             setIdError(true)
             return
         }

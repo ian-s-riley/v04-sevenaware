@@ -1,5 +1,8 @@
 import React, {useState} from "react";
 
+//parser for html in text
+import parse from 'html-react-parser';
+
 // redux store
 import { useDispatch } from 'react-redux';
 import {
@@ -68,8 +71,13 @@ function ProfileJointTaxes(prop) {
 
     function handleChange(e) {
         const {id, checked} = e.currentTarget;
-        //console.log('handleChange - id', id)
-        setForm({ ...form, jointTaxes: (id === "jointRadioYes")})
+        console.log('handleChange - id', id)        
+        console.log('handleChange - checked', checked)    
+        id === "jointFirst" ? (
+          setForm({ ...form, jointFirst: checked})
+        ) : (
+          setForm({ ...form, jointTaxes: (id === "jointRadioYes")}) 
+        )        
         setIsDirty(true)
     }
 
@@ -78,7 +86,7 @@ function ProfileJointTaxes(prop) {
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Col className="d-flex align-items-center" md="6">
             <Form className="settings-form">
             <FormGroup>
             <div className="form-check-radio">
@@ -109,6 +117,26 @@ function ProfileJointTaxes(prop) {
                     </Label>
                   </div>
             </FormGroup>
+            {form.jointTaxes && (
+              <FormGroup check>
+                <Label check>
+                <Input 
+                    id="jointFirst"
+                    type="checkbox" 
+                    defaultChecked={form.jointFirst}     
+                    onClick={handleChange}
+                />{' '}
+                    {form.jointFirst ? (
+                      parse("My " + (form.ssn === "" ? "TIN" : "SSN") + " is listed as the first tax ID number on the tax return (" + form.userId + "'s TIN is listed 1st).")
+                    ) : (
+                      parse("My " + (form.ssn === "" ? "TIN" : "SSN") + " is listed as the second tax ID number on the tax return (" + form.userId + "'s TIN is listed 2nd).")
+                    )}
+                    <span className="form-check-sign">
+                        <span className="check"></span>
+                    </span>
+                </Label>
+            </FormGroup> 
+            )}            
             </Form>
 
             </Col>

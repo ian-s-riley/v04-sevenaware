@@ -10,7 +10,7 @@ import InputMask from "react-input-mask";
 
 // reactstrap components
 import {
-  Button,
+  CustomInput,
   FormGroup,
   Form,
   Label,
@@ -18,7 +18,7 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
+  Modal,
   FormText,
 } from "reactstrap";
 
@@ -31,14 +31,18 @@ function ProfileFEIN(prop) {
     const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
+    const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>FEIN"
     let nextScreenId = "Profile>BusinessTIN"
-    let percentComplete = "20"
+    let percentComplete = "25"
 
     const handleNextClick = () => {   
         //validation
-        if (idState !== "success" && !form.noFein) return
+        if (idState !== "success" && !form.noFein && isDirty) {
+            setIdError(true)
+            return
+        }
          
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -73,7 +77,7 @@ function ProfileFEIN(prop) {
     const verifyID = value => {         
         var idRex = /^[0-9-]*$/;
         if (idRex.test(value) && value.length > 0) {
-            console.log('verifyPassword - valid', value)
+            console.log('verifyPassword - valid', value)          
             return true;
         }
         console.log('verifyPassword - invalid', value)
@@ -81,8 +85,12 @@ function ProfileFEIN(prop) {
     };
 
     function handleChange(e) {
-        const {id, value} = e.currentTarget;
-        setForm({ ...form, [id]: value})
+        const {id, value, checked} = e.currentTarget;
+        console.log('handleChange: id', id)
+        console.log('handleChange: value', value)
+        //console.log('handleChange: checked', checked)
+        //setForm({ ...form, [id]: (id === "noFein") ? (checked) : (value)}) 
+        setForm({ ...form, [id]: value}) 
         setIsDirty(true)
     }
 
@@ -118,19 +126,15 @@ function ProfileFEIN(prop) {
                     You indicated that you use a Federal Employer Identification Number (“FEIN”).
                     </FormText>  
                 </FormGroup>   
-                <FormGroup check>
-                    <Label check>
-                    <Input 
-                        id="noFein"
-                        type="checkbox" 
-                        defaultChecked={form.noFein}     
-                        onClick={handleChange}
-                    />{' '}
-                        I have not received a FEIN from the IRS yet.
-                        <span className="form-check-sign">
-                            <span className="check"></span>
-                        </span>
-                    </Label>
+                <FormGroup>
+                    <CustomInput
+                    defaultChecked={form.noFein}
+                    onChange={handleChange}
+                    type="switch"
+                    id="restrictedSpeculative"
+                    name="restrictedSpeculative"
+                    className="custom-switch-primary"
+                    />
                 </FormGroup> 
             </Form>
 
@@ -142,6 +146,25 @@ function ProfileFEIN(prop) {
             </Col>
         </Row>
         </Container>
+        <Modal isOpen={idError} toggle={() => setIdError(false)}>
+        <div className="modal-header">
+          <h5 className="modal-title" id="exampleModalLiveLabel">
+            Incorrect FEIN
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setIdError(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>It looks like you have not entered a valid FEIN</p>          
+        </div>
+      </Modal>
     </div> 
     
   );
