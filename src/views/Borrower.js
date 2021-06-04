@@ -19,7 +19,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 // core components
 import BorrowerNavBar from "components/Navbars/BorrowerNavBar.js";
 import BorrowerHeader from "components/Headers/BorrowerHeader.js";
-import FooterBorrower from "components/Footers/FooterBorrower.js";
+import FooterBorrower from "components/Footers/FooterGray.js";
 import Dashboard from "../views/Dashboard";
 import Application from "../views/Application";
 
@@ -91,16 +91,12 @@ function Borrower() {
       <BorrowerNavBar />
       <div className="wrapper">
         <BorrowerHeader />    
-        {form ? (
+        {form && (
           showForm ? (
             <Application form={form} />                            
           ) : (
             <Dashboard showForm={handleShowForm} form={form} />                            
           )
-        ) : (
-          <div className="sweet-loading">
-              <PulseLoader color={"#51bcda"} loading={true} css={override} size={15} />
-          </div> 
         )}        
       </div>
       <FooterBorrower />

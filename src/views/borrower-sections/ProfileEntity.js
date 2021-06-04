@@ -22,6 +22,9 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
+
 function ProfileEntity(prop) {
     const dispatch = useDispatch()
     
@@ -77,17 +80,16 @@ function ProfileEntity(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="8">
-            <Form className="settings-form">     
-            <Row>
-            <Col className="text-center ml-auto mr-auto" md="6" >
-            <FormGroup>
-            <UncontrolledDropdown className="btn-group">
+            <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
+            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Form className="settings-form">
+                <FormGroup>
+                    <UncontrolledDropdown className="btn-group">
                         <DropdownToggle
                         aria-expanded={false}
                         aria-haspopup={true}
                         caret
-                        color="info"
+                        color="primary"
                         data-toggle="dropdown"
                         type="button"
                         >
@@ -144,40 +146,18 @@ function ProfileEntity(prop) {
                             </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown> 
-            </FormGroup>
+                </FormGroup>
+            </Form>
 
             </Col>
-            </Row>
-                <div className="text-center">
-                    <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
-                        className="btn-just-icon pull-right"
-                        onClick={handleNextClick}
-                        color="info"
-                        id="tooltip924342661"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        {nextScreenId}
-                    </UncontrolledTooltip>
-                </div>
-            </Form>
+            <Col className="d-flex align-items-center" md="3">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
             </Col>
         </Row>
         </Container>
-    </div>
+    </div>                
   );
 }
 

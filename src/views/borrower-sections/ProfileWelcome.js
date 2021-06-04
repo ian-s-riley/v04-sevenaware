@@ -7,9 +7,11 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
+  Label,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 function ProfileWelcome(prop) {
     
@@ -38,32 +40,21 @@ function ProfileWelcome(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-        <Col className="ml-auto mr-auto" md="8">
-            <Form className="settings-form">
-                <Row>                    
-                    <Col className="ml-auto mr-auto" md="8">
-                    <label>Let’s gather some initial information on your business to speed-up your application process...</label>
-                    </Col>
-                    <Col className="ml-auto mr-auto align-items-center d-flex" md="2">
-                    <Button
-                        className="btn-just-icon"
-                        onClick={handleNextClick}
-                        color="info"
-                        id="tooltip924342661"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        {nextScreenId}
-                    </UncontrolledTooltip>
-                    </Col>
-                </Row>                
-            </Form>
+            <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
+            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Label>
+                This application will guide you through all of the steps necessary to help your back submit your 7(a) loan application to the SBA.
+                Let’s gather some initial information on your business to speed-up your application process...</Label>            
+            </Col>
+            <Col className="d-flex align-items-center" md="3">
+
+                <Buttons next={handleNextClick} />
+
             </Col>
         </Row>
         </Container>
-    </div>    
+    </div>
+
   );
 }
 

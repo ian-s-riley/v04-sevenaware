@@ -16,7 +16,11 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
+  FormGroup,
 } from "reactstrap";
+
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 function ProfileJointTaxes(prop) {
     const dispatch = useDispatch()
@@ -72,14 +76,12 @@ function ProfileJointTaxes(prop) {
   return (
     <div className="profile-content section">
         <Container>        
-        
         <Row>
-            <Col className="ml-auto mr-auto" md="8">
-            
+            <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
+            <Col className="d-flex align-items-center justify-content-center" md="6">
             <Form className="settings-form">
-              <Row>
-              <Col className="ml-auto mr-auto" md="6">
-                  <div className="form-check-radio">
+            <FormGroup>
+            <div className="form-check-radio">
                     <Label check>
                       <Input
                         defaultValue="option1"
@@ -92,9 +94,9 @@ function ProfileJointTaxes(prop) {
                       I file my taxes individually. <span className="form-check-sign" />
                     </Label>
                   </div>
-                </Col>
-                <Col className="ml-auto mr-auto" md="6">
-                  <div className="form-check-radio">
+            </FormGroup>
+            <FormGroup>
+              <div className="form-check-radio">
                     <Label check>
                       <Input
                         id="jointRadioYes"
@@ -106,40 +108,18 @@ function ProfileJointTaxes(prop) {
                       I file my taxes jointly. <span className="form-check-sign" />
                     </Label>
                   </div>
-                  </Col>
-              </Row>
-              <hr />
-              <div className="text-center">
-                <Button
-                    onClick={handleBackClick}
-                    className="btn-just-icon pull-left"
-                    id="tooltip924342662"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-left" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342662">
-                    Previous
-                </UncontrolledTooltip>
-                <Button
-                    className="btn-just-icon pull-right"
-                    onClick={handleNextClick}
-                    color="info"
-                    id="tooltip924342661"
-                    size="lg"
-                >
-                    <i className="nc-icon nc-minimal-right" />
-                </Button>
-                <UncontrolledTooltip delay={0} target="tooltip924342661">
-                    {nextScreenId}
-                </UncontrolledTooltip>
-            </div>              
+            </FormGroup>
             </Form>
+
+            </Col>
+            <Col className="d-flex align-items-center" md="3">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
 
             </Col>
         </Row>
         </Container>
-    </div>
+    </div> 
   );
 }
 

@@ -29,6 +29,9 @@ import {
   InputGroup,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
+
 function ProfileSSN(prop) {
     const dispatch = useDispatch()
     
@@ -50,6 +53,7 @@ function ProfileSSN(prop) {
             setIdError(true)
             return
         }
+        console.log('handleNextClick: expiry', expiry)
         if (idType === "TIN" && !expiry) return 
 
         //save the new form to the navigation path for this user    
@@ -127,9 +131,10 @@ function ProfileSSN(prop) {
     <div className="profile-content section">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="8">
-            <Form className="settings-form">                         
-                <Label>You indicated that you operate as a {form.entityType}.  Therefore, you use your Social Security Number or Individual Taxpayer Identification Number as your Taxpayer Identification Number, please enter it now:</Label>
+            <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
+            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Form className="settings-form">
+              <Label>You indicated that you operate as a {form.entityType}.  Therefore, you use your Social Security Number or Individual Taxpayer Identification Number as your Taxpayer Identification Number, please enter it now:</Label>
                 <FormGroup className={idState === "success" ? "has-success" : null}>
                     <Label for="ssn" className="control-label">{idType}</Label>
                     <InputMask 
@@ -176,32 +181,13 @@ function ProfileSSN(prop) {
                   </FormText>
                 </FormGroup>
                 )} 
-                <div className="text-center">
-                    <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
-                        className="btn-just-icon pull-right"
-                        onClick={handleNextClick}
-                        color="info"
-                        id="tooltip924342661"
-                        size="lg"
-                    >
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        {nextScreenId}
-                    </UncontrolledTooltip>
-                </div>
             </Form>
+
+            </Col>
+            <Col className="d-flex align-items-center" md="3">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
             </Col>
         </Row>
         </Container>
@@ -224,7 +210,7 @@ function ProfileSSN(prop) {
           <p>It looks like you have not entered a valid {idType}</p>          
         </div>
       </Modal>
-    </div>
+    </div> 
   );
 }
 

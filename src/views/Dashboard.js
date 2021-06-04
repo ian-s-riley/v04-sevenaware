@@ -121,21 +121,23 @@ function Dashboard(prop) {
 
 const stepsEligibility = (["Eligibility>Restricted","Eligibility>Ineligible","Eligibility>ForProfit","Eligibility>US","Eligibility>Eligible"])
 const progressChartEligibility = (
-  <svg viewBox="0 0 300 300" >
+  <svg viewBox="0 0 400 400" >
   <VictoryPie
     standalone={false}
-    width={300} height={300}
+    width={400} height={400}
     data={[
-      {x: "A", y: 100}
+      {x: "A", y: 25},
+      {x: "B", y: 50},
+      {x: "C", y: 25},
     ]}
-    innerRadius={70} labelRadius={100}
+    innerRadius={85} labelRadius={100}
     labelComponent={<span/>}
     colorScale={"grayscale"}
     style={{ labels: { fontSize: 20, fill: "white"}}}
   />
   <VictoryLabel
     textAnchor="middle" verticalAnchor="middle"
-    x={150} y={150}
+    x={200} y={200}
     style={{fontSize: 30}}
     text="100%"
   />
@@ -208,8 +210,8 @@ const progressChartEligibility = (
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" id="home">
                   <Row>
-                    <Col className="" md="2">
-                    {progressChart}
+                  <Col className="d-flex align-items-center justify-content-center" md="2">
+                    {progressChart}            
                     </Col>
                     <Col className="" md="6">
                           <h4>Business Profile & Ownership</h4>
@@ -240,7 +242,11 @@ const progressChartEligibility = (
                         </Col>
                   </Row>
                   <Row>
-                    <Col className="" md="2">{progressChartEligibility}</Col>
+                    <Col className="d-flex align-items-center justify-content-center" md="2">
+                              <div className="" style={{width:"90px"}}>
+                              {progressChartEligibility}
+                              </div>                      
+                    </Col>
                     <Col className="" md="6" tag="h5">
                           <br />
                           Eligibility

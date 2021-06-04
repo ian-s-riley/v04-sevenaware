@@ -16,28 +16,19 @@ function FooterGray() {
               <ul>
                 <li>
                   <a
-                    href="https://www.creative-tim.com?ref=pkpr-gray-footer"
+                    href="#" onClick={(e) => e.preventDefault()}
                     target="_blank"
                     className="mr-1"
                   >
-                    Creative Tim
+                    Roaring Brook Ventures
                   </a>
                 </li>
                 <li>
                   <a
-                    href="http://blog.creative-tim.com/?ref=pkpr-gray-footer"
-                    target="_blank"
-                    className="mr-1"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.creative-tim.com/license?ref=pkpr-gray-footer"
+                    href="#" onClick={(e) => e.preventDefault()}
                     target="_blank"
                   >
-                    Licenses
+                    About 7(a)ware
                   </a>
                 </li>
               </ul>
@@ -45,7 +36,7 @@ function FooterGray() {
             <div className="credits ml-auto">
               <span className="copyright">
                 © {new Date().getFullYear()}
-                , made with <i className="fa fa-heart heart" /> by Creative Tim
+                {" "}7(a)ware, LLC
               </span>
             </div>
           </Row>

@@ -17,6 +17,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "reactstrap";
 // core components
 
@@ -71,7 +72,7 @@ function BorrowerNavBar() {
         expand="lg"
       >
         <Container>
-          <div className="navbar-translate">
+          <div className="">
             <NavbarBrand id="navbar-brand" to="/" tag={Link}>
               <img
                   alt="Home"               

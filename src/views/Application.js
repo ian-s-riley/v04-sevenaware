@@ -81,8 +81,8 @@ function Application(prop) {
           setCurrentForm(<ProfileEntity nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>Welcome":
-          setStageHeader("Welcome")
-          setCurrentForm(<ProfileWelcome nextForm={prop.gotoNextForm} navigation={screenNavigation} form={form} />)
+          setStageHeader("Welcome to 7(a)ware")
+          setCurrentForm(<ProfileWelcome nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       default:
         setStageHeader("404 Page Not Found")

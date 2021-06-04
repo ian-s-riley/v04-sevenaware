@@ -1,7 +1,13 @@
 .footer{
     background-attachment: fixed;
-    position: relative;
+    //position: relative;
     line-height: 20px;
+
+
+    position:absolute;
+    left:0;
+    bottom:0;
+    right:0;
 
     .footer-nav{
         ul{
