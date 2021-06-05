@@ -2,6 +2,7 @@ import React, {useState} from "react";
 
 //parser for html in text
 import parse from 'html-react-parser';
+import InputMask from "react-input-mask";
 
 // redux store
 import { useDispatch } from 'react-redux';
@@ -31,24 +32,31 @@ function ProfileJointTaxes(prop) {
     const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
+    const [idType, setIdType] = useState("SSN");
+    const [id, setId] = useState("");
+    const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>Joint"
-    let nextScreenId = "Profile>BusinessTIN"
+    let nextScreenId = "Profile>BusinessName"
     let percentComplete = "25"
 
     const handleNextClick = () => {   
         //validation
 
         //save the new form to the navigation path for this user    
-        if (form.jointTaxes) { nextScreenId = "Profile>JointFirst" }
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
         
-        //update the local form store 
+        //set the busniess ID
+
+
+        //update the local form store         
         let newForm = null
         if (isDirty) {
             const newForm = { 
                 ...form, 
+                businessTin: id,
+                businessTinType: idType,
                 screenNavigation: screenNavigation.join(','),
                 percentComplete: percentComplete,
             }
@@ -69,17 +77,40 @@ function ProfileJointTaxes(prop) {
         prop.nextForm(null, screenNavigation)
     }
 
+    // function that returns true if value is email, false otherwise
+    const verifyID = value => {         
+      //console.log('verifyID - value:', value.substr(0,3))
+      if (value.substr(0,3) === '666' || value.substr(0,3) === '000') {return false}
+      var idRex = /^[0-9-]*$/;
+      if (idRex.test(value)) {
+          return true;
+      }
+      return false;
+  };
+
     function handleChange(e) {
-        const {id, checked} = e.currentTarget;
-        console.log('handleChange - id', id)        
-        console.log('handleChange - checked', checked)    
-        id === "jointFirst" ? (
-          setForm({ ...form, jointFirst: checked})
-        ) : (
-          setForm({ ...form, jointTaxes: (id === "jointRadioYes")}) 
-        )        
-        setIsDirty(true)
+      const {id, checked} = e.currentTarget;
+      setForm({ ...form, jointTaxes: (id === "jointRadioYes")})        
+      setIsDirty(true)
+  }
+
+    function handleChange2(e) {
+      const {id, checked} = e.currentTarget;
+      setForm({ ...form, jointFirst: (id === "jointFirstYes")}) 
+      console.log('handleChange2 - jointFirst', id === "jointFirstYes")       
+      setIsDirty(true)
     }
+
+    function handleChangeId(e) {
+      const {id, value} = e.currentTarget;        
+      if (value[0] === "9") {
+          setIdType("TIN")
+      } else {
+          setIdType("SSN")
+      }        
+      setId(value)
+      setIsDirty(true)
+  }
 
   return (
     <div className="profile-content section">
@@ -118,25 +149,66 @@ function ProfileJointTaxes(prop) {
                   </div>
             </FormGroup>
             {form.jointTaxes && (
-              <FormGroup check>
-                <Label check>
+              <>
+              <hr />
+              <Label>
+              Is your {(form.ssn === "" ? "TIN" : "SSN")} listed as the first or second tax ID number on the tax return (is the individual with this user ID listed first or second on the return?
+              </Label>
+              <FormGroup>
+              <div className="form-check-radio">
+                    <Label check>
+                      <Input
+                        defaultValue="option1"
+                        id="jointFirstYes"
+                        name="jointFirstRadios"
+                        type="radio"
+                        defaultChecked={!form.jointFirst}
+                        onChange={handleChange2}
+                      />
+                      My {(form.ssn === "" ? "TIN" : "SSN")} is listed 1st. <span className="form-check-sign" />
+                    </Label>
+                  </div>
+            </FormGroup>
+            <FormGroup>
+              <div className="form-check-radio">
+                    <Label check>
+                      <Input
+                        id="jointFirstNo"
+                        name="jointFirstRadios"
+                        type="radio"
+                        defaultChecked={form.jointFirst}
+                        onChange={handleChange2}
+                      />
+                      My {(form.ssn === "" ? "TIN" : "SSN")} is listed 2nd. <span className="form-check-sign" />
+                    </Label>
+                  </div>
+            </FormGroup>                           
+            </>            
+            )} 
+            {(form.jointTaxes && !form.jointFirst) && (
+            <FormGroup className={idState === "success" ? "has-success" : null}>
+                <Label for="ssn" className="control-label">Please enter the {idType} listed first on your joint tax return:</Label>
+                <InputMask 
+                    id="id"
+                    mask="999-99-9999" 
+                    maskPlaceholder="#"
+                    value={id}
+                    alwaysShowMask={true}
+                    onChange = {event => {
+                    if (verifyID(event.target.value)) {
+                        setIDState("success");
+                    } else {
+                        setIDState("error");
+                    }
+                    handleChangeId(event)
+                    }}
+                >
                 <Input 
-                    id="jointFirst"
-                    type="checkbox" 
-                    defaultChecked={form.jointFirst}     
-                    onClick={handleChange}
-                />{' '}
-                    {form.jointFirst ? (
-                      parse("My " + (form.ssn === "" ? "TIN" : "SSN") + " is listed as the first tax ID number on the tax return (" + form.userId + "'s TIN is listed 1st).")
-                    ) : (
-                      parse("My " + (form.ssn === "" ? "TIN" : "SSN") + " is listed as the second tax ID number on the tax return (" + form.userId + "'s TIN is listed 2nd).")
-                    )}
-                    <span className="form-check-sign">
-                        <span className="check"></span>
-                    </span>
-                </Label>
+                    type="text"                 
+                />       
+                </InputMask>
             </FormGroup> 
-            )}            
+            )}           
             </Form>
 
             </Col>

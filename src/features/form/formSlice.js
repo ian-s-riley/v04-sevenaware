@@ -36,9 +36,13 @@ export const formSlice = createSlice({
     noFein: false,
     ssn: "",
     tin: "",
-    tinExpiry: null,
-    jointTaxes: null,
+    tinExpiration: null,
+    jointTaxes: false,
     jointFirst: true,
+    jointFirstSsn: "",
+    jointFirstTin: "",
+    businessTin: "",
+    businessTinType: "",
     businessName: "",
     dba: "",
     businessAddressId: "",
@@ -78,9 +82,13 @@ export const formSlice = createSlice({
       state.noFein = action.payload.noFein
       state.ssn = action.payload.ssn
       state.tin = action.payload.tin
-      state.tinExpiry = action.payload.tinExpiry
+      state.tinExpiration = action.payload.tinExpiration
       state.jointTaxes = action.payload.jointTaxes
       state.jointFirst = action.payload.jointFirst
+      state.jointFirstSsn = action.payload.jointFirstSsn
+      state.jointFirstTin = action.payload.jointFirstTin
+      state.businessTin = action.payload.businessTin
+      state.businessTinType = action.payload.businessTinType
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
       state.businessAddressId = action.payload.businessAddressId
@@ -131,9 +139,13 @@ export const updateFormAsync = form => dispatch => {
           noFein: form.noFein,
           ssn: form.ssn,
           tin: form.tin,
-          tinExpiry: form.tinExpiry,
+          tinExpiration: form.tinExpiration,
           jointTaxes: form.jointTaxes,
           jointFirst: form.jointFirst,
+          jointFirstSsn: form.jointFirstSsn,
+          jointFirstTin: form.jointFirstTin,
+          businessTin: form.businessTin,
+          businessTinType: form.businessTinType,
           businessName: form.businessName,
           dba: form.dba,
           businessAddressId: form.businessAddressId,

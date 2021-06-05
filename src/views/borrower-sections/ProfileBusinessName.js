@@ -26,7 +26,7 @@ import {
 } from "reactstrap";
 
 
-function ProfileName(prop) {
+function ProfileBusinessName(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
@@ -87,6 +87,20 @@ function ProfileName(prop) {
         <Row>
             <Col className="ml-auto mr-auto" md="6">
             <Form className="settings-form">             
+                
+            <FormGroup>
+                    <Label for="dba" className="control-label">Does your business use a DBA?</Label>
+                    <Input 
+                    type="text" 
+                    name="dba" 
+                    id="dba" 
+                    onChange = {handleChange}
+                    />         
+                    <FormText>
+                        Doing Businss As (DBA)
+                    </FormText>
+                </FormGroup>  
+                
                 <FormGroup>
                     <Label for="businessName" className="control-label">What's the name of your business?</Label>
                     <Input 
@@ -104,18 +118,7 @@ function ProfileName(prop) {
                     }
                     />         
                 </FormGroup>  
-                <FormGroup>
-                    <Label for="dba" className="control-label">Does your business use a DBA?</Label>
-                    <Input 
-                    type="text" 
-                    name="dba" 
-                    id="dba" 
-                    onChange = {handleChange}
-                    />         
-                    <FormText>
-                        Doing Businss As (DBA)
-                    </FormText>
-                </FormGroup>    
+                  
                 <div className="text-center">
                     <Button
                         onClick={handleBackClick}
@@ -149,4 +152,4 @@ function ProfileName(prop) {
   );
 }
 
-export default ProfileName;
+export default ProfileBusinessName;

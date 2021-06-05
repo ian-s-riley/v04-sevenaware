@@ -134,6 +134,10 @@ export const createForm = /* GraphQL */ `
       tinExpiration
       jointTaxes
       jointFirst
+      jointFirstSsn
+      jointFirstTin
+      businessTin
+      businessTinType
       businessName
       dba
       businessImage
@@ -185,6 +189,10 @@ export const updateForm = /* GraphQL */ `
       tinExpiration
       jointTaxes
       jointFirst
+      jointFirstSsn
+      jointFirstTin
+      businessTin
+      businessTinType
       businessName
       dba
       businessImage
@@ -236,6 +244,10 @@ export const deleteForm = /* GraphQL */ `
       tinExpiration
       jointTaxes
       jointFirst
+      jointFirstSsn
+      jointFirstTin
+      businessTin
+      businessTinType
       businessName
       dba
       businessImage

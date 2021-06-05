@@ -101,6 +101,10 @@ export const getForm = /* GraphQL */ `
       tinExpiration
       jointTaxes
       jointFirst
+      jointFirstSsn
+      jointFirstTin
+      businessTin
+      businessTinType
       businessName
       dba
       businessImage
@@ -154,6 +158,10 @@ export const listForms = /* GraphQL */ `
         tinExpiration
         jointTaxes
         jointFirst
+        jointFirstSsn
+        jointFirstTin
+        businessTin
+        businessTinType
         businessName
         dba
         businessImage

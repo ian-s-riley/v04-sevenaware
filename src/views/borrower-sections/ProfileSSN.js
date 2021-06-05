@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 // redux store
 import { useDispatch } from 'react-redux';
@@ -39,9 +39,20 @@ function ProfileSSN(prop) {
     const [isDirty, setIsDirty] = useState(false)
     const [idState, setIDState] = useState("");
     const [idType, setIdType] = useState("SSN");
-    const [id, setId] = useState(prop.form.ssn === "" ? (prop.form.tin) : (prop.form.ssn));
-    const [expiry, setExpiry] = useState(null);
+    const [id, setId] = useState("");
+    const [tinExpiration, setTinExpiration] = useState(null);
     const [idError, setIdError] = useState(false);
+
+    useEffect(() => {
+      if (prop.form.ssn !== "") {
+          setIdType("SSN")
+          setId(prop.form.ssn)
+      } else {
+          setIdType("TIN")
+          setId(prop.form.tin)
+          setTinExpiration(prop.form.tinExpiration)
+      }
+    }, [])  
 
     //const thisScreenId = "Profile>SSN"
     let nextScreenId = "Profile>JointTaxes"
@@ -53,8 +64,8 @@ function ProfileSSN(prop) {
             setIdError(true)
             return
         }
-        console.log('handleNextClick: expiry', expiry)
-        if (idType === "TIN" && !expiry) return 
+        console.log('handleNextClick: tinExpiration', tinExpiration)
+        if (idType === "TIN" && !tinExpiration) return 
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -68,7 +79,7 @@ function ProfileSSN(prop) {
               ...form, 
               ssn: id,
               tin: "",
-              //tinExpiry: null,
+              tinExpiry: null,
               screenNavigation: screenNavigation.join(','),
               percentComplete: percentComplete,
             }
@@ -77,7 +88,7 @@ function ProfileSSN(prop) {
               ...form, 
               ssn: "",
               tin: id,
-              //tinExpiry: expiry,
+              tinExpiration: tinExpiration,
               screenNavigation: screenNavigation.join(','),
               percentComplete: percentComplete,
             }
@@ -122,8 +133,8 @@ function ProfileSSN(prop) {
     }
 
     function handleDateChange(e) {
-      //console.log('handleDateChange - e', e._d)
-      setExpiry(e._d)
+      console.log('handleDateChange - e', e)
+      setTinExpiration(e._d)
       setIsDirty(true)
   }
 
@@ -157,12 +168,13 @@ function ProfileSSN(prop) {
                     />       
                     </InputMask>
                 </FormGroup>  
-                {idType === "TIN" && (
+                {idType === "TIN" && (                  
                     <FormGroup>
                     <Label for="ssn" className="control-label">ITIN Expiration Date</Label>
                   <InputGroup className="date" id="datetimepicker">
                     <ReactDatetime
                       onChange={handleDateChange}
+                      value={form.tinExpiration.tinExpiration}
                       timeFormat={false}
                       inputProps={{
                         className: "form-control",

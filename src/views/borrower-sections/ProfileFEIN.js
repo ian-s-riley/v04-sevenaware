@@ -10,7 +10,7 @@ import InputMask from "react-input-mask";
 
 // reactstrap components
 import {
-  CustomInput,
+  Button,
   FormGroup,
   Form,
   Label,
@@ -34,7 +34,7 @@ function ProfileFEIN(prop) {
     const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>FEIN"
-    let nextScreenId = "Profile>BusinessTIN"
+    let nextScreenId = "Profile>BusinessName"
     let percentComplete = "25"
 
     const handleNextClick = () => {   
@@ -53,6 +53,8 @@ function ProfileFEIN(prop) {
             //update the local form store 
             newForm = { 
                 ...form, 
+                businessTin: form.fein,
+                businessTinType: "FEIN",
                 screenNavigation: screenNavigation.join(','),
                 percentComplete: percentComplete,
             }
@@ -85,12 +87,15 @@ function ProfileFEIN(prop) {
     };
 
     function handleChange(e) {
-        const {id, value, checked} = e.currentTarget;
-        console.log('handleChange: id', id)
-        console.log('handleChange: value', value)
-        //console.log('handleChange: checked', checked)
-        //setForm({ ...form, [id]: (id === "noFein") ? (checked) : (value)}) 
+        const {id, value} = e.currentTarget;
         setForm({ ...form, [id]: value}) 
+        setIsDirty(true)
+    }
+
+    function handleCheck(e) {
+        const {id, checked} = e.currentTarget;
+        setForm({ ...form, [id]: checked}) 
+        checked && (setForm({ ...form, fein: ""}))
         setIsDirty(true)
     }
 
@@ -126,15 +131,19 @@ function ProfileFEIN(prop) {
                     You indicated that you use a Federal Employer Identification Number (“FEIN”).
                     </FormText>  
                 </FormGroup>   
-                <FormGroup>
-                    <CustomInput
-                    defaultChecked={form.noFein}
-                    onChange={handleChange}
-                    type="switch"
-                    id="restrictedSpeculative"
-                    name="restrictedSpeculative"
-                    className="custom-switch-primary"
-                    />
+                <FormGroup check>
+                    <Label check>
+                    <Input 
+                        id="noFein"
+                        type="checkbox" 
+                        defaultChecked={form.noFein}     
+                        onClick={handleCheck}
+                    />{' '}
+                        {form.noFein ? ("I have not received a FEIN from the IRS yet.") : ("Click here if you haven't received a FEIN from the IRS yet.")}
+                        <span className="form-check-sign">
+                            <span className="check"></span>
+                        </span>
+                    </Label>
                 </FormGroup> 
             </Form>
 

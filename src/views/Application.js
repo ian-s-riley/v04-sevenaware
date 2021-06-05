@@ -37,13 +37,14 @@ import ProfileEntity from "./borrower-sections/ProfileEntity";
 import ProfileFEIN from "./borrower-sections/ProfileFEIN";
 import ProfileSSN from "./borrower-sections/ProfileSSN";
 import ProfileJointTaxes from "./borrower-sections/ProfileJointTaxes";
+import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
 
 function Application(prop) {
   const dispatch = useDispatch()    
     
   //const [form, setForm] = useState(useSelector(selectForm))   
   const [form, setForm] = useState(prop.form)   
-  console.log('Application.js - form', form)
+  //console.log('Application.js - form', form)
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(form.userId)
@@ -60,6 +61,10 @@ function Application(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>BusinessName":
+          setStageHeader("Do you use a Doing Business As (“DBA”) name for your business?")
+          setCurrentForm(<ProfileBusinessName nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>JointTaxes":
           setStageHeader("Do you file your taxes jointly or individually?")
           setCurrentForm(<ProfileJointTaxes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
