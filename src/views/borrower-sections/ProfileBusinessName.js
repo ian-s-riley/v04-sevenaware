@@ -25,6 +25,8 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
 
 function ProfileBusinessName(prop) {
     const dispatch = useDispatch()
@@ -33,29 +35,32 @@ function ProfileBusinessName(prop) {
     const [isDirty, setIsDirty] = useState(false)
     const [nameState, setNameState] = useState("");
 
-    const thisScreenId = "Profile>Name"
-    let nextScreenId = "Profile>ID"
-    let percentComplete = "5"
+    //const thisScreenId = "Profile>"
+    let nextScreenId = "Profile>BusinessAddress"
+    let percentComplete = "40"
 
     const handleNextClick = () => {   
         //validation
-        if (nameState !== "success") return
+        if (isDirty && nameState !== "success") return
          
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
         
         //update the local form store 
-        const newForm = { 
-            ...form, 
-            screenNavigation: screenNavigation.join(','),
-            percentComplete: percentComplete,
-         }
+        let newForm = null
+        if (isDirty) {
+            newForm = { 
+                ...form, 
+                screenNavigation: screenNavigation.join(','),
+                percentComplete: percentComplete,
+             }
+        
+            //update redux & graphql
+            dispatch(updateFormAsync(newForm))
     
-        //update redux & graphql
-        dispatch(updateFormAsync(newForm))
-
-        //send a notification
+            //send a notification
+        }        
   
         //go to the next step, stage, or form
         prop.nextForm(newForm, screenNavigation)
@@ -82,31 +87,20 @@ function ProfileBusinessName(prop) {
     }
 
   return (
-    <div className="profile-content section">
+    <div className="profile-content">
         <Container>        
         <Row>
-            <Col className="ml-auto mr-auto" md="6">
-            <Form className="settings-form">             
-                
-            <FormGroup>
-                    <Label for="dba" className="control-label">Does your business use a DBA?</Label>
-                    <Input 
-                    type="text" 
-                    name="dba" 
-                    id="dba" 
-                    onChange = {handleChange}
-                    />         
-                    <FormText>
-                        Doing Businss As (DBA)
-                    </FormText>
-                </FormGroup>  
+            <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
+            <Col className="" md="6">
+            <Form className="settings-form"> 
                 
                 <FormGroup>
-                    <Label for="businessName" className="control-label">What's the name of your business?</Label>
+                    <Label for="businessName" className="control-label">What is the legal name of your business?</Label>
                     <Input 
                     type="text" 
                     name="businessName" 
                     id="businessName" 
+                    defaultValue={form.businessName}
                     onChange = {event => {
                         if (verifyLength(event.target.value)) {
                             setNameState("success");
@@ -117,38 +111,20 @@ function ProfileBusinessName(prop) {
                         }
                     }
                     />         
-                </FormGroup>  
-                  
-                <div className="text-center">
-                    <Button
-                        onClick={handleBackClick}
-                        className="btn-just-icon pull-left"
-                        id="tooltip924342662"
-                        size="sm"
-                    >
-                        <i className="nc-icon nc-minimal-left" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342662">
-                        Previous
-                    </UncontrolledTooltip>
-                    <Button
-                        className="btn-just-icon pull-right"
-                        onClick={handleNextClick}
-                        color="info"
-                        id="tooltip924342661"
-                        size="sm"
-                    >
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        {nextScreenId}
-                    </UncontrolledTooltip>
-                </div>
+                </FormGroup>          
+
             </Form>
+
+            </Col>
+            <Col className="d-flex align-items-center justify-content-center" md="3">
+
+                <Buttons next={handleNextClick} back={handleBackClick}/>
+
             </Col>
         </Row>
         </Container>
-    </div>
+    </div> 
+    
   );
 }
 

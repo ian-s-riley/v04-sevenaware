@@ -62,6 +62,7 @@ type Form @model {
   businessTinType: String
   businessName: String
   dba: String
+  usesDba: Boolean
   businessImage: String
   businessAddressId: String
   agreeLexisNexis: Boolean

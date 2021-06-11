@@ -63,36 +63,28 @@ function ProfileSSN(prop) {
         if (idState !== "success" && isDirty) {
             setIdError(true)
             return
-        }
-        console.log('handleNextClick: tinExpiration', tinExpiration)
+        }        
         if (idType === "TIN" && !tinExpiration) return 
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
 
+        //var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        let tinExpiry =  tinExpiration ? (tinExpiration.toString()) : (null);
+        console.log('handleNextClick: tinExpiry',tinExpiry)
+
         let newForm = null
         if (isDirty) {
           //update the local form store 
-          if (idType === "SSN") {
-            newForm = { 
-              ...form, 
-              ssn: id,
-              tin: "",
-              tinExpiry: null,
-              screenNavigation: screenNavigation.join(','),
-              percentComplete: percentComplete,
-            }
-          } else {
-            newForm = { 
-              ...form, 
-              ssn: "",
-              tin: id,
-              tinExpiration: tinExpiration,
-              screenNavigation: screenNavigation.join(','),
-              percentComplete: percentComplete,
-            }
-          }         
+          newForm = { 
+            ...form, 
+            ssn: idType === "SSN" ? (id) : (""),
+            tin: idType === "SSN" ? ("") : (id),
+            tinExpiration: idType === "SSN" ? ("") : (tinExpiry),
+            screenNavigation: screenNavigation.join(','),
+            percentComplete: percentComplete,
+          }                           
 
           //update redux & graphql
           dispatch(updateFormAsync(newForm))
@@ -139,11 +131,11 @@ function ProfileSSN(prop) {
   }
 
   return (
-    <div className="profile-content section">
+    <div className="profile-content">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Col className="" md="6">
             <Form className="settings-form">
               <Label>You indicated that you operate as a {form.entityType}.  Therefore, you use your Social Security Number or Individual Taxpayer Identification Number as your Taxpayer Identification Number, please enter it now:</Label>
                 <FormGroup className={idState === "success" ? "has-success" : null}>
@@ -174,7 +166,7 @@ function ProfileSSN(prop) {
                   <InputGroup className="date" id="datetimepicker">
                     <ReactDatetime
                       onChange={handleDateChange}
-                      value={form.tinExpiration.tinExpiration}
+                      value={form.tinExpiration}
                       timeFormat={false}
                       inputProps={{
                         className: "form-control",
@@ -196,7 +188,7 @@ function ProfileSSN(prop) {
             </Form>
 
             </Col>
-            <Col className="d-flex align-items-center" md="3">
+            <Col className="d-flex align-items-center justify-content-center" md="3">
 
                 <Buttons next={handleNextClick} back={handleBackClick}/>
 

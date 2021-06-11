@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 //parser for html in text
 import parse from 'html-react-parser';
@@ -37,26 +37,47 @@ function ProfileJointTaxes(prop) {
     const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>Joint"
-    let nextScreenId = "Profile>BusinessName"
+    let nextScreenId = "Profile>DBA"
     let percentComplete = "25"
+
+    useEffect(() => {
+      //console.log('ProfileJoinTaxes.js - prop.form', prop.form)
+      if (prop.form.jointFirstSsn !== "") {
+          setIdType("SSN")
+          setId(prop.form.jointFirstSsn)
+      } else {
+          setIdType("TIN")
+          setId(prop.form.jointFirstTin)
+      }
+    }, [])
 
     const handleNextClick = () => {   
         //validation
+        if (isDirty && form.jointTaxes && !form.jointFirst && form.dba === "") return 
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
         
         //set the busniess ID
-
+        let businessTin = form.ssn !== "" ? (form.ssn) : (form.tin)
+        let businessTinType = form.ssn !== "" ? "SSN" : "TIN"
+        
+        //if jointly and second use the first tax return id
+        if (form.jointTaxes && !form.jointFirst) {          
+          businessTin = id
+          businessTinType = idType
+        }
 
         //update the local form store         
         let newForm = null
         if (isDirty) {
             const newForm = { 
                 ...form, 
-                businessTin: id,
-                businessTinType: idType,
+                businessTin: businessTin,
+                businessTinType: businessTinType,
+                jointFirstSsn: idType === "SSN" ? (id) : (""),
+                jointFirstTin: idType === "SSN" ? ("") : (id),
                 screenNavigation: screenNavigation.join(','),
                 percentComplete: percentComplete,
             }
@@ -90,14 +111,15 @@ function ProfileJointTaxes(prop) {
 
     function handleChange(e) {
       const {id, checked} = e.currentTarget;
-      setForm({ ...form, jointTaxes: (id === "jointRadioYes")})        
+      setForm({ ...form, jointTaxes: (id === "jointRadioYes")})      
+      //if (id !== "jointRadioYes") {setId("")}  
       setIsDirty(true)
   }
 
     function handleChange2(e) {
-      const {id, checked} = e.currentTarget;
+      const {id, checked} = e.currentTarget
       setForm({ ...form, jointFirst: (id === "jointFirstYes")}) 
-      console.log('handleChange2 - jointFirst', id === "jointFirstYes")       
+      //if (id === "jointFirstYes") {setId("")}
       setIsDirty(true)
     }
 
@@ -113,11 +135,11 @@ function ProfileJointTaxes(prop) {
   }
 
   return (
-    <div className="profile-content section">
+    <div className="profile-content">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center" md="6">
+            <Col className="" md="6">
             <Form className="settings-form">
             <FormGroup>
             <div className="form-check-radio">
@@ -162,7 +184,7 @@ function ProfileJointTaxes(prop) {
                         id="jointFirstYes"
                         name="jointFirstRadios"
                         type="radio"
-                        defaultChecked={!form.jointFirst}
+                        defaultChecked={form.jointFirst}
                         onChange={handleChange2}
                       />
                       My {(form.ssn === "" ? "TIN" : "SSN")} is listed 1st. <span className="form-check-sign" />
@@ -176,7 +198,7 @@ function ProfileJointTaxes(prop) {
                         id="jointFirstNo"
                         name="jointFirstRadios"
                         type="radio"
-                        defaultChecked={form.jointFirst}
+                        defaultChecked={!form.jointFirst}
                         onChange={handleChange2}
                       />
                       My {(form.ssn === "" ? "TIN" : "SSN")} is listed 2nd. <span className="form-check-sign" />
@@ -192,7 +214,7 @@ function ProfileJointTaxes(prop) {
                     id="id"
                     mask="999-99-9999" 
                     maskPlaceholder="#"
-                    value={id}
+                    value={id || ""}
                     alwaysShowMask={true}
                     onChange = {event => {
                     if (verifyID(event.target.value)) {
@@ -212,7 +234,7 @@ function ProfileJointTaxes(prop) {
             </Form>
 
             </Col>
-            <Col className="d-flex align-items-center" md="3">
+            <Col className="d-flex align-items-center justify-content-center" md="3">
 
                 <Buttons next={handleNextClick} back={handleBackClick}/>
 

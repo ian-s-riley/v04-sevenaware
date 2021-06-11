@@ -107,6 +107,7 @@ export const getForm = /* GraphQL */ `
       businessTinType
       businessName
       dba
+      usesDba
       businessImage
       businessAddressId
       agreeLexisNexis
@@ -164,6 +165,7 @@ export const listForms = /* GraphQL */ `
         businessTinType
         businessName
         dba
+        usesDba
         businessImage
         businessAddressId
         agreeLexisNexis

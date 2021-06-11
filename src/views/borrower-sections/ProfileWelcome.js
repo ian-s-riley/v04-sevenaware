@@ -37,19 +37,17 @@ function ProfileWelcome(prop) {
     };
 
   return (
-    <div className="profile-content section">
+    <div className="profile-content">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Col className="" md="6">
             <Label>
                 This application will guide you through all of the steps necessary to help your back submit your 7(a) loan application to the SBA.
                 Let’s gather some initial information on your business to speed-up your application process...</Label>            
             </Col>
-            <Col className="d-flex align-items-center" md="3">
-
+            <Col className="d-flex align-items-center justify-content-center" md="3">
                 <Buttons next={handleNextClick} />
-
             </Col>
         </Row>
         </Container>

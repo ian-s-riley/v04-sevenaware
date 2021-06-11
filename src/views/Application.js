@@ -35,8 +35,9 @@ import {
 import ProfileWelcome from "./borrower-sections/ProfileWelcome";
 import ProfileEntity from "./borrower-sections/ProfileEntity";
 import ProfileFEIN from "./borrower-sections/ProfileFEIN";
-import ProfileSSN from "./borrower-sections/ProfileSSN";
+import ProfileID from "./borrower-sections/ProfileID";
 import ProfileJointTaxes from "./borrower-sections/ProfileJointTaxes";
+import ProfileDBA from "./borrower-sections/ProfileDBA";
 import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
 
 function Application(prop) {
@@ -62,16 +63,20 @@ function Application(prop) {
 
     switch (screenId) {
       case "Profile>BusinessName":
-          setStageHeader("Do you use a Doing Business As (“DBA”) name for your business?")
+          setStageHeader("What is your business entity’s legal name?")
           setCurrentForm(<ProfileBusinessName nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
+      case "Profile>DBA":
+        setStageHeader("Do you use a Doing Business As (“DBA”) name for your business?")
+            setCurrentForm(<ProfileDBA nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+            break;
       case "Profile>JointTaxes":
           setStageHeader("Do you file your taxes jointly or individually?")
           setCurrentForm(<ProfileJointTaxes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
-      case "Profile>SSN":
+      case "Profile>ID":
           setStageHeader("Please enter your Tax Identification Number:")
-          setCurrentForm(<ProfileSSN nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          setCurrentForm(<ProfileID nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>FEIN":
           setStageHeader("Please enter your " + form.entityType + "’s Federal Employer Identification Number:")

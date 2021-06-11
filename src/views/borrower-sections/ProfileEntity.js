@@ -15,11 +15,7 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
-  Button,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
+  Input,
 } from "reactstrap";
 
 // core components
@@ -35,12 +31,14 @@ function ProfileEntity(prop) {
     let nextScreenId = "Profile>FEIN"
     let percentComplete = "10"
 
+    const entityTypes = ["Sole Proprietor", "Partnership", "Corporation", "Limited Liability Company", "Trust", "Cooperative", "ESOP", "401(k) Plan"]
+
     const handleNextClick = () => {   
         //validation
-        if (form.entityType === "Select One" || form.entityType === "" || !form.entityType) return
+        if (isDirty && (form.entityType === "Select One" || form.entityType === "" || !form.entityType)) return
          
         //save the new form to the navigation path for this user    
-        if (form.entityType === "Sole Proprietor") { nextScreenId = "Profile>SSN" }
+        if (form.entityType === "Sole Proprietor") { nextScreenId = "Profile>ID" }
         let screenNavigation = Object.assign([], prop.navigation);
         screenNavigation.push(nextScreenId)
         
@@ -70,90 +68,48 @@ function ProfileEntity(prop) {
     }
 
     function handleChange(e) {
-        //console.log('handleChange - e.value', e.currentTarget.value)
-        const entity = e.currentTarget.value;
-        setForm({ ...form, entityType: entity})
+        const {value} = e.currentTarget;
+        setForm({ ...form, entityType: value})
         setIsDirty(true)
     }
 
   return (
-    <div className="profile-content section">
+    <div className="profile-content">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Col className="" md="6">
             <Form className="settings-form">
-                <FormGroup>
-                    <UncontrolledDropdown className="btn-group">
-                        <DropdownToggle
-                        aria-expanded={false}
-                        aria-haspopup={true}
-                        caret
-                        color="primary"
-                        data-toggle="dropdown"
-                        type="button"
-                        >
-                        {form.entityType || "Select One"}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="Sole Proprietor"
-                                id="menuSoleProprietor">
-                                Sole Proprietor
-                            </DropdownItem>
-                            <UncontrolledTooltip placement="top" target="menuSoleProprietor" delay={0}>
-                                A <b>sole proprietor</b> personally owns the 100% of the business.
-                            </UncontrolledTooltip>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="Partnership"
-                                id="menuPartnership">
-                                Partnership
-                            </DropdownItem>
-                            <UncontrolledTooltip placement="top" target="menuPartnership" delay={0}>
-                                In a <em>partnership</em> ownership of the business is shared with multiple entities.
-                            </UncontrolledTooltip>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="Corporation">
-                                Corporation
-                            </DropdownItem>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="Limited Liability Company">
-                                Limited Liability Company
-                            </DropdownItem>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="Trust">
-                                Trust
-                            </DropdownItem>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="Cooperative">
-                                Cooperative
-                            </DropdownItem>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="ESOP">
-                                ESOP
-                            </DropdownItem>
-                            <DropdownItem 
-                                onClick={handleChange} 
-                                value="401(k) Plan">
-                                401(k) Plan
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown> 
-                </FormGroup>
+                {entityTypes.map((entityType, key) => {
+                    return (
+                        <FormGroup key={key}>
+                            
+                            <div className="d-flex justify-content-between form-check-radio">
+                                <Label check>
+                                <Input
+                                    value={entityType}
+                                    name="entityRadios"
+                                    type="radio"
+                                    defaultChecked={form.entityType === entityType}
+                                    onChange={handleChange}
+                                />
+                                {entityType} <span className="form-check-sign" />
+                                </Label>                    
+                                <i id={"icon" + key} className="fa fa-2x fa-question-circle-o"></i>
+                                <UncontrolledTooltip delay={0} target={"icon" + key}>
+                                    A <b>{entityType}</b> business entity...
+                                </UncontrolledTooltip>
+                            </div> 
+
+
+                        </FormGroup>        
+                    )
+                })}                
             </Form>
 
             </Col>
-            <Col className="d-flex align-items-center" md="3">
-
+            <Col className="d-flex align-items-center justify-content-center" md="3">
                 <Buttons next={handleNextClick} back={handleBackClick}/>
-
             </Col>
         </Row>
         </Container>

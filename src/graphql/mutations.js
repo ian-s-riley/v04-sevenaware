@@ -140,6 +140,7 @@ export const createForm = /* GraphQL */ `
       businessTinType
       businessName
       dba
+      usesDba
       businessImage
       businessAddressId
       agreeLexisNexis
@@ -195,6 +196,7 @@ export const updateForm = /* GraphQL */ `
       businessTinType
       businessName
       dba
+      usesDba
       businessImage
       businessAddressId
       agreeLexisNexis
@@ -250,6 +252,7 @@ export const deleteForm = /* GraphQL */ `
       businessTinType
       businessName
       dba
+      usesDba
       businessImage
       businessAddressId
       agreeLexisNexis

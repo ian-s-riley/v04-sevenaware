@@ -45,6 +45,7 @@ export const formSlice = createSlice({
     businessTinType: "",
     businessName: "",
     dba: "",
+    usesDba: false,
     businessAddressId: "",
     agreeLexisNexis: false,
     fullOwner: null,
@@ -91,6 +92,7 @@ export const formSlice = createSlice({
       state.businessTinType = action.payload.businessTinType
       state.businessName = action.payload.businessName
       state.dba = action.payload.dba
+      state.usesDba = action.payload.usesDba
       state.businessAddressId = action.payload.businessAddressId
       state.agreeLexisNexis = action.payload.agreeLexisNexis   
       state.fullOwner = action.payload.fullOwner
@@ -148,6 +150,7 @@ export const updateFormAsync = form => dispatch => {
           businessTinType: form.businessTinType,
           businessName: form.businessName,
           dba: form.dba,
+          usesDba: form.usesDba,
           businessAddressId: form.businessAddressId,
           agreeLexisNexis: form.agreeLexisNexis,
           fullOwner: form.fullOwner,

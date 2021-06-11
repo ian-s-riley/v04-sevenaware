@@ -34,7 +34,7 @@ function ProfileFEIN(prop) {
     const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>FEIN"
-    let nextScreenId = "Profile>BusinessName"
+    let nextScreenId = "Profile>DBA"
     let percentComplete = "25"
 
     const handleNextClick = () => {   
@@ -100,11 +100,11 @@ function ProfileFEIN(prop) {
     }
 
   return (
-    <div className="profile-content section">
+    <div className="profile-content">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center justify-content-center" md="6">
+            <Col className="" md="6">
             <Form className="settings-form">
             <FormGroup className={idState === "success" ? "has-success" : null}>
                     <Label for="fein" className="control-label">FEIN</Label>
@@ -148,7 +148,7 @@ function ProfileFEIN(prop) {
             </Form>
 
             </Col>
-            <Col className="d-flex align-items-center" md="3">
+            <Col className="d-flex align-items-center justify-content-center" md="3">
 
                 <Buttons next={handleNextClick} back={handleBackClick}/>
 
