@@ -115,18 +115,7 @@ function Ineligible(prop) {
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
-                            Loan packaging{" "}
-                            <CustomInput
-                            defaultChecked={form.restrictedPackaging}
-                            onChange={handleChange}
-                            type="switch"
-                            id="restrictedPackaging"
-                            name="restrictedPackaging"
-                            className="custom-switch-primary"
-                            />
-                        </li> 
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Pyramid sales plans{" "}
+                            Pyramid sales plans {" "}
                             <CustomInput
                             defaultChecked={form.ineligiblePyramid}
                             onChange={handleChange}
@@ -148,7 +137,7 @@ function Ineligible(prop) {
                             />
                         </li> 
                         <li className="notification-item d-flex justify-content-between align-items-center">
-                            Firms involved in illegal activities that are against the law in the jurisdiction where the business is located{" "}
+                            Firms involved in illegal activities that are against the law in the jurisdiction where the business is located (including cannabis). {" "}
                             <CustomInput
                             defaultChecked={form.ineligibleIllegal}
                             onChange={handleChange}
@@ -157,6 +146,17 @@ function Ineligible(prop) {
                             name="ineligibleIllegal"
                             className="custom-switch-primary"
                             />
+                        </li> 
+                        <li className="notification-item d-flex justify-content-between align-items-center">
+                            Speculative trading activities, dealing in rare coins or stamps {" "}
+                            <CustomInput
+                            defaultChecked={form.restrictedSpeculative}
+                            onChange={handleChange}
+                            type="switch"
+                            id="restrictedSpeculative"
+                            name="restrictedSpeculative"
+                            className="custom-switch-primary"
+                            />                            
                         </li>                
                     </ul>
                 </Col>

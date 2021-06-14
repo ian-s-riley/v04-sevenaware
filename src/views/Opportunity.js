@@ -106,17 +106,17 @@ function Opportunity() {
         setScreenHeader("If your business is one the following it is INELIGIBLE…")
         setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
-      case "Eligibility>Restricted>Yes":
-        setScreenHeader("Eligibility Warning")
-        setCurrentForm(<RestrictedYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
-      case "Eligibility>Restricted":
-        setScreenHeader("Does your business generate revenue from any of the following activities?")
-        setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
-        break;
+      // case "Eligibility>Restricted>Yes":
+      //   setScreenHeader("Eligibility Warning")
+      //   setCurrentForm(<RestrictedYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+      //   break;
+      // case "Eligibility>Restricted":
+      //   setScreenHeader("Does your business generate revenue from any of the following activities?")
+      //   setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+      //   break;
       default:
-        setScreenHeader("Does your business generate revenue from any of the following activities?")
-        setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+        setScreenHeader("If your business is one the following it is INELIGIBLE…")
+        setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
     }
   };

@@ -16,6 +16,10 @@ import {
   Col,
   UncontrolledTooltip,
   Input,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
 } from "reactstrap";
 
 // core components
@@ -35,7 +39,8 @@ function ProfileEntity(prop) {
 
     const handleNextClick = () => {   
         //validation
-        if (isDirty && (form.entityType === "Select One" || form.entityType === "" || !form.entityType)) return
+        console.log('handleNextClick - form.entityType', form.entityType)
+        if (form.entityType === "" || !form.entityType) return
          
         //save the new form to the navigation path for this user    
         if (form.entityType === "Sole Proprietor") { nextScreenId = "Profile>ID" }
@@ -74,12 +79,15 @@ function ProfileEntity(prop) {
     }
 
   return (
-    <div className="profile-content">
+    <div className="profile-content section">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
             <Col className="" md="6">
             <Form className="settings-form">
+                <FormGroup>
+                
+                </FormGroup>
                 {entityTypes.map((entityType, key) => {
                     return (
                         <FormGroup key={key}>

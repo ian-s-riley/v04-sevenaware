@@ -30,7 +30,7 @@ function ProfileDBA(prop) {
     const [nameState, setNameState] = useState("");
 
     //const thisScreenId = "Profile>DBA"
-    let nextScreenId = "Profile>BusinessName"
+    let nextScreenId = "Profile>BusinessAddress"
     let percentComplete = "35"
 
     const handleNextClick = () => {   
@@ -75,16 +75,13 @@ function ProfileDBA(prop) {
     };
 
     function handleChange(e) {
-        const {id, value, checked} = e.currentTarget;
-        console.log('profileDBA.js - handleChange - id', id)
-        console.log('profileDBA.js - handleChange - value', value)
-        console.log('profileDBA.js - handleChange - checked', checked)             
+        const {id, value, checked} = e.currentTarget;           
         setForm({ ...form, [id]: id === "usesDba" ? (checked) : (value)})
         setIsDirty(true)
     }
 
   return (
-    <div className="profile-content">
+    <div className="profile-content section">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3">{form.usesDba}</Col>

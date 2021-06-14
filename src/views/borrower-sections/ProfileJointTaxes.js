@@ -135,7 +135,7 @@ function ProfileJointTaxes(prop) {
   }
 
   return (
-    <div className="profile-content">
+    <div className="profile-content section">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
@@ -184,7 +184,7 @@ function ProfileJointTaxes(prop) {
                         id="jointFirstYes"
                         name="jointFirstRadios"
                         type="radio"
-                        defaultChecked={form.jointFirst}
+                        defaultChecked={form.jointFirst || !form.joinFirst}
                         onChange={handleChange2}
                       />
                       My {(form.ssn === "" ? "TIN" : "SSN")} is listed 1st. <span className="form-check-sign" />
@@ -198,7 +198,7 @@ function ProfileJointTaxes(prop) {
                         id="jointFirstNo"
                         name="jointFirstRadios"
                         type="radio"
-                        defaultChecked={!form.jointFirst}
+                        defaultChecked={form.jointFirst === false}
                         onChange={handleChange2}
                       />
                       My {(form.ssn === "" ? "TIN" : "SSN")} is listed 2nd. <span className="form-check-sign" />
@@ -207,7 +207,7 @@ function ProfileJointTaxes(prop) {
             </FormGroup>                           
             </>            
             )} 
-            {(form.jointTaxes && !form.jointFirst) && (
+            {(form.jointTaxes && form.jointFirst === false) && (
             <FormGroup className={idState === "success" ? "has-success" : null}>
                 <Label for="ssn" className="control-label">Please enter the {idType} listed first on your joint tax return:</Label>
                 <InputMask 

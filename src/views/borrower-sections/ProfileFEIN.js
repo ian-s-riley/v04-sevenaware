@@ -34,7 +34,7 @@ function ProfileFEIN(prop) {
     const [idError, setIdError] = useState(false);
 
     //const thisScreenId = "Profile>FEIN"
-    let nextScreenId = "Profile>DBA"
+    let nextScreenId = "Profile>BusinessName"
     let percentComplete = "25"
 
     const handleNextClick = () => {   
@@ -100,7 +100,7 @@ function ProfileFEIN(prop) {
     }
 
   return (
-    <div className="profile-content">
+    <div className="profile-content section">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>

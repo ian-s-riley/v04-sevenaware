@@ -131,7 +131,7 @@ function ProfileSSN(prop) {
   }
 
   return (
-    <div className="profile-content">
+    <div className="profile-content section">
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
@@ -144,7 +144,7 @@ function ProfileSSN(prop) {
                         id="id"
                         mask="999-99-9999" 
                         maskPlaceholder="#"
-                        value={id}
+                        value={id || ""}
                         alwaysShowMask={true}
                         onChange = {event => {
                         if (verifyID(event.target.value)) {

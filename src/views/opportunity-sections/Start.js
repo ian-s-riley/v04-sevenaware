@@ -20,7 +20,7 @@ import {
 function Start(prop) {
   const dispatch = useDispatch()
 
-  let nextScreenId = "Eligibility>Restricted"
+  let nextScreenId = "Eligibility>Ineligible"
   let percentComplete = 1
   
   const handleNextClick = () => {

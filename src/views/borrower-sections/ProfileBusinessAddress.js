@@ -28,16 +28,26 @@ import {
 // core components
 import Buttons from "../opportunity-sections/Buttons";
 
-function ProfileBusinessName(prop) {
+//address verification
+const SmartyStreetsSDK = require("smartystreets-javascript-sdk");
+const SmartyStreetsCore = SmartyStreetsSDK.core;
+const Lookup = SmartyStreetsSDK.usStreet.Lookup;
+
+function ProfileBusinessAddress(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
     const [isDirty, setIsDirty] = useState(false)
     const [nameState, setNameState] = useState("");
 
-    //const thisScreenId = "Profile>"
-    let nextScreenId = "Profile>BusinessAddress"
-    let percentComplete = "40"
+    const [addressModal, setAddressModal] = useState(false);
+    const [addressState, setAddressState] = useState("");
+    const [cityState, setCityState] = useState("");
+    const [zipState, setZipState] = useState("");
+
+    //const thisScreenId = "Profile>Address"
+    let nextScreenId = "Profile>"
+    let percentComplete = "45"
 
     const handleNextClick = () => {   
         //validation
@@ -95,7 +105,7 @@ function ProfileBusinessName(prop) {
             <Form className="settings-form"> 
                 
                 <FormGroup>
-                    <Label for="businessName" className="control-label">What is the legal name of your business?</Label>
+                    <Label for="businessName" className="control-label">What is the address of your business?</Label>
                     <Input 
                     type="text" 
                     name="businessName" 
@@ -128,4 +138,4 @@ function ProfileBusinessName(prop) {
   );
 }
 
-export default ProfileBusinessName;
+export default ProfileBusinessAddress;

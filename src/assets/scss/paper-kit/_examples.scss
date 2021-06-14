@@ -262,6 +262,19 @@
 .profile-content{
     position: relative;
 }
+
+.application-wrapper {
+    height: 100vh;  
+  }
+  
+  .application {
+    height: 100%;  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
 .owner .avatar{
     margin-top: -85px;
     padding: 15px;

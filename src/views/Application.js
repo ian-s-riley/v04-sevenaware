@@ -39,6 +39,7 @@ import ProfileID from "./borrower-sections/ProfileID";
 import ProfileJointTaxes from "./borrower-sections/ProfileJointTaxes";
 import ProfileDBA from "./borrower-sections/ProfileDBA";
 import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
+import ProfileBusinessAddress from "./borrower-sections/ProfileBusinessAddress";
 
 function Application(prop) {
   const dispatch = useDispatch()    
@@ -62,6 +63,10 @@ function Application(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>BusinessAddress":
+          setStageHeader("What is your business entity’s address?")
+          setCurrentForm(<ProfileBusinessAddress nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>BusinessName":
           setStageHeader("What is your business entity’s legal name?")
           setCurrentForm(<ProfileBusinessName nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -112,9 +117,9 @@ function Application(prop) {
   });
 
   return (
-        <div className="profile-content section-white-gray">
+        <div className="">
           <Container>            
-            <Row className="owner">
+            <Row className="">
               <Col className="ml-auto mr-auto text-center" md="6" sm="6" xs="6">
                 <div className="name">
                   <h4>
@@ -123,7 +128,7 @@ function Application(prop) {
                 </div>
               </Col>
             </Row>
-            <div className="profile-tabs">
+            <div className="profile-content">
               
             {currentForm}
               

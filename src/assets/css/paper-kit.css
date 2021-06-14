@@ -8882,6 +8882,11 @@ a.pswp__share--download:hover {
 .profile-content {
   position: relative; }
 
+
+  .application {
+    height: 500px
+  }
+
 .owner .avatar {
   margin-top: -85px;
   padding: 15px;
