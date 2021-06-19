@@ -100,7 +100,7 @@ export const formSlice = createSlice({
   },
 });
 
-export const { updateFormStatus, updateForm } = formSlice.actions;
+export const { updateForm } = formSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
