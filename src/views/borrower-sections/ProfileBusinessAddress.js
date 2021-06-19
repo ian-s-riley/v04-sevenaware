@@ -99,7 +99,7 @@ function ProfileBusinessAddress(prop) {
         //validation
         if (isDirty && (address1State !== "success" || cityState !== "success" || zipState !== "success")) return
 
-        if (isDirty) {
+        //if (isDirty) {
             let authId = "5754b539-a016-8109-970c-4c11834d47cb"
             let authToken = "asVs4YKeYeeUx29M1XeJ"
             const credentials = new SmartyStreetsCore.StaticCredentials(authId, authToken)
@@ -119,14 +119,14 @@ function ProfileBusinessAddress(prop) {
                 client.send(lookup1)
                   .then(handleSuccess)
                   .catch(handleError)
-        } else {
-            //save the new form to the navigation path for this user    
-            let screenNavigation = Object.assign([], prop.navigation);
-            screenNavigation.push(nextScreenId)
+        // } else {
+        //     //save the new form to the navigation path for this user    
+        //     let screenNavigation = Object.assign([], prop.navigation);
+        //     screenNavigation.push(nextScreenId)
 
-            //go to the next step, stage, or form
-            prop.nextForm(null, screenNavigation)
-        }
+        //     //go to the next step, stage, or form
+        //     prop.nextForm(null, screenNavigation)
+        // }
     }
 
     function handleSuccess(response) {
@@ -168,6 +168,7 @@ function ProfileBusinessAddress(prop) {
         
         //update the local form store 
         let newForm = null
+        console.log('handleVerifyAddress - prop.form.businessAddress.Id', prop.form.businessAddressId)
         if (!prop.form.businessAddressId) {
             //create the new address and add the id to the form
             const apiAddressData = await API.graphql(
