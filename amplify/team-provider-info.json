@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "v04sevenawarea21539a2": {}
+      },
+      "interactions": {
+        "sevenawarev04": {
+          "deploymentBucketName": "amplify-amplifyceb98fb296a04-staging-194842-deployment",
+          "s3Key": "amplify-builds/sevenawarev04-6a39585032536937704e-build.zip"
+        }
       }
     }
   }

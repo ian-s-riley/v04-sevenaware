@@ -131,6 +131,7 @@ export const onCreateForm = /* GraphQL */ `
       usesDba
       businessImage
       businessAddressId
+      nacis
       agreeLexisNexis
       fullOwner
       createdAt
@@ -184,6 +185,7 @@ export const onUpdateForm = /* GraphQL */ `
       usesDba
       businessImage
       businessAddressId
+      nacis
       agreeLexisNexis
       fullOwner
       createdAt
@@ -237,6 +239,7 @@ export const onDeleteForm = /* GraphQL */ `
       usesDba
       businessImage
       businessAddressId
+      nacis
       agreeLexisNexis
       fullOwner
       createdAt

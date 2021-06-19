@@ -47,6 +47,7 @@ export const formSlice = createSlice({
     dba: "",
     usesDba: false,
     businessAddressId: "",
+    nacis: "",
     agreeLexisNexis: false,
     fullOwner: null,
   },
@@ -94,6 +95,7 @@ export const formSlice = createSlice({
       state.dba = action.payload.dba
       state.usesDba = action.payload.usesDba
       state.businessAddressId = action.payload.businessAddressId
+      state.nacis = action.payload.nacis
       state.agreeLexisNexis = action.payload.agreeLexisNexis   
       state.fullOwner = action.payload.fullOwner
     },
@@ -152,6 +154,7 @@ export const updateFormAsync = form => dispatch => {
           dba: form.dba,
           usesDba: form.usesDba,
           businessAddressId: form.businessAddressId,
+          nacis: form.nacis,
           agreeLexisNexis: form.agreeLexisNexis,
           fullOwner: form.fullOwner,
         }

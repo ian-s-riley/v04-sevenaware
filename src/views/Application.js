@@ -40,6 +40,7 @@ import ProfileJointTaxes from "./borrower-sections/ProfileJointTaxes";
 import ProfileDBA from "./borrower-sections/ProfileDBA";
 import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
 import ProfileBusinessAddress from "./borrower-sections/ProfileBusinessAddress";
+import ProfileNACIS from "./borrower-sections/ProfileNACIS";
 
 function Application(prop) {
   const dispatch = useDispatch()    
@@ -63,6 +64,10 @@ function Application(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Profile>NACIS":
+          setStageHeader("Please select this " + form.entityType + "’s Industry Classification Code.")
+          setCurrentForm(<ProfileNACIS nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>BusinessAddress":
           setStageHeader("What is your business entity’s address?")
           setCurrentForm(<ProfileBusinessAddress nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)

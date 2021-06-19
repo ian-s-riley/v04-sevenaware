@@ -65,6 +65,7 @@ type Form @model {
   usesDba: Boolean
   businessImage: String
   businessAddressId: String
+  nacis: String
   agreeLexisNexis: Boolean
   fullOwner: Boolean
 }

@@ -110,6 +110,7 @@ export const getForm = /* GraphQL */ `
       usesDba
       businessImage
       businessAddressId
+      nacis
       agreeLexisNexis
       fullOwner
       createdAt
@@ -168,6 +169,7 @@ export const listForms = /* GraphQL */ `
         usesDba
         businessImage
         businessAddressId
+        nacis
         agreeLexisNexis
         fullOwner
         createdAt

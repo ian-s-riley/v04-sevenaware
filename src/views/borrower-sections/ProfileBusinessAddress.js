@@ -73,7 +73,7 @@ function ProfileBusinessAddress(prop) {
     const [zipState, setZipState] = useState("");
 
     //const thisScreenId = "Profile>Address"
-    let nextScreenId = "Profile>"
+    let nextScreenId = "Profile>NACIS"
     let percentComplete = "45"
 
     useEffect(() => {
