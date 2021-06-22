@@ -92,6 +92,7 @@ function App() {
         )}  
       </BrowserRouter>
     </Provider>
+    
   )
 }
 

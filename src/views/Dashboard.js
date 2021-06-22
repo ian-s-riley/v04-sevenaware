@@ -75,8 +75,12 @@ function Dashboard(prop) {
   
   function gotoForm(screen) {
     let newScreenNavigation = form.screenNavigation
-    if (screen) {
+    if (screen !== "") {
       newScreenNavigation = screenNavigation.slice(0, screenNavigation.indexOf(screen)+1)
+    } else {
+      //go to the most current screen/form      
+      newScreenNavigation = screenNavigation.pop()
+      console.log('gotoForm - newScreenNavigation', newScreenNavigation)
     }    
     //console.log('gotoForm - newScreenNavigation', newScreenNavigation)
 
@@ -216,7 +220,7 @@ const progressChartEligibility = (
                     <Col className="" md="6">
                           <h4>Business Profile & Ownership</h4>
                           <h5><small>{form.percentComplete}% Complete</small></h5>
-                          <a href="#" onClick={gotoForm}>
+                          <a href="#" onClick={() => gotoForm("")}>
                             Click here to continue your application
                           </a>
                         </Col>

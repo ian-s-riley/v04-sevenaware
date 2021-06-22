@@ -116,5 +116,6 @@
     ],
     "outputVoice": "Matthew",
     "botName": "BookTrip",
-    "coppa": false
+    "coppa": false,
+    "shortId": "86ab1159"
 }

@@ -506,7 +506,7 @@ function ensureLambdaFunctionAccess(intent){
 
         const params = {
             FunctionName: lambdaName,
-            StatementId: `Lex-${intent.name}`+ "8b358a76",
+            StatementId: `Lex-${intent.name}`+ "86ab1159",
             Action: 'lambda:InvokeFunction',
             Principal: 'lex.amazonaws.com',
             SourceArn: `arn:aws:lex:${region}:${accountId}:intent:${intent.name}:*`,
