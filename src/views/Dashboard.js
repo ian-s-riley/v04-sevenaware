@@ -77,9 +77,10 @@ function Dashboard(prop) {
     let newScreenNavigation = form.screenNavigation
     if (screen !== "") {
       newScreenNavigation = screenNavigation.slice(0, screenNavigation.indexOf(screen)+1)
+      console.log('gotoForm - newScreenNavigation', newScreenNavigation)
     } else {
       //go to the most current screen/form      
-      newScreenNavigation = screenNavigation.pop()
+      //newScreenNavigation = screenNavigation.slice( screenNavigation.indexOf(screen),  screenNavigation.indexOf(screen))
       console.log('gotoForm - newScreenNavigation', newScreenNavigation)
     }    
     //console.log('gotoForm - newScreenNavigation', newScreenNavigation)
