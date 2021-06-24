@@ -32,7 +32,7 @@ import {
 } from "reactstrap";
 
 // core components
-import ProfileWelcome from "./borrower-sections/ProfileWelcome";
+import ProfileWelcome from "./borrower-sections/Profile";
 import ProfileEntity from "./borrower-sections/ProfileEntity";
 import ProfileFEIN from "./borrower-sections/ProfileFEIN";
 import ProfileID from "./borrower-sections/ProfileID";
@@ -41,6 +41,8 @@ import ProfileDBA from "./borrower-sections/ProfileDBA";
 import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
 import ProfileBusinessAddress from "./borrower-sections/ProfileBusinessAddress";
 import ProfileNACIS from "./borrower-sections/ProfileNACIS";
+
+import Ownership from "./borrower-sections/Ownership";
 
 function Application(prop) {
   const dispatch = useDispatch()    
@@ -64,6 +66,10 @@ function Application(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Ownership>":
+          setStageHeader("Let's get the ownership struction of your business for the SBA.")
+          setCurrentForm(<Ownership nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Profile>NACIS":
           setStageHeader("Please select this " + form.entityType + "’s Industry Classification Code.")
           setCurrentForm(<ProfileNACIS nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
@@ -96,7 +102,7 @@ function Application(prop) {
           setStageHeader("Under what type of legal entity does your business operate?")
           setCurrentForm(<ProfileEntity nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
-      case "Profile>Welcome":
+      case "Profile>":
           setStageHeader("Welcome to 7(a)ware")
           setCurrentForm(<ProfileWelcome nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;

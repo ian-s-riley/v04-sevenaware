@@ -15,7 +15,7 @@ import Buttons from "../opportunity-sections/Buttons";
 
 function ProfileWelcome(prop) {
     
-    //const thisScreenId = "Profile>Welcome"
+    //const thisScreenId = "Profile>"
     let nextScreenId = "Profile>Entity"        
 
     const handleNextClick = () => {   

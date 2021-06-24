@@ -13,10 +13,10 @@ import {
 // core components
 import Buttons from "../opportunity-sections/Buttons";
 
-function ProfileWelcome(prop) {
+function Ownership(prop) {
     
-    //const thisScreenId = "Profile>Welcome"
-    let nextScreenId = "Profile>Entity"        
+    //const thisScreenId = "Ownership>"
+    let nextScreenId = "Ownership>"        
 
     const handleNextClick = () => {   
         //validation
@@ -43,8 +43,8 @@ function ProfileWelcome(prop) {
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
             <Col className="d-flex align-items-center" md="6">
               <Label>
-                This application will guide you through all of the steps necessary to help your back submit your 7(a) loan application to the SBA.
-                Let’s gather some initial information on your business to speed-up your application process...</Label>            
+              We need to know if you have: 1) any Affiliates (think Franchise/Jobber agreements or other entities that you control), 2) have any Associates / Key Employees, and or officers or directors?
+              </Label>            
             </Col>
             <Col className="d-flex align-items-center justify-content-center" md="3">
                 <Buttons next={handleNextClick} />
@@ -56,4 +56,4 @@ function ProfileWelcome(prop) {
   );
 }
 
-export default ProfileWelcome;
+export default Ownership;

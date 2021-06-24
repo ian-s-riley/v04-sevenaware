@@ -98,7 +98,7 @@ function ProfileSignUp(prop) {
         
         const newFormData = {   
             userId: newUserName,
-            screenNavigation: "Profile>Welcome", 
+            screenNavigation: "Profile>", 
             percentComplete: 0,
             loanAmount: 0,           
             restricted: false,

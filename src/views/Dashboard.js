@@ -60,6 +60,174 @@ function Dashboard(prop) {
     fetchNotifications()
   }, [userId])  
 
+
+  const  setupChartData = (sectionPrefix, sectionName) => {
+    //get the profile navigation steps
+    //console.log("setupCharts - screenNavigation", screenNavigation)
+    const stepsFiltered = screenNavigation.filter(
+      o => o.startsWith(sectionPrefix)
+    )    
+    if (stepsFiltered.length === 0) {return}
+
+    //reverse the order of the steps, see the latest on top
+    const stepsOrdered = stepsFiltered.slice(0).reverse().map(
+      function(val, index) {
+          return val
+      }
+    )    
+
+    //percentage completed charts
+    //7 steps if SSN/TIN, 6 if FEIN
+    //const totalSteps = form.entityType === "Sole Proprietor" ? (8) : (7)
+    //for now we'll leave it at 10 steps, it works even if this count isn't right.
+    const totalSteps = 10
+    //console.log("setupCharts - totalSteps", totalSteps)
+    const stepPercent = (1/totalSteps*100)
+    //console.log("setupCharts - stepPercent", stepPercent)
+    let percentComplete = stepPercent*stepsFiltered.length
+    let lastPage = screenNavigation.slice(-1)[0] 
+    console.log("setupChartData - lastPage", lastPage)
+    let pieDimension = 400
+    //console.log("setupCharts - lastPage", lastPage)    
+    if (lastPage.startsWith(sectionPrefix)) {
+      //within profile section  
+      //lastPage = ""    
+    } else {
+      //on a next section
+      lastPage = ""
+      percentComplete = 100
+      pieDimension = 360
+    }
+
+    let colorScale = "grayscale"
+    sectionPrefix === "Profile>" && (colorScale = "cool")
+    sectionPrefix === "Ownership>" && (colorScale = "warm")
+
+    const chartSection = (
+    <Row>
+        <Col className="d-flex align-items-center justify-content-center" md="2">
+          <svg viewBox="0 0 400 400" >
+          <VictoryPie
+            standalone={false}
+            width={pieDimension} height={pieDimension}
+            data={percentComplete < 100 ? (
+              [
+                {x: "A", y: percentComplete/2},
+                {x: "A", y: percentComplete/2},
+                {x: "C", y: 100-(percentComplete)},
+              ]
+            ) : (
+              [
+              {x: "A", y: 1/6*100},
+              {x: "B", y: 1/6*100},
+              {x: "B", y: 1/6*100},
+              {x: "B", y: 1/6*100},
+              {x: "B", y: 1/6*100},
+            ]
+            )}
+            innerRadius={70} labelRadius={100}
+            labelComponent={<span/>}
+            colorScale={colorScale}
+            style={{ labels: { fontSize: 20, fill: "white"}}}
+          />
+          <VictoryLabel
+            textAnchor="middle" verticalAnchor="middle"
+            x={pieDimension/2} y={pieDimension/2}
+            style={{fontSize: 40}}
+            text={percentComplete + "%"}
+          />
+          </svg>           
+          </Col>
+          <Col className="" md="6">
+                <h4>{sectionName}</h4>
+                <h5><small>{percentComplete}% Complete</small></h5>
+                {percentComplete < 100 && (
+                  <a href="#" onClick={() => gotoForm(lastPage)}>
+                    Click here to continue your application
+                  </a>
+                )}                          
+              </Col>
+              <Col className="" md="4">
+                <div className="hashtag-suggestions pull-left">
+                  {percentComplete < 100 && (<h5>Timeline</h5>)}
+                  <ul className="list-unstyled">
+                    {stepsOrdered.map((screen, key) => {
+                      return (
+                      <li key={key}>
+                      <a
+                        href="#"
+                        onClick={() => gotoForm(screen)}
+                      >
+                        {screen}
+                      </a>
+                      </li>
+                      )
+                    })
+                    }
+                  </ul>
+                </div>
+              </Col>
+        </Row>
+      )
+
+      return chartSection
+  }  
+
+
+  const eligibilitySteps = ["Eligibility>US","Eligibility>ForProfit","Eligibility>Restricted"]
+  const EligibilityChart = (
+    <Row>
+        <Col className="d-flex align-items-center justify-content-center" md="2">
+        <svg viewBox="0 0 400 400" >
+          <VictoryPie
+            standalone={false}
+            width={360} height={360}
+            data={[
+              {x: "A", y: 33},
+              {x: "B", y: 33},
+              {x: "C", y: 34},
+            ]}
+            innerRadius={65} labelRadius={100}
+            labelComponent={<span/>}
+            colorScale={"grayscale"}
+            style={{ labels: { fontSize: 201397, fill: "white"}}}
+          />
+          <VictoryLabel
+            textAnchor="middle" verticalAnchor="middle"
+            x={180} y={180}
+            style={{fontSize: 40}}
+            text={"100%"}
+          />
+          </svg>      
+                  
+
+
+                                     
+        </Col>
+        <Col className="" md="6" tag="h5">
+              <br />
+              Eligibility
+              <br/>
+              <small>100% Complete</small>
+            </Col>
+            <Col className="" md="4">
+              <div className="hashtag-suggestions pull-left">
+                <br />
+                <ul className="list-unstyled">
+                  {eligibilitySteps.map((screen, key) => {
+                    return (
+                    <li key={key}>
+                      {screen}
+                    </li>
+                    )
+                  })
+                  }
+                </ul>
+              </div>
+            </Col>
+      </Row>
+  )
+
   async function fetchNotifications() {
     if (userId) {
       const apiData = await API.graphql(graphqlOperation(listNotifications, {
@@ -74,14 +242,16 @@ function Dashboard(prop) {
   } 
   
   function gotoForm(screen) {
+    console.log('gotoForm - screen', screen)
+    //console.log('gotoForm - screenNavigation', screenNavigation)
     let newScreenNavigation = form.screenNavigation
     if (screen !== "") {
       newScreenNavigation = screenNavigation.slice(0, screenNavigation.indexOf(screen)+1)
-      console.log('gotoForm - newScreenNavigation', newScreenNavigation)
+      //console.log('gotoForm - newScreenNavigation', newScreenNavigation)
     } else {
       //go to the most current screen/form      
       //newScreenNavigation = screenNavigation.slice( screenNavigation.indexOf(screen),  screenNavigation.indexOf(screen))
-      console.log('gotoForm - newScreenNavigation', newScreenNavigation)
+      //console.log('gotoForm - newScreenNavigation', newScreenNavigation)
     }    
     //console.log('gotoForm - newScreenNavigation', newScreenNavigation)
 
@@ -99,56 +269,6 @@ function Dashboard(prop) {
       setActiveTab(tab);
     }
   };
-
-  const progressChart = (
-    <svg viewBox="0 0 400 400" >
-      <VictoryPie
-        standalone={false}
-        width={400} height={400}
-        data={[
-          {x: "A", y: form.percentComplete},
-          {x: "B", y: 100-form.percentComplete}
-        ]}
-        innerRadius={70} labelRadius={100}
-        labelComponent={<span/>}
-        colorScale={"cool"}
-        style={{ labels: { fontSize: 20, fill: "white"}}}
-      />
-      <VictoryLabel
-        textAnchor="middle" verticalAnchor="middle"
-        x={200} y={200}
-        style={{fontSize: 30}}
-        text={form.percentComplete + "%"}
-      />
-      </svg>
-  )
-
-const stepsEligibility = (["Eligibility>Restricted","Eligibility>Ineligible","Eligibility>ForProfit","Eligibility>US"])
-const progressChartEligibility = (
-  <svg viewBox="0 0 400 400" >
-  <VictoryPie
-    standalone={false}
-    width={400} height={400}
-    data={[
-      {x: "A", y: 25},
-      {x: "B", y: 25},
-      {x: "C", y: 25},
-      {x: "D", y: 25},
-    ]}
-    innerRadius={85} labelRadius={100}
-    labelComponent={<span/>}
-    colorScale={"grayscale"}
-    style={{ labels: { fontSize: 20, fill: "white"}}}
-  />
-  <VictoryLabel
-    textAnchor="middle" verticalAnchor="middle"
-    x={200} y={200}
-    style={{fontSize: 30}}
-    text="100%"
-  />
-  </svg>
-)
-
 
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -214,67 +334,9 @@ const progressChartEligibility = (
               </div>
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="1" id="home">
-                  <Row>
-                  <Col className="d-flex align-items-center justify-content-center" md="2">
-                    {progressChart}            
-                    </Col>
-                    <Col className="" md="6">
-                          <h4>Business Profile & Ownership</h4>
-                          <h5><small>{form.percentComplete}% Complete</small></h5>
-                          <a href="#" onClick={() => gotoForm("")}>
-                            Click here to continue your application
-                          </a>
-                        </Col>
-                        <Col className="" md="4">
-                          <div className="hashtag-suggestions pull-left">
-                            <h5>Timeline</h5>
-                            <ul className="list-unstyled">
-                              {screenNavigation.map((screen, key) => {
-                                return (
-                                <li key={key}>
-                                <a
-                                  href="#"
-                                  onClick={() => gotoForm(screen)}
-                                >
-                                  {screen}
-                                </a>
-                                </li>
-                                )
-                              })
-                              }
-                            </ul>
-                          </div>
-                        </Col>
-                  </Row>
-                  <Row>
-                    <Col className="d-flex align-items-center justify-content-center" md="2">
-                              <div className="" style={{width:"90px"}}>
-                              {progressChartEligibility}
-                              </div>                      
-                    </Col>
-                    <Col className="" md="6" tag="h5">
-                          <br />
-                          Eligibility
-                          <br/>
-                          <small>100% Complete</small>
-                        </Col>
-                        <Col className="" md="4">
-                          <div className="hashtag-suggestions pull-left">
-                            <br />
-                            <ul className="list-unstyled">
-                              {stepsEligibility.map((screen, key) => {
-                                return (
-                                <li key={key}>
-                                  {screen}
-                                </li>
-                                )
-                              })
-                              }
-                            </ul>
-                          </div>
-                        </Col>
-                  </Row>
-
+                  {setupChartData("Ownership>", "Ownership")}
+                  {setupChartData("Profile>", "Business Profile")}
+                  {EligibilityChart}
                 </TabPane>
                 <TabPane tabId="2" id="application" role="tabpanel">
                 <Row>
