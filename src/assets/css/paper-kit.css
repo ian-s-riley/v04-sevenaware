@@ -8930,11 +8930,11 @@ a.pswp__share--download:hover {
 .notifications {
   list-style: none;
   padding-left: 0;
-  padding-top: 20px; }
+  padding-top: 10px; }
   .notifications .notification-item {
     border-top: 1px solid #e8e7e3;
     min-height: 60px;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 15px; }
     .notifications .notification-item .switch {
       float: right; }

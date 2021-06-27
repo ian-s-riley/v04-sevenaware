@@ -15,6 +15,13 @@ import {
   Col,
   CustomInput,
   UncontrolledTooltip,
+  FormGroup,
+  Nav, 
+  NavItem, 
+  NavLink,
+  vTabs,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 
 // core components
@@ -25,18 +32,19 @@ function Ineligible(prop) {
     const dispatch = useDispatch()
     
     const [form, setForm] = useState(prop.form)
+    const [vTabs, setVTabs] = React.useState("1");
     let nextScreenId = "Eligibility>ForProfit"
     let percentComplete = 7
 
     const handleNextClick = () => {   
         //validation
-        const ineligible =  form.ineligibleNonProfit
-                            || form.ineligibleRealEstate
-                            || form.ineligibleLending
-                            || form.ineligiblePyramid
-                            || form.ineligibleGambling
-                            || form.ineligibleIllegal
-        if (ineligible) {nextScreenId = "Eligibility>Ineligible>Yes"}
+        // const ineligible =  form.ineligibleNonProfit
+        //                     || form.ineligibleRealEstate
+        //                     || form.ineligibleLending
+        //                     || form.ineligiblePyramid
+        //                     || form.ineligibleGambling
+        //                     || form.ineligibleIllegal
+        if (form.ineligible) {nextScreenId = "Eligibility>Ineligible>Yes"}
 
         //save the new form to the navigation path for this user    
         let screenNavigation = Object.assign([], prop.navigation);
@@ -45,7 +53,6 @@ function Ineligible(prop) {
         //update the local form store 
         const newForm = { 
             ...form, 
-            ineligible: ineligible,
             screenNavigation: screenNavigation.join(','),
             percentComplete: percentComplete,
          }
@@ -78,85 +85,145 @@ function Ineligible(prop) {
             <Col className="ml-auto mr-auto" md="8">
             
             <Form className="settings-form">
+            <Row>
+                <Col md="4" sm="4" xs="6">
+                  <div className="nav-tabs-navigation">
+                    <div className="nav-tabs-wrapper">
+                      <Nav
+                        className="flex-column nav-stacked"
+                        role="tablist"
+                        tabs
+                      >
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "1" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("1");
+                            }}
+                          >
+                            Non-Profits?
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "2" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("2");
+                            }}
+                          >
+                            REIs?
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "3" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("3");
+                            }}
+                          >
+                            Lending?
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "4" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("4");
+                            }}
+                          >
+                            MML?
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "5" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("5");
+                            }}
+                          >
+                            Gambling?
+                          </NavLink>
+                        </NavItem>                       
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "5" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("6");
+                            }}
+                          >
+                            Illegal Activities?
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={vTabs === "5" ? "active" : ""}
+                            onClick={() => {
+                              setVTabs("7");
+                            }}
+                          >
+                            Speculative Trading?
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                    </div>
+                  </div>
+                </Col>
+                <Col md="8" sm="8" xs="6">
+                  {/* Tab panes */}
+                  <TabContent activeTab={"vTabs" + vTabs}>
+                    <TabPane tabId="vTabs1">
+                      <br />
+                      <p>
+                        Consumer and marketing cooperatives, charitable, religious, or other non-profit institutions.
+                      </p>
+                    </TabPane>
+                    <TabPane tabId="vTabs2">
+                      <br />
+                      <p>
+                        Real estate investment firms.
+                      </p>
+                    </TabPane>
+                    <TabPane tabId="vTabs3">
+                      <br />
+                      <p>
+                        Firms involved in lending activities, such as leasing companies, finance companies, and any firm whose stock in trade is money.
+                      </p>
+                    </TabPane>
+                    <TabPane tabId="vTabs4">
+                      <br />
+                      <p>
+                        Pyramid sales plans & multi-level marketing.
+                      </p>
+                      <br/>
+                      <p>
+                      In multi-level marketing, the compensation plan theoretically pays out to participants only from two potential revenue streams. The first is paid out from commissions of sales made by the participants directly to their own retail customers. The second is paid out from commissions based upon the wholesale purchases made by other distributors below the participant who have recruited those other participants into the MLM.
+                      </p>
+                    </TabPane>
+                    <TabPane tabId="vTabs5">
+                    <br /><p>Firms involved in gambling activities.</p>
+                    </TabPane>
+                    <TabPane tabId="vTabs6">
+                    <br /><p>Firms involved in illegal activities that are against the law in the jurisdiction where the business is located (including cannabis).</p>
+                    </TabPane>       
+                    <TabPane tabId="vTabs7">
+                    <br /><p>Speculative trading activities, dealing in rare coins or stamps.</p>
+                    </TabPane>                    
+                  </TabContent>
+                </Col>
+              </Row>
               <Row>
                 <Col className="ml-auto mr-auto" md="10">
-                <ul className="notifications">
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Consumer and marketing cooperatives, charitable, religious, or other non-profit institutions{" "}
-                            <CustomInput
-                            defaultChecked={form.ineligibleNonProfit}
-                            onChange={handleChange}
-                            type="switch"
-                            id="ineligibleNonProfit"
-                            name="ineligibleNonProfit"
-                            className="custom-switch-primary"
-                            />
-                        </li> 
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Real estate investment firms{" "}
-                            <CustomInput
-                            defaultChecked={form.ineligibleRealEstate}
-                            onChange={handleChange}
-                            type="switch"
-                            id="ineligibleRealEstate"
-                            name="ineligibleRealEstate"
-                            className="custom-switch-primary"
-                            />
-                        </li>   
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Firms involved in lending activities, such as leasing companies, finance companies, and any firm whose stock in trade is money {" "}
-                            <CustomInput
-                            defaultChecked={form.ineligibleLending}
-                            onChange={handleChange}
-                            type="switch"
-                            id="ineligibleLending"
-                            name="ineligibleLending"
-                            className="custom-switch-primary"
-                            />
-                        </li> 
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Pyramid sales plans {" "}
-                            <CustomInput
-                            defaultChecked={form.ineligiblePyramid}
-                            onChange={handleChange}
-                            type="switch"
-                            id="ineligiblePyramid"
-                            name="ineligiblePyramid"
-                            className="custom-switch-primary"
-                            />
-                        </li> 
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Firms involved in gambling activities {" "}
-                            <CustomInput
-                            defaultChecked={form.ineligibleGambling}
-                            onChange={handleChange}
-                            type="switch"
-                            id="ineligibleGambling"
-                            name="ineligibleGambling"
-                            className="custom-switch-primary"
-                            />
-                        </li> 
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Firms involved in illegal activities that are against the law in the jurisdiction where the business is located (including cannabis). {" "}
-                            <CustomInput
-                            defaultChecked={form.ineligibleIllegal}
-                            onChange={handleChange}
-                            type="switch"
-                            id="ineligibleIllegal"
-                            name="ineligibleIllegal"
-                            className="custom-switch-primary"
-                            />
-                        </li> 
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            Speculative trading activities, dealing in rare coins or stamps {" "}
-                            <CustomInput
-                            defaultChecked={form.restrictedSpeculative}
-                            onChange={handleChange}
-                            type="switch"
-                            id="restrictedSpeculative"
-                            name="restrictedSpeculative"
-                            className="custom-switch-primary"
-                            />                            
+                <ul className="">
+                        <li className="d-flex justify-content-between align-items-center">
+                        {!form.ineligible ? ("No, our business does not receive revenue from any of these sources") : ("Yes, our business receives revenue from one or more of these sources.")}{" "}
+                        <CustomInput
+                        defaultChecked={form.ineligible}
+                        onChange={handleChange}
+                        type="switch"
+                        id="ineligible"
+                        name="ineligible"
+                        className="custom-switch-primary"
+                        />
                         </li>                
                     </ul>
                 </Col>

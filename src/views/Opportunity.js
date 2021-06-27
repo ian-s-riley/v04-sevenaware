@@ -103,7 +103,7 @@ function Opportunity() {
         setCurrentForm(<IneligibleYes nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       case "Eligibility>Ineligible":
-        setScreenHeader("If your business is one the following it is INELIGIBLE…")
+        setScreenHeader("Are you in one of the following industries?")
         setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
       // case "Eligibility>Restricted>Yes":
@@ -115,7 +115,7 @@ function Opportunity() {
       //   setCurrentForm(<Restricted nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
       //   break;
       default:
-        setScreenHeader("If your business is one the following it is INELIGIBLE…")
+        setScreenHeader("Are you in one of the following industries?")
         setCurrentForm(<Ineligible nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
         break;
     }
