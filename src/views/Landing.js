@@ -1,11 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// reactstrap components
-import { Button, Container, NavLink, Row, Col } from "reactstrap";
+// nodejs library that concatenates strings
+import classnames from "classnames";
 
-// core components
-import AuthNavBar from "components/Navbars/AuthNavBar.js";
+// reactstrap components
+import {
+  Button, 
+  Container, 
+  NavLink, 
+  Row, 
+  Col, 
+  Collapse,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  NavbarBrand,
+  Navbar,
+  Nav,
+} from "reactstrap";
+
 
 function Landing() {
 
@@ -13,15 +28,60 @@ function Landing() {
     <>
       <div
         className="page-header"
-        style={{
-          backgroundImage:
-            "url(" +
-            require("assets/img/cover-2.jpg").default +
-            ")",
-        }}
       >
 
-        <AuthNavBar />
+      <Navbar
+        className={classnames("fixed-top", "navbar-transparent")}
+        id="navbar-main"
+        expand="lg"
+      >
+        <Container>
+          <div className="navbar-translate">
+            <NavbarBrand id="navbar-brand" to="/" tag={Link}>
+              <img
+                  alt="Home"               
+                  style={{
+                    height: "20px"
+                  }}
+                  src={require("assets/img/7alogo.png").default}
+                />
+            </NavbarBrand>
+            <button
+              className="navbar-toggler"
+              id="navigation"
+              type="button"
+              onClick={() => {
+                document.documentElement.classList.toggle("nav-open");
+              }}
+            >
+              <span className="navbar-toggler-bar bar1"></span>
+              <span className="navbar-toggler-bar bar2"></span>
+              <span className="navbar-toggler-bar bar3"></span>
+            </button>
+          </div>
+          <Collapse navbar isOpen={true}>
+            <Nav className="ml-auto" navbar>                            
+            <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle className="mr-2" nav>
+                  <i className="fa fa-3x fa-bars"></i>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-primary" right>
+                  <DropdownItem to="/signin" tag={Link}>
+                    Sign In
+                  </DropdownItem>
+                  <hr/>
+                  <DropdownItem tag={Link} to="/opportunity">
+                    Sign Up
+                  </DropdownItem>
+                  <DropdownItem tag={Link} to="/verify">
+                    Verify Sign Up
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>        
+            </Nav>
+          </Collapse>
+        </Container>
+      </Navbar>
         <div className="content-center">
           <Container>
             <div className="motto">
@@ -62,7 +122,39 @@ function Landing() {
             </div>
           </Container>
         </div>
+        <div className="page-header header-video">
+              <div className="filter filter-primary" />
+              {/* We show the video image placeholder instead of the video for small devices */}
+              <div
+                className="video-image"
+                style={{
+                  backgroundImage:
+                    "url(" +
+                    require("assets/img/video-placeholder.png").default +
+                    ")",
+                }}
+              />
+              <video
+                id="video-source"
+                loop="loop"
+                muted="muted"
+                preload="auto"
+                volume="0" 
+                autoPlay={true}
+              >
+              <source
+                  src={require("assets/video/business.webm").default}
+                  type="video/webm"
+                ></source>
+                <source
+                  src={require("assets/video/business.mp4").default}
+                  type="video/mp4"
+                ></source>
+                Video not supported
+              </video>              
+            </div>
       </div>
+      
     </>
   );
 }
