@@ -16,6 +16,9 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
+// core components
+import Buttons from "../opportunity-sections/Buttons";
+
 
 function Eligible(prop) {
     const dispatch = useDispatch()    
@@ -64,31 +67,49 @@ function Eligible(prop) {
             <Form className="settings-form">
               <Row>
                 <Col className="ml-auto mr-auto" md="10">
-                    <label>
-                        Click on the ‘APPLY NOW’ button to be invited to create a password protected account. We have found it a good practice to have an equity owner and authorized person create the account.
-                    </label>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="d-flex align-items-center justify-content-center" md="12">
-                    <Button
-                        className="btn-round "
-                        onClick={handleNextClick}
-                        color="primary"
-                        id="tooltip924342661"
-                        size="md"
-                    >
-                        Apply Now
-                        <i className="nc-icon nc-minimal-right" />
-                    </Button>
-                    <UncontrolledTooltip delay={0} target="tooltip924342661">
-                        Apply Now
-                    </UncontrolledTooltip>
+                    <h5>
+                        Click on the ‘APPLY NOW’ button to be invited to create a password protected account.
+                        <br/><br/><small>We have found it a good practice to have an equity owner and authorized person create the account.</small>
+                        </h5>
                 </Col>
               </Row>               
             </Form>
             </Col>
-            <Col className="d-flex align-items-center" md="2"></Col>
+            <Col className="d-flex align-items-center" md="2">
+            
+            <div className="">
+              <div style={{width: "180px"}}>
+              <Button
+                  className="btn-round "
+                  onClick={handleNextClick}
+                  color="primary"
+                  id="tooltip924342661"
+                  size="lg"
+              >
+                  Apply Now
+                  <i className="nc-icon nc-minimal-right" />
+              </Button>
+              </div>
+
+              <div className="following2">
+              <a href="#">
+                  <Button
+                      className="btn-just-icon"
+                      color=""
+                      id="tooltip924342355"
+                      size="sm"
+                  >
+                      <i className={"nc-icon nc-minimal-left"} />
+                  </Button>
+                  <UncontrolledTooltip delay={0} target="tooltip924342355">
+                      Back
+                  </UncontrolledTooltip>
+                  </a>
+              </div>                   
+              
+          </div> 
+
+            </Col>
         </Row>
         </Container>
     </div>

@@ -213,19 +213,15 @@ function Ineligible(prop) {
               </Row>
               <Row>
                 <Col className="ml-auto mr-auto" md="10">
-                <ul className="">
-                        <li className="d-flex justify-content-between align-items-center">
-                        {!form.ineligible ? ("No, our business does not receive revenue from any of these sources") : ("Yes, our business receives revenue from one or more of these sources.")}{" "}
-                        <CustomInput
-                        defaultChecked={form.ineligible}
-                        onChange={handleChange}
-                        type="switch"
-                        id="ineligible"
-                        name="ineligible"
-                        className="custom-switch-primary"
-                        />
-                        </li>                
-                    </ul>
+                <CustomInput
+                      type="switch"
+                      defaultChecked={form.ineligible}
+                      onChange={handleChange}
+                      id="ineligible"
+                      name="ineligible"
+                      className="custom-switch-primary h5"
+                      label={!form.ineligible ? ("No, our business does not receive revenue from any of these sources") : ("Yes, our business receives revenue from one or more of these sources.")}
+                    />
                 </Col>
               </Row>               
             </Form>

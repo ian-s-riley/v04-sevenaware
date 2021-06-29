@@ -55,15 +55,11 @@ function ProfileStart(prop) {
             <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
             
-            <Form className="settings-form">
               <Row>
-                <Col className="ml-auto mr-auto" md="10">
-                    <label>
-                    Let’s get started building your business profile by getting an account email and password set up for secure access to your loan application.
-                    </label>
+                <Col className="ml-auto mr-auto h5" md="10">
+                    <br/>Let’s get started building your business profile by getting an account email and password set up for secure access to your loan application.
                 </Col>
               </Row>
-            </Form>
             </Col>
             <Col className="d-flex align-items-center" md="2">
             <Buttons next={handleNextClick} />

@@ -180,7 +180,9 @@ function ProfileSignUp(prop) {
             <Col className="d-flex align-items-center justify-content-center" md="2"></Col>
             <Col className="ml-auto mr-auto" md="8">
             
-            <Form className="settings-form">                
+            <Form className="settings-form">     
+                <Row>
+                <Col className="ml-auto mr-auto h5" md="10">
                 <FormGroup className={emailState === "success" ? "has-success" : null}>
                 <Label for="businessEmail" className="control-label">Email Address (User ID)</Label>
                 <Input 
@@ -256,6 +258,9 @@ function ProfileSignUp(prop) {
                         </span>
                     </Label>
                 </FormGroup> 
+                </Col>
+                </Row>           
+                
             </Form>
 
             </Col>

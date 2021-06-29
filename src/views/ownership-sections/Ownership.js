@@ -8,6 +8,9 @@ import {
   Row,
   Col,
   Label,
+  Pagination,
+  PaginationItem,
+  PaginationLink
 } from "reactstrap";
 
 // core components
@@ -41,11 +44,26 @@ function Ownership(prop) {
         <Container>        
         <Row>
             <Col className="d-flex align-items-center justify-content-center" md="3"></Col>
-            <Col className="d-flex align-items-center" md="6">
-              <Label>
-              We need to know if you have: 1) any Affiliates (think Franchise/Jobber agreements or other entities that you control), 2) have any Associates / Key Employees, and or officers or directors?
-              </Label>            
+            <Col className="justify-content-center" md="6">
+            <Row>
+              <Col className="d-flex align-items-center justify-content-center" md="1">
+              <span className="numberCircle">&#9312;</span>
+              </Col>
+              <Col className="d-flex align-items-center" md="11">
+              Any affiliates (think Franchise/Jobber agreements or other entities that you control?
+              </Col>
+            </Row>
+            <Row>
+              <Col className="d-flex align-items-center justify-content-center" md="1">
+              <span className="numberCircle">&#9313;</span>
+              </Col>
+              <Col className="d-flex align-items-center" md="11">
+              Any Associates/Key Employees, and or officers or directors?
+              </Col>
+            </Row>
+
             </Col>
+              
             <Col className="d-flex align-items-center justify-content-center" md="3">
                 <Buttons next={handleNextClick} />
             </Col>

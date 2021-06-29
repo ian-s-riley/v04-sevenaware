@@ -71,20 +71,21 @@ function ForProfit(prop) {
             
             <Form className="settings-form">
               <Row>
-                <Col className="ml-auto mr-auto" md="10">
-                    <ul className="notifications">
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            {form.forProfit ? "Yes, this is a for profit business. " : "No, this is a non-profit business. "}
-                            <CustomInput
-                            defaultChecked={form.forProfit}
-                            onChange={handleChange}
-                            type="switch"
-                            id="forProfit"
-                            name="forProfit"
-                            className="custom-switch-primary"
-                            />
-                        </li>       
-                    </ul>
+              <Col className="ml-auto mr-auto" md="10">
+                <Row>
+                  <Col className="ml-auto mr-auto" md="10">
+                    <br/>
+                    <CustomInput
+                      type="switch"
+                      defaultChecked={form.forProfit}
+                      onChange={handleChange}
+                      id="forProfit"
+                      name="forProfit"
+                      className="custom-switch-primary h5"
+                      label={form.forProfit ? ("Yes, this is a for profit business. ") : ("No, this is a non-profit business. ")}
+                    />
+                  </Col>
+                </Row> 
                 </Col>
               </Row>               
             </Form>

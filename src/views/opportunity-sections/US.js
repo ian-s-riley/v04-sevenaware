@@ -71,23 +71,21 @@ function US(prop) {
             <Col className="ml-auto mr-auto" md="8">
             
             <Form className="settings-form">
-              <Row>
-                <Col className="ml-auto mr-auto" md="10">
-                    <ul className="notifications">
-                        <li className="notification-item d-flex justify-content-between align-items-center">
-                            {form.us ? "Yes, this is a US business. " : "No, this is not a US business. "}
-                            <CustomInput
-                            defaultChecked={form.us}
-                            onChange={handleChange}
-                            type="switch"
-                            id="us"
-                            name="us"
-                            className="custom-switch-primary"
-                            />
-                        </li>                                
-                    </ul>
-                </Col>
-              </Row>               
+            <Row>
+                  <Col className="ml-auto mr-auto" md="10">
+                    <br/>
+                    <CustomInput
+                      type="switch"
+                      defaultChecked={form.us}
+                      onChange={handleChange}
+                      id="us"
+                      name="us"
+                      color="primary"
+                      className="custom-switch-primary h5"
+                      label={form.forProfit ? ("Yes, this business is located in the US.") : ("No, this business is not located in the US.")}
+                    />
+                  </Col>
+                </Row>             
             </Form>
             </Col>
             <Col className="d-flex align-items-center" md="2">

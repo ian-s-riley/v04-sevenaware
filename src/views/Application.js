@@ -41,8 +41,7 @@ import ProfileDBA from "./borrower-sections/ProfileDBA";
 import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
 import ProfileBusinessAddress from "./borrower-sections/ProfileBusinessAddress";
 import ProfileNACIS from "./borrower-sections/ProfileNACIS";
-
-import Ownership from "./borrower-sections/Ownership";
+import Ownership from "./ownership-sections/Ownership"
 
 function Application(prop) {
   const dispatch = useDispatch()    
@@ -67,7 +66,7 @@ function Application(prop) {
 
     switch (screenId) {
       case "Ownership>":
-          setStageHeader("Let's get the ownership struction of your business for the SBA.")
+          setStageHeader("We need to know if you have:")
           setCurrentForm(<Ownership nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>NACIS":

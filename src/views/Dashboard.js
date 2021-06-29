@@ -101,7 +101,7 @@ function Dashboard(prop) {
 
     let colorScale = "grayscale"
     sectionPrefix === "Profile>" && (colorScale = "cool")
-    sectionPrefix === "Ownership>" && (colorScale = "warm")
+    sectionPrefix === "Ownership>" && (colorScale = "qualitative")
 
     const chartSection = (
     <Row>

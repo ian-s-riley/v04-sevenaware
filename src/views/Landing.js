@@ -123,8 +123,19 @@ function Landing() {
           </Container>
         </div>
         <div className="page-header header-video">
+              <div className="" />
+              {/*
+              <div
+                className="video-image"
+                style={{
+                  backgroundImage:
+                    "url(" +
+                    require("assets/img/cover-2.jpg").default +
+                    ")",
+                }}
+              />
+              */}
               <div className="filter filter-primary" />
-              {/* We show the video image placeholder instead of the video for small devices */}
               <div
                 className="video-image"
                 style={{
@@ -143,15 +154,16 @@ function Landing() {
                 autoPlay={true}
               >
               <source
-                  src={require("assets/video/business.webm").default}
+                  src={"https://sevenaware-v04.s3.amazonaws.com/business.webm"}
                   type="video/webm"
                 ></source>
                 <source
-                  src={require("assets/video/business.mp4").default}
+                  src={"https://sevenaware-v04.s3.amazonaws.com/business.mp4"}
                   type="video/mp4"
                 ></source>
                 Video not supported
-              </video>              
+              </video>          
+                
             </div>
       </div>
       
