@@ -134,7 +134,7 @@ function Landing() {
                     ")",
                 }}
               />
-              */}
+              
               <div className="filter filter-primary" />
               <div
                 className="video-image"
@@ -153,17 +153,17 @@ function Landing() {
                 volume="0" 
                 autoPlay={true}
               >
-              <source
-                  src={"https://sevenaware-v04.s3.amazonaws.com/business.webm"}
-                  type="video/webm"
-                ></source>
                 <source
                   src={"https://sevenaware-v04.s3.amazonaws.com/business.mp4"}
                   type="video/mp4"
                 ></source>
                 Video not supported
               </video>          
-                
+              */}
+
+                <video autoPlay loop muted>
+                        <source src={"https://sevenaware-v04.s3.amazonaws.com/business.mp4"} type='video/mp4' />
+                </video>
             </div>
       </div>
       
