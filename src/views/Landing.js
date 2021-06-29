@@ -123,7 +123,7 @@ function Landing() {
           </Container>
         </div>
         <div className="page-header header-video">
-              <div className="" />
+              <div className="filter filter-primary" />
               {/*
               <div
                 className="video-image"
@@ -161,8 +161,9 @@ function Landing() {
               </video>          
               */}
 
-                <video autoPlay loop muted>
-                        <source src={"https://sevenaware-v04.s3.amazonaws.com/business.mp4"} type='video/mp4' />
+                <video autoPlay loop muted poster="assets/img/cover-2.jpg">
+                  <source src={"https://sevenaware-v04.s3.amazonaws.com/business.webm"} type='video/mp4' />
+                  <source src={"https://sevenaware-v04.s3.amazonaws.com/business.mp4"} type='video/mp4' />
                 </video>
             </div>
       </div>
