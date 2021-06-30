@@ -48,7 +48,7 @@ function Application(prop) {
     
   //const [form, setForm] = useState(useSelector(selectForm))   
   const [form, setForm] = useState(prop.form)   
-  //console.log('Application.js - form', form)
+  console.log('Application.js - form', form)
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(form.userId)
@@ -66,7 +66,15 @@ function Application(prop) {
 
     switch (screenId) {
       case "Ownership>":
-          setStageHeader("We need to know if you have:")
+          setStageHeader(form.entityType === "Sole Proprietor " ? (
+            "Let's get the ownership structure of your business for the SBA."
+          ) : (
+            form.businessName !== "" ? (
+                "We need to gather the complete ownership information on " + form.businessName
+              ) : (
+                "We need to gather the complete ownership information on " + form.dba
+              )            
+          ))
           setCurrentForm(<Ownership nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
           break;
       case "Profile>NACIS":
