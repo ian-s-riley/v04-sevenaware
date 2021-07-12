@@ -24,6 +24,7 @@ export const getUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
+      status
       createdAt
       updatedAt
     }
@@ -57,6 +58,7 @@ export const listUsers = /* GraphQL */ `
         idType
         percentOwner
         sevenAwareAgree
+        status
         createdAt
         updatedAt
       }

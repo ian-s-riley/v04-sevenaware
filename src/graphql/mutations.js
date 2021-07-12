@@ -27,6 +27,7 @@ export const createUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
+      status
       createdAt
       updatedAt
     }
@@ -58,6 +59,7 @@ export const updateUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
+      status
       createdAt
       updatedAt
     }
@@ -89,6 +91,7 @@ export const deleteUser = /* GraphQL */ `
       idType
       percentOwner
       sevenAwareAgree
+      status
       createdAt
       updatedAt
     }

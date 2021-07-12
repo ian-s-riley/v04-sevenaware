@@ -17,6 +17,9 @@ import {
     updateAddressAsync
   } from 'features/form/addressSlice'
 
+// react plugin used to create DropdownMenu for selecting items
+import Select from "react-select";  
+
 // reactstrap components
 import {
   Button,
@@ -48,7 +51,20 @@ const SmartyStreetsSDK = require("smartystreets-javascript-sdk");
 const SmartyStreetsCore = SmartyStreetsSDK.core;
 const Lookup = SmartyStreetsSDK.usStreet.Lookup;
 
-const usStates =  ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
+const usStates =  ["GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"]
+const selectStates = [
+  { value: "", label: " Choose state", isDisabled: true },
+  { value: "AK", label: "AK " },
+  { value: "AL", label: "AL " },
+  { value: "AR", label: "AR " },
+  { value: "AZ", label: "AZ " },
+  { value: "CA", label: "CA " },
+  { value: "CO", label: "CO " },
+  { value: "CT", label: "CT " },
+  { value: "DC", label: "DC " },
+  { value: "DE", label: "DE " },
+  { value: "FL", label: "FL " },
+];
 
 function ProfileBusinessAddress(prop) {
     const dispatch = useDispatch()
@@ -95,7 +111,6 @@ function ProfileBusinessAddress(prop) {
     
 
     async function handleNextClick() {
-        console.log('handleNextClic - ')
         //validation
         if (isDirty && (address1State !== "success" || cityState !== "success" || zipState !== "success")) return
 
@@ -239,8 +254,8 @@ function ProfileBusinessAddress(prop) {
         setAddress({ ...address, [id]: value})
     }
 
-    function handleSelectState(e) {
-        setAddress({...address, state: e.target.innerText})
+    function handleSelectState(value) {
+        setAddress({...address, state: value})
         setIsDirty(true)
     }
 
@@ -305,28 +320,19 @@ function ProfileBusinessAddress(prop) {
                     <Col md="6">
                     <Label for="state" className="control-label">State</Label>
                         
+                    <Select
+                      className="react-select react-select-success"
+                      classNamePrefix="react-select"
+                      name="state"
+                      id="state"
+                      value={address.state}
+                      options={selectStates}
+                      onChange={(value) => handleSelectState(value)}
+                      placeholder="Choose State"
+                    />
 
 
-                        <UncontrolledDropdown>
-                            <DropdownToggle
-                            aria-expanded={false}
-                            aria-haspopup={true}
-                            caret
-                            color="primary"
-                            data-toggle="dropdown"
-                            id="stateDropdown"
-                            type="button"
-                            >
-                            {address.state === "" ? ("State") : (address.state)}
-                            </DropdownToggle>
-                            <DropdownMenu aria-labelledby="stateDropdown">
-                            {usStates.map(usState => (
-                            <DropdownItem key={usState} href="#" onClick={handleSelectState}>
-                                {usState}
-                            </DropdownItem>
-                            ))}
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                       
                     </Col>
                 </Row>
 

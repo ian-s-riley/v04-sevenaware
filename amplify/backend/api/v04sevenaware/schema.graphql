@@ -19,6 +19,7 @@ type User @model {
   idType: String
   percentOwner: Float
   sevenAwareAgree: Boolean
+  status: String
 }
 
 type Form @model {

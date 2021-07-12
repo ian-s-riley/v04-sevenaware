@@ -9,22 +9,24 @@ export const userSlice = createSlice({
   initialState: {
     id: "",
     userId: "",
+    formId: "",
     userType: "",    
     email: "",    
     password: "",
+    prefix: "",
     firstName: "",
     middleName: "",
     lastName: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-    zipPlus4: "",
+    addressId: "",   
     title: "",
     profile: "",
     image: "",
+    tin: "",
+    ssn: "",
+    idType: "",
+    percentOwner: 0,
     sevenAwareAgree: false,
+    status: "",
   },
   reducers: {
     updateUser: (state, action) => {
@@ -32,22 +34,24 @@ export const userSlice = createSlice({
       //console.log('updateProfile: state',state)
       state.id = action.payload.id
       state.userId = action.payload.userId
+      state.formId = action.payload.formId
       state.userType = action.payload.userType
       state.email = action.payload.email
       state.password = action.payload.password
+      state.prefix = action.payload.prefix   
       state.firstName = action.payload.firstName      
       state.middleName = action.payload.middleName
       state.lastName = action.payload.lastName
-      state.address1 = action.payload.address1
-      state.address2 = action.payload.address2
-      state.city = action.payload.city
-      state.state = action.payload.state
-      state.zip = action.payload.zip
-      state.zipPlus4 = action.payload.zipPlus4
+      state.addressId = action.payload.addressId
       state.title = action.payload.title
       state.profile = action.payload.profile
       state.image = action.payload.image
+      state.ssn = action.payload.ssn
+      state.tin = action.payload.tin
+      state.idType = action.payload.idType
+      state.percentOwner = action.payload.percentOwner
       state.sevenAwareAgree = action.payload.sevenAwareAgree 
+      state.status = action.payload.status 
     },
   },
 });
@@ -66,22 +70,24 @@ export const updateUserAsync = user => dispatch => {
         input: {
           id: user.id,
           userId: user.userId,
+          formId: user.formId,
           userType: user.userType,
           email: user.email,
           password: user.password,
+          prefix: user.prefix,
           firstName: user.firstName,   
           middleName: user.middleName,
           lastName: user.lastName,
-          address1: user.address1,
-          address2: user.address2,
-          city: user.city,
-          state: user.state,
-          zip: user.zip, 
-          zipPlus4: user.zipPlus4,
+          addressId: user.addressId,          
           title: user.title,
           profile: user.profile,
           image: user.image,
+          ssn: user.ssn,
+          tin: user.tin,
+          idType: user.idType,
+          percentOwner: user.percentOwner,
           sevenAwareAgree: user.sevenAwareAgree,
+          status: user.status,
         }
       } 
   })    

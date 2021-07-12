@@ -42,6 +42,7 @@ import ProfileBusinessName from "./borrower-sections/ProfileBusinessName";
 import ProfileBusinessAddress from "./borrower-sections/ProfileBusinessAddress";
 import ProfileNACIS from "./borrower-sections/ProfileNACIS";
 import Ownership from "./ownership-sections/Ownership"
+import Owners from "./ownership-sections/Owners"
 
 function Application(prop) {
   const dispatch = useDispatch()    
@@ -65,6 +66,10 @@ function Application(prop) {
     const screenId = screenNavigation.slice(-1)[0];
 
     switch (screenId) {
+      case "Ownership>Owners":
+        setStageHeader("[We need 100% ownership structure]")
+        setCurrentForm(<Owners nextForm={gotoNextForm} navigation={screenNavigation} form={form} />)
+          break;
       case "Ownership>":
           setStageHeader(form.entityType === "Sole Proprietor " ? (
             "Let's get the ownership structure of your business for the SBA."

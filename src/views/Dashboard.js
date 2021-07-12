@@ -131,7 +131,7 @@ function Dashboard(prop) {
             style={{ labels: { fontSize: 20, fill: "white"}}}
           />
           <VictoryLabel
-            textAnchor="middle" verticalAnchor="middle"
+            textAnchor="middle" verticalanchor="middle"
             x={pieDimension/2} y={pieDimension/2}
             style={{fontSize: 40}}
             text={percentComplete + "%"}
@@ -193,7 +193,7 @@ function Dashboard(prop) {
             style={{ labels: { fontSize: 201397, fill: "white"}}}
           />
           <VictoryLabel
-            textAnchor="middle" verticalAnchor="middle"
+            textAnchor="middle" verticalanchor="middle"
             x={180} y={180}
             style={{fontSize: 40}}
             text={"100%"}
