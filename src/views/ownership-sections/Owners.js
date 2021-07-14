@@ -44,15 +44,15 @@ import { formatDiagnostic } from "typescript";
 // core components
 import Buttons from "../opportunity-sections/Buttons";
 
-import { PinpointClient, CreateAppCommand } from "@aws-sdk/client-pinpoint";
+// import { PinpointClient, CreateAppCommand } from "@aws-sdk/client-pinpoint";
 
-// a client can be shared by different commands.
-const client = new PinpointClient({ region: "us-east-1" });
+// // a client can be shared by different commands.
+// const client = new PinpointClient({ region: "us-east-1" });
 
-const params = {
-  /** input parameters */
-};
-const command = new CreateAppCommand(params);
+// const params = {
+//   /** input parameters */
+// };
+// const command = new CreateAppCommand(params);
 
 // // Load the AWS SDK for Node.js
 // var AWS = require('aws-sdk');
