@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.3",
+    "@aws-sdk/client-pinpoint": "^3.21.0",
     "@emotion/react": "^11.4.0",
     "@reduxjs/toolkit": "^1.5.1",
     "aws-amplify": "^3.4.3",
     "aws-amplify-react": "^5.0.3",
+    "aws-sdk": "^2.944.0",
     "bootstrap": "4.6.0",
     "bower": "^1.8.12",
     "chartist": "^0.11.4",
@@ -31,6 +33,7 @@
     "react-spinners": "^0.10.6",
     "reactstrap": "8.9.0",
     "smartystreets-javascript-sdk": "^1.9.0",
+    "uuid": "^8.3.2",
     "victory": "^35.8.2",
     "victory-pie": "^35.8.0"
   },

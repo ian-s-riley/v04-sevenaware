@@ -12,6 +12,9 @@ import { useDispatch } from 'react-redux';
 import {
   updateFormAsync,  
 } from 'features/form/formSlice'
+import {
+  createNotificationAsync,  
+} from 'features/notification/notificationSlice'
 
 import InputMask from "react-input-mask";
 
@@ -41,6 +44,86 @@ import { formatDiagnostic } from "typescript";
 // core components
 import Buttons from "../opportunity-sections/Buttons";
 
+import { PinpointClient, CreateAppCommand } from "@aws-sdk/client-pinpoint";
+
+// a client can be shared by different commands.
+const client = new PinpointClient({ region: "us-east-1" });
+
+const params = {
+  /** input parameters */
+};
+const command = new CreateAppCommand(params);
+
+// // Load the AWS SDK for Node.js
+// var AWS = require('aws-sdk');
+
+// // The AWS Region that you want to use to send the email. For a list of
+// // AWS Regions where the Amazon Pinpoint API is available, see
+// // https://docs.aws.amazon.com/pinpoint/latest/apireference/
+// const aws_region = "us-east-1"
+
+// // The "From" address. This address has to be verified in Amazon Pinpoint
+// // in the region that you use to send email.
+// const senderAddress = "sender@example.com";
+
+// // The address on the "To" line. If your Amazon Pinpoint account is in
+// // the sandbox, this address also has to be verified.
+// var toAddress = "recipient@example.com";
+
+// // The Amazon Pinpoint project/application ID to use when you send this message.
+// // Make sure that the SMS channel is enabled for the project or application
+// // that you choose.
+// const appId = "ce796be37f32f178af652b26eexample";
+
+// // The subject line of the email.
+// var subject = "Amazon Pinpoint (AWS SDK for JavaScript in Node.js)";
+
+// // The email body for recipients with non-HTML email clients.
+// var body_text = `Amazon Pinpoint Test (SDK for JavaScript in Node.js)
+// ----------------------------------------------------
+// This email was sent with Amazon Pinpoint using the AWS SDK for JavaScript in Node.js.
+// For more information, see https:\/\/aws.amazon.com/sdk-for-node-js/`;
+
+// // The body of the email for recipients whose email clients support HTML content.
+// var body_html = `<html>
+// <head></head>
+// <body>
+//   <h1>Amazon Pinpoint Test (SDK for JavaScript in Node.js)</h1>
+//   <p>This email was sent with
+//     <a href='https://aws.amazon.com/pinpoint/'>the Amazon Pinpoint API</a> using the
+//     <a href='https://aws.amazon.com/sdk-for-node-js/'>
+//       AWS SDK for JavaScript in Node.js</a>.</p>
+// </body>
+// </html>`;
+
+// // The character encoding the you want to use for the subject line and
+// // message body of the email.
+// var charset = "UTF-8";
+
+// // Specify that you're using a shared credentials file.
+// //var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+// //AWS.config.credentials = credentials;
+
+// // Specify the region.
+// AWS.config.update({region:aws_region});
+
+// const awsCreds = new BasicAWSCredentials("access_key_id", "secret_key_id");
+// AWS.AmazonS3ClientBuilder.standard()
+//                         .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+//                         .build();
+
+//AWS.config.AWSStaticCredentialsProvider()
+// AWS.config.getCredentials(function(err) {
+//   if (err) console.log(err.stack);
+//   // credentials not loaded
+//   else {
+//     console.log("Access key:", AWS.config.credentials.accessKeyId);
+//   }
+// });
+
+//Create a new Pinpoint object.
+//var pinpoint = new AWS.Pinpoint();
+
 const initialUserState = {
   id: "",
   userId: "",
@@ -60,7 +143,7 @@ const initialUserState = {
   tin: "",
   ssn: "",
   idType: "SSN",
-  percentOwner: 0,
+  percentOwner: null,
   sevenAwareAgree: false,
 }
 
@@ -74,6 +157,7 @@ function Owners(prop) {
     const [totalPercent, setTotalPercent] = useState(0);  
     const [emailState, setEmailState] = useState("");  
     const [newOwnerModal, setNewOwnerModal] = React.useState(false);
+    const [ownerModal, setOwnerModal] = React.useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     
     //const thisScreenId = "Ownership>Owners"
@@ -93,6 +177,12 @@ function Owners(prop) {
         setOwners(owners)
       }
     }
+
+    useEffect(() => {
+      const newTotal = owners.reduce((a,v) =>  a = a + parseFloat(v.percentOwner) , 0 )
+      console.log('useEffect - newTotal', newTotal)
+      setTotalPercent(newTotal)
+    }, [owners])
 
     const handleNextClick = () => {   
        //validation
@@ -127,7 +217,7 @@ function Owners(prop) {
 
     function handleNewOwner() {   
       //validation
-      if (emailState === "error" || percentState === "error" || user.email === "" || user.percentOwner === "") {
+      if (emailState !== "success" || percentState !== "success" || user.email === "" || user.percentOwner === "") {
         setErrorMessage("Please make sure that the email address is correct and that the percent ownership is between 0 & 100%.")
         return false;
       } else {
@@ -166,6 +256,25 @@ function Owners(prop) {
         }
       )
     const newUserId = apiUserData.data.createUser.id
+
+    //send an email to the new owner
+    //send a notification to the new user/borrower
+    const toUserId = "ian.public@yahoo.com"
+    const fromUserId = "ian.s.riley@outlook.com"
+    const title = "Welcome to 7(a)ware"
+    const emailBody = "<p>Welcome to <b>7(a)ware</b>. You've been added as a " + user.percentOwner + "% owner of " + form.businessName + ".<br /><br/>Pleaes sign up on the <a href='www.7aware.com'>7(a)ware SBA loan application owner portal</a> to complete your profile."
+    const borrowerNotification = {
+        fromUserId: fromUserId,
+        toUserId: toUserId,
+        fromEmail: fromUserId,
+        toEmail: toUserId,
+        fromName: fromUserId,
+        toName: toUserId,
+        title: title,
+        body: emailBody,
+        emailBody: emailBody,
+    } 
+    dispatch(createNotificationAsync(borrowerNotification))
     
     //add the new user to the local store for display
     setOwners([...owners, {...user, "id": newUserId}]);
@@ -195,8 +304,10 @@ function Owners(prop) {
   }
 
   const verifyPercent = value => {         
+    console.log('verifyPercent - totalPercent:', totalPercent)
     console.log('verifyPercent - value:', value)
-    if (value < 0 || value > 100.00) {return false}
+    if (value < 0) {return false}
+    if (100 - totalPercent - value < 0) {return false}
 
     var percentRex = /^((\d{0,2}(\.\d{1,2})?)|100)$/;
     if (percentRex.test(value)) {      
@@ -223,13 +334,14 @@ function Owners(prop) {
                   </tr>
                 </thead>
                 <tbody>
+                  {totalPercent < 100.00 && (
                   <tr className="d-flex">
                     <td className="text-center col-7">
                       <FormGroup>
                       <InputGroup className={emailState === "success" ? "has-success" : null}>
                           <Input 
                           type="email" 
-                          value={user.email}
+                          defaultValue={user.email}
                           onChange = {event => {
                           if (verifyEmail(event.target.value)) {
                               setEmailState("success");
@@ -252,6 +364,7 @@ function Owners(prop) {
                       <InputGroup className={percentState === "success" ? "has-success" : null}>
                       <Input 
                           type="text"  
+                          defaultValue={user.percentOwner}
                           onChange = {event => {
                           if (verifyPercent(event.target.value)) {
                               setPercentState("success");
@@ -289,6 +402,8 @@ function Owners(prop) {
                         </UncontrolledTooltip>
                       </td>
                     </tr>
+                  )}
+                  
 
                   {owners.map((owner, key) => {
                     return (
@@ -308,7 +423,7 @@ function Owners(prop) {
                           id="tooltip164934787"
                           size="sm"
                           type="button"
-                          onClick={() => setNewOwnerModal(true)}
+                          onClick={() => setOwnerModal(true)}
                         >
                           <i className="fa fa-user" />
                         </Button>
@@ -346,7 +461,7 @@ function Owners(prop) {
                   <tr className="d-flex">       
                     <td className="text-center col-7"></td>
                     <td className="text-center col-3">
-                    <h5>{(owners.reduce((a,v) =>  a = a + v.percentOwner , 0 ))}%</h5>
+                    <h5>{totalPercent}%</h5>
                     </td>
                     <td className="text-right col-2"></td>
                   </tr>
@@ -417,6 +532,39 @@ function Owners(prop) {
         </div>
         <div className="modal-body">
           <p>It looks like you have not entered a valid {"something"}</p>          
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={ownerModal}
+        toggle={() => setOwnerModal(false)}
+        modalClassName="modal-register"
+      >
+        <div className="modal-header no-border-header text-center">
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setOwnerModal(false)}
+          >
+            <span aria-hidden={true}>×</span>
+          </button>
+          <br />
+          <h3 className="modal-title text-center">You own</h3>
+          <p>{user.percentOwner}% of this business.</p>
+        </div>
+        <div className="modal-body">
+          
+          <p>
+            As the owner fills out their profile you'll see updates here 
+          </p>          
+          <br />
+          <div className="text-center">
+          <Button className="btn-round" color="primary">
+            Resend Invitation
+          </Button>
+          </div>          
         </div>
       </Modal>
     </div>
