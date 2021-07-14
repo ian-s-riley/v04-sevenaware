@@ -259,8 +259,9 @@ function Owners(prop) {
 
     //send an email to the new owner
     //send a notification to the new user/borrower
-    const toUserId = "ian.public@yahoo.com"
+    const toUserId = user.email
     const fromUserId = "ian.s.riley@outlook.com"
+    const fromName = "7(a)ware"
     const title = "Welcome to 7(a)ware"
     const emailBody = "<p>Welcome to <b>7(a)ware</b>. You've been added as a " + user.percentOwner + "% owner of " + form.businessName + ".<br /><br/>Pleaes sign up on the <a href='www.7aware.com'>7(a)ware SBA loan application owner portal</a> to complete your profile."
     const borrowerNotification = {
@@ -268,7 +269,7 @@ function Owners(prop) {
         toUserId: toUserId,
         fromEmail: fromUserId,
         toEmail: toUserId,
-        fromName: fromUserId,
+        fromName: fromName,
         toName: toUserId,
         title: title,
         body: emailBody,
