@@ -217,8 +217,11 @@ function Owners(prop) {
 
     function handleNewOwner() {   
       //validation
-      if (emailState !== "success" || percentState !== "success" || user.email === "" || user.percentOwner === "") {
-        setErrorMessage("Please make sure that the email address is correct and that the percent ownership is between 0 & 100%.")
+      if (emailState !== "success" || user.email === "") {
+        setErrorMessage("Please enter a valid email address for this owner.")
+        return false;
+      } else if (percentState !== "success" || user.percentOwner === "") {
+        setErrorMessage("Please make sure you've entered a percentage less than " + (100-totalPercent) + "% and greater than 0.")
         return false;
       } else {
         setNewOwnerModal(true)      
@@ -342,7 +345,7 @@ function Owners(prop) {
                       <InputGroup className={emailState === "success" ? "has-success" : null}>
                           <Input 
                           type="email" 
-                          defaultValue={user.email}
+                          value={user.email}
                           onChange = {event => {
                           if (verifyEmail(event.target.value)) {
                               setEmailState("success");
@@ -519,7 +522,7 @@ function Owners(prop) {
       <Modal isOpen={errorMessage !== ""} toggle={() => setErrorMessage("")}>
         <div className="modal-header">
           <h5 className="modal-title" id="exampleModalLiveLabel">
-            Incorrect {"something"}
+            Please Check your Entries
           </h5>
           <button
             aria-label="Close"
@@ -532,7 +535,7 @@ function Owners(prop) {
           </button>
         </div>
         <div className="modal-body">
-          <p>It looks like you have not entered a valid {"something"}</p>          
+          <p>{errorMessage}</p>          
         </div>
       </Modal>
 

@@ -114,7 +114,7 @@ function ProfileBusinessAddress(prop) {
         //validation
         if (isDirty && (address1State !== "success" || cityState !== "success" || zipState !== "success")) return
 
-        //if (isDirty) {
+        if (isDirty) {
             let authId = "5754b539-a016-8109-970c-4c11834d47cb"
             let authToken = "asVs4YKeYeeUx29M1XeJ"
             const credentials = new SmartyStreetsCore.StaticCredentials(authId, authToken)
@@ -134,18 +134,19 @@ function ProfileBusinessAddress(prop) {
                 client.send(lookup1)
                   .then(handleSuccess)
                   .catch(handleError)
-        // } else {
-        //     //save the new form to the navigation path for this user    
-        //     let screenNavigation = Object.assign([], prop.navigation);
-        //     screenNavigation.push(nextScreenId)
+        } else {
+             //save the new form to the navigation path for this user    
+             let screenNavigation = Object.assign([], prop.navigation);
+             screenNavigation.push(nextScreenId)
 
-        //     //go to the next step, stage, or form
-        //     prop.nextForm(null, screenNavigation)
-        // }
+             //go to the next step, stage, or form
+             prop.nextForm(null, screenNavigation)
+        }
     }
 
     function handleSuccess(response) {
-        response.lookups.map(lookup => console.log(lookup.result));
+        //response.lookups.map(lookup => console.log(lookup.result));
+
         setAddress({
           ...address,
           "address1": response.lookups[0].result[0].deliveryLine1,
