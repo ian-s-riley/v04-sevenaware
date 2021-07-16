@@ -86,7 +86,7 @@ function Dashboard(prop) {
     //console.log("setupCharts - stepPercent", stepPercent)
     let percentComplete = stepPercent*stepsFiltered.length
     let lastPage = screenNavigation.slice(-1)[0] 
-    console.log("setupChartData - lastPage", lastPage)
+    //console.log("setupChartData - lastPage", lastPage)
     let pieDimension = 400
     //console.log("setupCharts - lastPage", lastPage)    
     if (lastPage.startsWith(sectionPrefix)) {
@@ -131,7 +131,7 @@ function Dashboard(prop) {
             style={{ labels: { fontSize: 20, fill: "white"}}}
           />
           <VictoryLabel
-            textAnchor="middle" verticalanchor="middle"
+            textAnchor="middle" verticalAnchor="middle"
             x={pieDimension/2} y={pieDimension/2}
             style={{fontSize: 40}}
             text={percentComplete + "%"}
@@ -193,7 +193,7 @@ function Dashboard(prop) {
             style={{ labels: { fontSize: 201397, fill: "white"}}}
           />
           <VictoryLabel
-            textAnchor="middle" verticalanchor="middle"
+            textAnchor="middle" verticalAnchor="middle"
             x={180} y={180}
             style={{fontSize: 40}}
             text={"100%"}
@@ -242,7 +242,7 @@ function Dashboard(prop) {
   } 
   
   function gotoForm(screen) {
-    console.log('gotoForm - screen', screen)
+    //console.log('gotoForm - screen', screen)
     //console.log('gotoForm - screenNavigation', screenNavigation)
     let newScreenNavigation = form.screenNavigation
     if (screen !== "") {

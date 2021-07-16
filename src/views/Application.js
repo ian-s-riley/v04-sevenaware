@@ -49,7 +49,7 @@ function Application(prop) {
     
   //const [form, setForm] = useState(useSelector(selectForm))   
   const [form, setForm] = useState(prop.form)   
-  console.log('Application.js - form', form)
+  //console.log('Application.js - form', form)
 
   const [navigation, setNavigation] = useState(useSelector(selectNavigation))
   const [userId, setUserId] = useState(form.userId)

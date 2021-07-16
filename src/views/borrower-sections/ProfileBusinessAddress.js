@@ -98,12 +98,12 @@ function ProfileBusinessAddress(prop) {
 
     async function fetchAddress() {
         //lookup the address for this form and put it into the local store
-        console.log("ProfileBusinessAddress - form.businessAddressId", prop.form.businessAddressId)
+        //console.log("ProfileBusinessAddress - form.businessAddressId", prop.form.businessAddressId)
         if (prop.form.businessAddressId) {
           const addressFromAPI = await API.graphql(graphqlOperation(getAddress, {
             id: prop.form.businessAddressId,
           }))  
-          console.log('fetchAddress: addressFromAPI', addressFromAPI)
+          //console.log('fetchAddress: addressFromAPI', addressFromAPI)
           setAddress(addressFromAPI.data.getAddress)          
         }
       }
@@ -112,9 +112,9 @@ function ProfileBusinessAddress(prop) {
 
     async function handleNextClick() {
         //validation
-        if (isDirty && (address1State !== "success" || cityState !== "success" || zipState !== "success")) return
+        //if (isDirty && (address1State !== "success" || cityState !== "success" || zipState !== "success")) return false
 
-        if (isDirty) {
+        //if (isDirty) {
             let authId = "5754b539-a016-8109-970c-4c11834d47cb"
             let authToken = "asVs4YKeYeeUx29M1XeJ"
             const credentials = new SmartyStreetsCore.StaticCredentials(authId, authToken)
@@ -134,19 +134,19 @@ function ProfileBusinessAddress(prop) {
                 client.send(lookup1)
                   .then(handleSuccess)
                   .catch(handleError)
-        } else {
-             //save the new form to the navigation path for this user    
-             let screenNavigation = Object.assign([], prop.navigation);
-             screenNavigation.push(nextScreenId)
+        // } else {
+        //      //save the new form to the navigation path for this user    
+        //      let screenNavigation = Object.assign([], prop.navigation);
+        //      screenNavigation.push(nextScreenId)
 
-             //go to the next step, stage, or form
-             prop.nextForm(null, screenNavigation)
-        }
+        //      //go to the next step, stage, or form
+        //      prop.nextForm(null, screenNavigation)
+        // }
     }
 
     function handleSuccess(response) {
         //response.lookups.map(lookup => console.log(lookup.result));
-
+        console.log('ProfileBusinessAddress.js - handleSuccess - response', response)
         setAddress({
           ...address,
           "address1": response.lookups[0].result[0].deliveryLine1,
@@ -184,7 +184,7 @@ function ProfileBusinessAddress(prop) {
         
         //update the local form store 
         let newForm = null
-        console.log('handleVerifyAddress - prop.form.businessAddress.Id', prop.form.businessAddressId)
+        //console.log('handleVerifyAddress - prop.form.businessAddress.Id', prop.form.businessAddressId)
         if (!prop.form.businessAddressId) {
             //create the new address and add the id to the form
             const apiAddressData = await API.graphql(
@@ -207,7 +207,7 @@ function ProfileBusinessAddress(prop) {
             )
 
             const newAddressId = apiAddressData.data.createAddress.id
-            console.log('handleNextClick - newAddressId', newAddressId)
+            //console.log('handleNextClick - newAddressId', newAddressId)
 
             newForm = { 
                 ...form, 
